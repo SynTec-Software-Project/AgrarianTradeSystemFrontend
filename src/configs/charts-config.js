@@ -19,7 +19,7 @@ export const chartsConfig = {
     },
     labels: {
       style: {
-        colors: "#37474f",
+        colors: "#44BD32",
         fontSize: "13px",
         fontFamily: "inherit",
         fontWeight: 300,
