@@ -4,3 +4,6 @@ export * from "@/pages/dashboard/tables";
 export * from "@/pages/dashboard/notifications";
 export * from "@/pages/dashboard/MyProducts";
 export * from "@/pages/dashboard/NewOrders";
+export * from "@/pages/dashboard/MyReviews";
+export * from "@/pages/dashboard/MyOrders";
+export * from "@/pages/dashboard/MyReturns";
