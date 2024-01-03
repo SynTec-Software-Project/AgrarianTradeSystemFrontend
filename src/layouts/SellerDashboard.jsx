@@ -7,7 +7,7 @@ import {
   Configurator,
   Footer,
 } from "@/widgets/layout";
-import routes from "@/routes";
+import routes from "@/routes/SellerRoutes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
 
 export function Dashboard() {
@@ -44,7 +44,7 @@ export function Dashboard() {
           )}
         </Routes>
         <div className="text-blue-gray-600">
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </div>
     </div>
