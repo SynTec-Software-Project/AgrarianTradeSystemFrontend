@@ -6,8 +6,8 @@ import {
   ServerStackIcon,
   RectangleStackIcon,
 } from "@heroicons/react/24/solid";
-import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/pages/dashboard";
-import { SignIn, SignUp } from "@/pages/auth";
+import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/pages/SellerDashboard/dashboard";
+import { SignIn, SignUp } from "@/pages/SellerDashboard/auth";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
