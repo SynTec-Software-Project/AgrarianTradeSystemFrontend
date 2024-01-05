@@ -9,6 +9,7 @@ import {
 } from "@/widgets/layout";
 import routes from "@/routes/SellerRoutes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
+import Routing from "@/routes/Routing";
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -36,7 +37,8 @@ export function Dashboard() {
         >
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton> */}
-        <Routes>
+        
+        {/* <Routes>
           {routes.map(
             ({ layout, pages }) =>
               layout === "dashboard" &&
@@ -44,7 +46,10 @@ export function Dashboard() {
                 <Route exact path={path} element={element} />
               ))
           )}
-        </Routes>
+        </Routes> */}
+      
+       <Routing/>
+
         <div className="text-blue-gray-600">
           {/* <Footer /> */}
         </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon, } from "@heroicons/react/24/solid";
 import { HiTrash } from "react-icons/hi2";
@@ -34,56 +35,40 @@ const TABS = [
   },
 ];
  
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", "", ""];
+const TABLE_HEAD = ["Order", "Product Number", "Date Created", "Unit Price", "Stock","Total Price", "", ""];
  
 const TABLE_ROWS = [
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    job: "Manager",
-    org: "Organization",
-    online: true,
-    date: "23/04/18",
+    img: "https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202203151011.jpg?im=Resize=(1000,1000)",
+    name: "Carrot",
+    number:"PO-20001",
+    date: "23/04/23",
+    unitPrice: "300.00",
+    stock: "50",
+    total: "15000.00"
   },
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-    name: "Alexa Liras",
-    email: "alexa@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
-    online: false,
-    date: "23/04/18",
+    img: "https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202203151011.jpg?im=Resize=(1000,1000)",
+    name: "Carrot",
+    number:"PO-20002",
+    date: "23/04/23",
+    unitPrice: "300.00",
+    stock: "50",
+    total: "15000.00"
   },
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-    name: "Laurent Perrier",
-    email: "laurent@creative-tim.com",
-    job: "Executive",
-    org: "Projects",
-    online: false,
-    date: "19/09/17",
+    img: "https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202203151011.jpg?im=Resize=(1000,1000)",
+    name: "Carrot",
+    number:"PO-20003",
+    date: "23/04/23",
+    unitPrice: "300.00",
+    stock: "50",
+    total: "15000.00"
   },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-    name: "Michael Levi",
-    email: "michael@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
-    online: true,
-    date: "24/12/08",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-    name: "Richard Gran",
-    email: "richard@creative-tim.com",
-    job: "Manager",
-    org: "Executive",
-    online: false,
-    date: "04/10/21",
-  },
+ 
 ];
 const MyProductsTable = () => {
+  const navigate = useNavigate();
   return (
     <div>
         
@@ -99,12 +84,13 @@ const MyProductsTable = () => {
          See information about all products
        </Typography>
      </div>
-     
 
      {/* Add button */}
      <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-       <Button className="flex items-center gap-3" size="md" color='green'>
-         <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add products
+       <Button className="flex items-center gap-3" size="md" color='green'
+       onClick={()=>navigate('add-products')}
+       >
+        Add products
        </Button>
      </div>
    </div>
@@ -132,14 +118,13 @@ const MyProductsTable = () => {
      </thead>
      <tbody>
        {TABLE_ROWS.map(
-         ({ img, name, email, job, org, online, date }, index) => {
+         ({ img, name,number, date, unitPrice, stock,  total }, index) => {
            const isLast = index === TABLE_ROWS.length - 1;
            const classes = isLast
              ? "p-4"
              : "p-4 border-b border-blue-gray-50";
-
            return (
-             <tr key={name}>
+             <tr key={number}>
                <td className={classes}>
                  <div className="flex items-center gap-3">
                    <Avatar src={img} alt={name} size="sm" />
@@ -151,16 +136,17 @@ const MyProductsTable = () => {
                      >
                        {name}
                      </Typography>
-                     <Typography
+                     {/* <Typography
                        variant="small"
                        color="blue-gray"
                        className="font-normal opacity-70"
                      >
-                       {email}
-                     </Typography>
+                       {}
+                     </Typography> */}
                    </div>
                  </div>
                </td>
+
                <td className={classes}>
                  <div className="flex flex-col">
                    <Typography
@@ -168,27 +154,11 @@ const MyProductsTable = () => {
                      color="blue-gray"
                      className="font-normal"
                    >
-                     {job}
-                   </Typography>
-                   <Typography
-                     variant="small"
-                     color="blue-gray"
-                     className="font-normal opacity-70"
-                   >
-                     {org}
+                     {number}
                    </Typography>
                  </div>
                </td>
-               <td className={classes}>
-                 <div className="w-max">
-                   <Chip
-                     variant="ghost"
-                     size="sm"
-                     value={online ? "online" : "offline"}
-                     color={online ? "green" : "blue-gray"}
-                   />
-                 </div>
-               </td>
+
                <td className={classes}>
                  <Typography
                    variant="small"
@@ -198,7 +168,37 @@ const MyProductsTable = () => {
                    {date}
                  </Typography>
                </td>
-              
+
+               <td className={classes}>
+                 <Typography
+                   variant="small"
+                   color="blue-gray"
+                   className="font-normal"
+                 >
+                   {unitPrice}
+                 </Typography>
+               </td>
+
+               <td className={classes}>
+                 <Typography
+                   variant="small"
+                   color="blue-gray"
+                   className="font-normal"
+                 >
+                   {stock}
+                 </Typography>
+               </td>
+
+               <td className={classes}>
+                 <Typography
+                   variant="small"
+                   color="blue-gray"
+                   className="font-normal"
+                 >
+                   {total}
+                 </Typography>
+               </td>
+
               {/* edit button column */}
                <td className={classes}>
                  <Tooltip content="Edit User">
@@ -209,7 +209,7 @@ const MyProductsTable = () => {
                </td>
                <td className={classes}>
                  <Tooltip content="Delete User">
-                   <IconButton variant="text">
+                   <IconButton variant="text" color='red'>
                    <HiTrash className="h-4 w-4" />
                    </IconButton>
                  </Tooltip>
