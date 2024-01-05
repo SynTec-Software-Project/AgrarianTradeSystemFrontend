@@ -7,8 +7,8 @@ const Routing = () => {
     <>
     <Routes>
         <Route path='/my-products' element={<MyProducts />}>
+            
         </Route>
-        
         <Route path='/new-orders' element={<NewOrders />}>  </Route>
 
         <Route path='/my-orders' element={<MyOrders />}>  </Route>
@@ -16,6 +16,8 @@ const Routing = () => {
         <Route path='/my-reviews' element={<MyReviews />}>  </Route>
 
         <Route path='/my-returns' element={<MyReturns />}>  </Route>
+
+        <Route path='/add-products' element={<AddProductForm/>}>  </Route>
         </Routes>
     </>
   )

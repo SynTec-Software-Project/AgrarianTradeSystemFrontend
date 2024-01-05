@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon, } from "@heroicons/react/24/solid";
 import { HiTrash } from "react-icons/hi2";
 import {
@@ -65,6 +64,17 @@ const TABLE_ROWS = [
     stock: "50",
     total: "15000.00"
   },
+
+  {
+    img: "https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202203151011.jpg?im=Resize=(1000,1000)",
+    name: "Carrot",
+    number:"PO-20003",
+    date: "23/04/23",
+    unitPrice: "300.00",
+    stock: "50",
+    total: "15000.00"
+  },
+ 
  
 ];
 const MyProductsTable = () => {
@@ -88,7 +98,7 @@ const MyProductsTable = () => {
      {/* Add button */}
      <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
        <Button className="flex items-center gap-3" size="md" color='green'
-       onClick={()=>navigate('add-products')}
+       onClick={()=>navigate('/dashboard/add-products')}
        >
         Add products
        </Button>
@@ -201,14 +211,14 @@ const MyProductsTable = () => {
 
               {/* edit button column */}
                <td className={classes}>
-                 <Tooltip content="Edit User">
+                 <Tooltip content="Edit Product">
                    <IconButton variant="text">
                      <PencilIcon className="h-4 w-4" />
                    </IconButton>
                  </Tooltip>
                </td>
                <td className={classes}>
-                 <Tooltip content="Delete User">
+                 <Tooltip content="Delete Product">
                    <IconButton variant="text" color='red'>
                    <HiTrash className="h-4 w-4" />
                    </IconButton>
@@ -234,7 +244,9 @@ const MyProductsTable = () => {
      </Button>
    </div>
  </CardFooter>
-</Card></div>
+</Card>
+
+</div>
   )
 }
 
