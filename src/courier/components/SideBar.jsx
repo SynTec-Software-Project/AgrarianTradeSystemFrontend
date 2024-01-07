@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
 import { HomeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { TbCategory } from "react-icons/tb";
-import { MdOutlineRateReview,MdAssignmentReturn } from "react-icons/md";
+import { MdOutlineRateReview,MdOutlineInput, MdOutlineHistory } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
 import {
   Avatar,
@@ -37,7 +37,7 @@ export function SideBar() {
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
           >
-            <h1>Buyer Dashboard</h1>
+            <h1>Courier Dashboard</h1>
           </Typography>
         </Link>
         <IconButton
@@ -61,7 +61,7 @@ export function SideBar() {
                   color={sidenavType === "dark" ? "white" : "blue-gray"}
                   className="font-black uppercase opacity-75"
                 >
-                  Products
+                  Orders
                 </Typography>
               </li>
             <li>
@@ -107,7 +107,7 @@ export function SideBar() {
                       className="flex items-center gap-4 px-4 capitalize"
                       fullWidth
                     >
-                      <MdOutlineRateReview size={24} />
+                      <MdOutlineInput size={24} />
                       <Typography
                         color="inherit"
                         className="font-medium capitalize"
@@ -134,7 +134,7 @@ export function SideBar() {
                       className="flex items-center gap-4 px-4 capitalize"
                       fullWidth
                     >
-                      <MdAssignmentReturn size={24} />
+                      < MdOutlineHistory size={24} />
                       <Typography
                         color="inherit"
                         className="font-medium capitalize"
