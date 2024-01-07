@@ -65,7 +65,7 @@ export function SideBar() {
                 </Typography>
               </li>
             <li>
-               <NavLink to='my-orders'>
+               <NavLink to='new-orders'>
                {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
@@ -85,7 +85,7 @@ export function SideBar() {
                         color="inherit"
                         className="font-medium capitalize"
                       >
-                        My Orders
+                        New Orders
                       </Typography>
                     </Button>
                   )}  
@@ -93,7 +93,7 @@ export function SideBar() {
             </li>
 
             <li>
-               <NavLink to='my-reviews'>
+               <NavLink to='my-orders'>
                {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
@@ -112,7 +112,7 @@ export function SideBar() {
                         color="inherit"
                         className="font-medium capitalize"
                       >
-                        My Reviews
+                        My Orders
                       </Typography>
                     </Button>
                   )}  
@@ -120,7 +120,7 @@ export function SideBar() {
             </li>
              
             <li>
-               <NavLink to='my-returns'>
+               <NavLink to='my-history'>
                {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
@@ -139,7 +139,7 @@ export function SideBar() {
                         color="inherit"
                         className="font-medium capitalize"
                       >
-                        My Returns
+                        Order History
                       </Typography>
                     </Button>
                   )}  
@@ -183,11 +183,7 @@ export function SideBar() {
                </NavLink>
             </li> 
 
-             
-           
-           
-              
-          
+                     
           </ul>
 
       </div>
