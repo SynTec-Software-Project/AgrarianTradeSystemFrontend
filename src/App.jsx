@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import LandingPage from "./user/LandingPage";
 import AddProductForm from "./pages/SellerDashboard/dashboard/tabs/MyProduct/AddProductForm";
+import BuyerDashboard from "./buyer/layout/BuyerDashboard";
 
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
 
     <Routes>
       <Route path="/" element={<LandingPage />} />
+       
+       <Route path="buyers" element={<BuyerDashboard/>}/>
     </Routes>
     
     
