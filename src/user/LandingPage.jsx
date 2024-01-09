@@ -1,10 +1,10 @@
 import React from 'react'
-import MainNav from './components/MainNav'
+import MainNavbar from './components/MainNavbar'
 
 const LandingPage = () => {
   return (
     <div className='bg-secondary'>
-     <MainNav/>
+      <MainNavbar/>
     </div>
   )
 }

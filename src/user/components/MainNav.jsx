@@ -1,79 +1,85 @@
 import React, { useState } from "react";
+import { TbTruckDelivery } from "react-icons/tb";
+import { BsCoin } from "react-icons/bs";
+import { Badge, IconButton, Avatar } from "@material-tailwind/react";
+import { HomeIcon ,ShoppingCartIcon } from "@heroicons/react/24/solid";
+import SearchBar from "./SearchBar";
+
 
 const MainNav = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
-    <header className="flex w-full items-center bg-green-50 dark:bg-dark">
-      <div className="container">
-        <div className="relative -mx-4 items-center justify-between grid grid-cols-2">
-          <div className="w-50 max-w-full px-4">
-            <a href="/#" className="block w-full">
-              <img
-                src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-primary.svg"
-                alt="logo"
-                className="dark:hidden"
-              />
-              <img
-                src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-white.svg"
-                alt="logo"
-                className="hidden dark:block"
-              />
-            </a>
-          </div>
-        <div className="grid grid-rows-2 py-2">
-    {/* Upper  nav */}
-        
-            <div>
-                <ul className="block lg:flex justify-end pr-4 text-primary">
-                  <ListItem NavLink="/#">Become a Seller</ListItem>
-                  <ListItem NavLink="/#">Delivery Partner</ListItem>
-        
-                </ul>
-            </div>
-        
-          {/* lower nav */}
-    <div>
-          <div className="flex w-full items-center justify-between px-4">
-            <div>
-              <nav
-                // :className="!navbarOpen && 'hidden' "
-                id="navbarCollapse"
-                className={`absolute right-4 top-full w-full max-w-[250px] rounded-lg px-6 py-3 shadow dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none lg:dark:bg-transparent ${
-                  !open && "hidden"
-                } `}
-              >
-                <ul className="block lg:flex">
-                  <ListItem NavLink="/#">Home</ListItem>
-                  <ListItem NavLink="/#">Payment</ListItem>
-                  <ListItem NavLink="/#">About</ListItem>
-                  <ListItem NavLink="/#">Blog</ListItem>
-                </ul>
-              </nav>
-            </div>
-            <div className="hidden justify-end pr-16 gap-3 sm:flex lg:pr-0">
-            <button className='bg-transparent border-primary border rounded-full inline-flex items-center 
-            justify-center py-2 px-8 text-center text-sm font-medium  text-primary
-            disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
-                   Login
-            </button>
+  <>
+    <header className="flex w-full items-center justify-between bg-green-50 dark:bg-dark">
+        <div className="container">
+                  <div className="mx-4 items-center justify-between flex flex-row">
+                    <div className="w-50 max-w-full px-4 ">
+                      <a href="/#" className="block w-full">
+                        <img
+                          src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-primary.svg"
+                          alt="logo"
+                          className="dark:hidden"
+                        />
+                      </a>
+                    </div>
+                 <div>
+                         {/* Upper  nav */}     
+                  <div className=" bg-black"> 
+                        <div className="mx-auto">
+                            <nav
+                                  // :className="!navbarOpen && 'hidden' "
+                                  id="navbarCollapse"
+                                  className={`absolute right-4 top-full w-full max-w-[250px] rounded-lg px-6 py-3 shadow dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none lg:dark:bg-transparent ${
+                                    !open && "hidden"
+                                  } `}
+                                >
+                                  <ul className="block lg:flex">
+                                    <ListItem NavLink="/#">Home</ListItem>
+                                    <ListItem NavLink="/#">About</ListItem>
+                                    <ListItem NavLink="/#">Blog</ListItem>
+                                    <ListItem NavLink="/#">Blog</ListItem>
+                                    
+                                    <ul className="block  lg:flex  justify-end pr-4 text-primary">
+                                    <ListItem NavLink="/#"><BsCoin size={24} className=" mx-2" />Become a Seller</ListItem>
+                                    <ListItem NavLink="/#"><TbTruckDelivery size={25} className=" mx-2"/>Delivery Partner</ListItem>
 
-            <button className='bg-primary border-primary border rounded-full inline-flex items-center 
-            justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
-            disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
-                   Sign Up
-            </button>
-            </div>
-            </div>
-    </div>
-        
+                                  </ul>
+                                  </ul>
 
+                                </nav>
+                          </div>
+                                  
+                         <SearchBar/>
+                  </div>
+                    {/* lower nav */}
+                  <div className="py-3 ">
+                            <div className="flex w-full items-center justify-between px-4">
+                                <div className="hidden justify-end pr-16 gap-3 sm:flex lg:pr-0 items-center ">
+                                      <Badge content="5" color="green" className="mx-3">
+                                          <IconButton color="gray" variant="outlined" className="rounded-full">
+                                            <ShoppingCartIcon className="h-3 w-3" />
+                                          </IconButton>
+                                      </Badge>
+                                      <button className='bg-transparent border-primary border rounded-full inline-flex items-center 
+                                      justify-center py-2 px-8 text-center text-sm font-medium  text-primary
+                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
+                                            Login
+                                      </button>
+
+                                      <button className='bg-primary border-primary border rounded-full inline-flex items-center 
+                                      justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
+                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
+                                            Sign Up
+                                      </button>
+                                  </div>
+                            </div>
+                      </div>
+                  </div>
+                  </div>
         </div>
-        </div>
-      </div>
-    </header>
-    </div>
+     </header>
+    </>
   );
 };
 
@@ -93,3 +99,4 @@ const ListItem = ({ children, NavLink }) => {
     </>
   );
 };
+ 
