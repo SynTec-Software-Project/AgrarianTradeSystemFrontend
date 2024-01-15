@@ -33,12 +33,12 @@ const MainNav = () => {
                                         <ul className="block lg:flex items-start text-sm">
                                             <ListItem NavLink="/#">Home</ListItem>
                                             <ListItem NavLink="/#">About</ListItem>
-                                            <ListItem NavLink="/#">My Orders</ListItem>
+                                            <ListItem NavLink="/buyers/my-orders">My Orders</ListItem>
                                             <ListItem NavLink="/#">Offers</ListItem>
                                         </ul>
                                         <ul className="block  lg:flex  justify-end pr-4 text-primary text-sm">
-                                           <ListItem NavLink="/#"><BsCoin size={24} className=" mx-2" />Become a Seller</ListItem>
-                                           <ListItem NavLink="/#"><TbTruckDelivery size={25} className=" mx-2"/>Delivery Partner</ListItem>
+                                           <ListItem NavLink="/dashboard/my-products"><BsCoin size={24} className=" mx-2" />Become a Seller</ListItem>
+                                           <ListItem NavLink="/couriers/new-orders"><TbTruckDelivery size={25} className=" mx-2"/>Delivery Partner</ListItem>
 
                                         </ul>                            
                                 
