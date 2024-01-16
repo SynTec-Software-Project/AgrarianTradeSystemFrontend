@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import LandingPage from "./user/LandingPage";
+import Login from "./pages/SellerDashboard/auth/Login";
 
 
 function App() {
@@ -15,7 +16,9 @@ function App() {
       <Route path="/" element={<LandingPage />} />
     </Routes>
 
-
+    <Routes>
+      <Route path="/login" element={<Login/>} />
+    </Routes>
     
     </>
   );
