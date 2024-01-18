@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import LandingPage from "./user/LandingPage";
+import Login from "./pages/SellerDashboard/auth/Login";
 import AddProductForm from "./pages/SellerDashboard/dashboard/tabs/MyProduct/AddProductForm";
 import BuyerDashboard from "./buyer/layout/BuyerDashboard";
 import CourierDashboard from "./courier/layout/CourierDashboard";
@@ -21,9 +22,13 @@ function App() {
       <Route path="/couriers/*" element={<CourierDashboard/>}/>
       <Route path="/products" element={<ProductList/>}/>
     </Routes>
-    
-    
 
+
+    <Routes>
+      <Route path="/login" element={<Login/>} />
+    </Routes>
+    
+   
     
     </>
   );
