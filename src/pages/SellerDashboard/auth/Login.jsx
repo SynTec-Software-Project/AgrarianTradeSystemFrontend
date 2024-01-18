@@ -1,8 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye} from '@fortawesome/free-regular-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Login(){
-
+    const [visibility, setVisibility]=useState(false);
     return(
         <>
             <section class=" font-poppins">
@@ -24,23 +26,22 @@ function Login(){
                                         <div>
                                             <label for="" class="text-gray-700 dark:text-gray-300 ">Password:</label>
                                             <div class="relative flex items-center mt-2">
-                                                <input type="password"
+                                                <input type={visibility ? "text" : "password"}
                                                     class="w-full px-4 py-3 bg-white rounded-lg dark:text-gray-400 dark:bg-gray-800 dark:border dark:border-gray-800 "
                                                     name="" placeholder="Enter password"/>
-                                                    <FontAwesomeIcon icon={faEye} className='absolute right-3 bg-white pl-2'/>
+                                                    <FontAwesomeIcon icon={visibility ? faEye : faEyeSlash} onClick={()=> setVisibility(!visibility)} className='absolute right-3 bg-white pl-2 hover:cursor-pointer'/>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mt-4 text-right">
-                                        <a href="#" class="text-sm font-semibold text-primary hover:underline">forgot
-                                            password?</a>
+                                        <Link className='text-sm font-semibold text-primary hover:underline' to={"/forgotpassword"}>forgot
+                                            password?</Link>
                                     </div>
                                     <button
                                         class="w-full px-4 py-3 mt-6 font-semibold text-gray-200 bg-primary rounded-lg hover:text-gray-700 hover:bg-green-300 "
                                         type="submit">LOGIN</button>
                                     <p class="mt-6 text-gray-700 dark:text-gray-300"> Need an account?
-                                        <a href="#" class="font-semibold text-primary hover:text-green-800"> Create an account
-                                        </a>
+                                        <Link className="font-semibold text-primary hover:text-green-800" to={"/create"}> Create an account</Link>
                                     </p>
                                 </form>
                             </div>
