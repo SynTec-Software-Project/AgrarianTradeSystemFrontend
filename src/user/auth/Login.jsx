@@ -28,7 +28,8 @@ function Login(){
                                                 <input type={visibility ? "text" : "password"}
                                                     class="w-full px-4 py-3 bg-white rounded-lg dark:text-gray-400 dark:bg-gray-800 dark:border dark:border-gray-800 "
                                                     name="" placeholder="Enter password"/>
-                                                
+                                               {visibility? <FaRegEye size={25} onClick={()=> setVisibility(!visibility)} className='absolute right-3 bg-white pl-2 hover:cursor-pointer'/> : <FaRegEyeSlash size={25} onClick={()=> setVisibility(!visibility)}
+                                                className='absolute right-3 bg-white pl-2 hover:cursor-pointer'/>} 
                                             </div>
                                         </div>
                                     </div>
