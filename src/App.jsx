@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import LandingPage from "./user/LandingPage";
-import AddProductForm from "./pages/SellerDashboard/dashboard/tabs/MyProduct/AddProductForm";
 import BuyerDashboard from "./buyer/layout/BuyerDashboard";
 import CourierDashboard from "./courier/layout/CourierDashboard";
 import ProductList from "./user/pages/ProductList";

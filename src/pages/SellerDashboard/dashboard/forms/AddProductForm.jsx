@@ -1,7 +1,7 @@
 import React from 'react'
 import { Select, Option } from "@material-tailwind/react";
 import { Radio, Typography } from "@material-tailwind/react";
-import { Hint, Title } from '../../forms/Hint';
+import { Hint, Title } from './Hint';
 import { Button } from "@material-tailwind/react";
 const AddProductForm = () => {
   return (

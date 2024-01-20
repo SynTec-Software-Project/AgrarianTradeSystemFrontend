@@ -1,5 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import axios from "axios"
 import { PencilIcon, UserPlusIcon, } from "@heroicons/react/24/solid";
 import { HiTrash } from "react-icons/hi2";
 import {
@@ -46,40 +48,25 @@ const TABLE_ROWS = [
     stock: "50",
     total: "15000.00"
   },
-  {
-    img: "https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202203151011.jpg?im=Resize=(1000,1000)",
-    name: "Carrot",
-    number:"PO-20002",
-    date: "23/04/23",
-    unitPrice: "300.00",
-    stock: "50",
-    total: "15000.00"
-  },
-  {
-    img: "https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202203151011.jpg?im=Resize=(1000,1000)",
-    name: "Carrot",
-    number:"PO-20003",
-    date: "23/04/23",
-    unitPrice: "300.00",
-    stock: "50",
-    total: "15000.00"
-  },
 
-  {
-    img: "https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202203151011.jpg?im=Resize=(1000,1000)",
-    name: "Carrot",
-    number:"PO-20003",
-    date: "23/04/23",
-    unitPrice: "300.00",
-    stock: "50",
-    total: "15000.00"
-  },
- 
- 
 ];
 const MyProductsTable = () => {
   const navigate = useNavigate();
+  const [products,setProducts]=useState([]);
+
+  useEffect(() => {
+    axios.get("https://localhost:7282/api/Product/GetProduct")
+    .then((response) => {
+      setProducts((data) => {
+        return response.data;
+      });
+    });
+  }, []);
+
+
+
   return (
+
     <div>
         
         {/* Header card */}
@@ -127,97 +114,92 @@ const MyProductsTable = () => {
        </tr>
      </thead>
      <tbody>
-       {TABLE_ROWS.map(
-         ({ img, name,number, date, unitPrice, stock,  total }, index) => {
-           const isLast = index === TABLE_ROWS.length - 1;
-           const classes = isLast
-             ? "p-4"
-             : "p-4 border-b border-blue-gray-50";
+       {products.map((p) => {
            return (
-             <tr key={number}>
-               <td className={classes}>
+             <tr key={p.productID}>
+               <td className="p-4 border-b border-blue-gray-50">
                  <div className="flex items-center gap-3">
-                   <Avatar src={img} alt={name} size="sm" />
+                   <Avatar src={p.productImage} alt={p.productTitle} size="sm" />
                    <div className="flex flex-col">
                      <Typography
                        variant="small"
                        color="blue-gray"
                        className="font-normal"
                      >
-                       {name}
+                       {p.productTitle}
                      </Typography>
-                     {/* <Typography
+                     <Typography
                        variant="small"
                        color="blue-gray"
                        className="font-normal opacity-70"
                      >
-                       {}
-                     </Typography> */}
+                       {p.productDescription}
+                     </Typography>
                    </div>
                  </div>
                </td>
 
-               <td className={classes}>
+               <td className="p-4 border-b border-blue-gray-50">
                  <div className="flex flex-col">
                    <Typography
                      variant="small"
                      color="blue-gray"
                      className="font-normal"
                    >
-                     {number}
+                     {"PO-"+1000+p.productID}
                    </Typography>
                  </div>
                </td>
 
-               <td className={classes}>
+               <td className="p-4 border-b border-blue-gray-50">
                  <Typography
                    variant="small"
                    color="blue-gray"
                    className="font-normal"
                  >
-                   {date}
+                   {p.dateCreated}
                  </Typography>
                </td>
 
-               <td className={classes}>
+               <td className="p-4 border-b border-blue-gray-50">
                  <Typography
                    variant="small"
                    color="blue-gray"
                    className="font-normal"
                  >
-                   {unitPrice}
+                   {p.unitPrice}
                  </Typography>
                </td>
 
-               <td className={classes}>
+               <td className="p-4 border-b border-blue-gray-50">
                  <Typography
                    variant="small"
                    color="blue-gray"
                    className="font-normal"
                  >
-                   {stock}
+                   {p.availableStock}
                  </Typography>
                </td>
 
-               <td className={classes}>
+               <td className="p-4 border-b border-blue-gray-50">
                  <Typography
                    variant="small"
                    color="blue-gray"
                    className="font-normal"
                  >
-                   {total}
+                   {p.minimumQuantity}
                  </Typography>
                </td>
 
               {/* edit button column */}
-               <td className={classes}>
+               <td className="p-4 border-b border-blue-gray-50">
                  <Tooltip content="Edit Product">
                    <IconButton variant="text">
                      <PencilIcon className="h-4 w-4" />
                    </IconButton>
                  </Tooltip>
                </td>
-               <td className={classes}>
+               <td className="p-4 border-b border-blue-gray-50">
                  <Tooltip content="Delete Product">
                    <IconButton variant="text" color='red'>
                    <HiTrash className="h-4 w-4" />
