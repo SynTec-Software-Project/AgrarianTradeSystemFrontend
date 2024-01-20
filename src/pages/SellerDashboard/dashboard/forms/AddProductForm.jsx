@@ -1,19 +1,92 @@
 import React, { useRef,useState } from 'react'
 import { Select, Option } from "@material-tailwind/react";
+import { useNavigate } from 'react-router-dom';
 import { Radio, Typography } from "@material-tailwind/react";
 import { Hint, Title } from './Hint';
 import { Button } from "@material-tailwind/react";
+import axios from 'axios';
+
 const AddProductForm = () => {
+  // get user inputs
   const productTitleRef = useRef("");
   const productDescriptionRef = useRef("");
   const productImageRef = useRef("");
-  const productTypeRef = useRef("");
-  const categoryRef = useRef("");
   const unitPriceRef = useRef(0);
   const availableStockRef = useRef(0);
   const minimumQuantityRef = useRef(0);
   const dateCreatedRef = useRef("");
+   
+  const navigate=useNavigate();
+  
+  const [selectedProductType, setSelectedProductType] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  
+  const handleProductTypeChange = (event) => {
+    const value = event.target.value;
+    setSelectedProductType(value);
+
+    setSelectedCategory('');
+  };
+   
+  const handleCategoryChange = (event) => {
+    const value = event.target.value;
+    setSelectedCategory(value);
+  };
+
+  function addProducts(){
+    var product={
+    productTitle: productTitleRef.current.value,
+    productDescription: productDescriptionRef.current.value,
+    productImage: productImageRef.current.value,
+    productType: selectedProductType,
+    category: selectedCategory,
+    unitPrice: unitPriceRef.current.value,
+    availableStock: availableStockRef.current.value,
+    minimumQuantity: minimumQuantityRef.current.value,
+    dateCreated: dateCreatedRef.current.value,
+    }
+       axios.post("https://localhost:7282/api/Product/PostProduct" ,product)
+       .then((respose) => {
+        navigate(-1);
+       })
+
+  }
+
+  var vegetables = [
+    { value: "artichoke", label: "Artichoke" },
+    { value: "asparagus", label: "Asparagus" },
+    { value: "bell-pepper", label: "Bell Pepper" },
+    { value: "broccoli", label: "Broccoli" },
+    { value: "cabbage", label: "Cabbage" },
+    { value: "carrot", label: "Carrot" },
+    { value: "celery", label: "Celery" },
+    { value: "cucumber", label: "Cucumber" },
+    { value: "kale", label: "Kale" },
+    { value: "leek", label: "Leek" },
+    { value: "potato", label: "Potato" },
+    { value: "spinach", label: "Spinach" },
+    { value: "sweet-potato", label: "Sweet Potato" },
+    { value: "tomato", label: "Tomato" },
+    { value: "green-beans", label: "Green Beans" }
+];
+
+var fruits = [
+  { value: "apple", label: "Apple" },
+  { value: "banana", label: "Banana" },
+  { value: "orange", label: "Orange" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "grape", label: "Grape" },
+  { value: "watermelon", label: "Watermelon" },
+  { value: "kiwi", label: "Kiwi" },
+  { value: "pineapple", label: "Pineapple" },
+  { value: "mango", label: "Mango" },
+  { value: "pear", label: "Pear" }
+];
+
+
+
   return (
+
     <div>
       <div class="relative my-4 py-10 flex flex-col text-gray-700 bg-white shadow-none rounded-xl bg-clip-border ">
       <form class="max-w-screen-lg mt-8 ml-8 mb-2 w-80 sm:w-96">     
@@ -22,24 +95,26 @@ const AddProductForm = () => {
        {/* title*/}
        <div>
                     <div className=' flex'>
-                          <Title title='Product Title'/>
+                         <Title title='Product Title'/>
                       </div> 
                       <input type="text" id="number-input" aria-describedby="helper-text-explanation"
                        class="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent !border-t-blue-gray-200 bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" 
-                        placeholder="Title" required>            
+                        placeholder="Title" required 
+                        ref={productTitleRef}       
+                        >            
                      </input>
                 </div>
 
         {/* description*/}
               <div class="w-96">
-              <h6
-                    class="block mb-3 font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-gray-900">
-                    Description
-                  </h6>
+              <Title title="Description"></Title>
               <div class="relative w-full min-w-[200px]">
                 <textarea
                   class="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
-                  placeholder=" "></textarea>
+                  placeholder=" "
+                  ref={productDescriptionRef}
+                  ></textarea>
+               
                 <label
                   class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                   Description
@@ -47,10 +122,14 @@ const AddProductForm = () => {
               </div>
             </div>
                 
-        {/* Category selection */}
+        {/* Category selection
                <Title title="Select Category"></Title>
                 <div className="flex gap-10 -mt-3">
-                      <Radio name="type"  label={
+                      <Radio name="type" 
+                      value="vegetable"
+                      checked={selectedProductType === 'vegetable'}
+                      onChange={handleProductTypeChange}
+                       label={
                         <Typography
                           color="blue-gray"
                           className="font-normal text-blue-gray-700"
@@ -60,7 +139,12 @@ const AddProductForm = () => {
                       }
                       defaultChecked
                       />
-                    <Radio name="type"  label={
+                    <Radio name="type"  
+                    value="fruit"
+                    checked={selectedProductType === 'fruit'}
+                    onChange={handleProductTypeChange}
+                    
+                    label={
                         <Typography
                           color="blue-gray"
                           className="font-normal text-blue-gray-700"
@@ -73,35 +157,38 @@ const AddProductForm = () => {
 
                   <div>
                     <div className="w-full">
-                      <Select label="Select Type">
-                      <Option>Artichoke</Option>
-                      <Option>Asparagus</Option>
-                      <Option>Bell Pepper</Option>
-                      <Option>Broccoli</Option>
-                      <Option>Brussels Sprouts</Option>
-                      <Option>Cabbage</Option>
-                      <Option>Carrot</Option>
-                      <Option>Cauliflower</Option>
-                      <Option>Celery</Option>
-                      <Option>Cucumber</Option>
-                      <Option>Eggplant</Option>
-                      <Option>Kale</Option>
-                      <Option>Leek</Option>
-                      <Option>Potato</Option>
-                      <Option>Radish</Option>
-                      <Option>Spinach</Option>
-                      <Option>Sweet Potato</Option>
-                      <Option>Tomato</Option>
-                      <Option>Zucchini</Option>
-                      <Option>Green Beans</Option>
-                        
+                      <Select label="Select Type" value={selectedCategory} onChange={handleCategoryChange} >
+
+                    
+          {selectedProductType === 'vegetable' ? (
+            <>
+                  {vegetables.map((v) => (
+                        <Option key={v.value} value={v.value}>{v.label}</Option>
+                    ))}
+            </>
+          ) : selectedProductType === 'fruit' ? (
+            <>
+              {fruits.map((f)=>{
+                           <Option key={f.value} value={f.value}>{f.label}</Option>
+                      })}
+            </>
+          ) : null}
+                      
+                      
                       </Select> 
                   </div>      
-                </div>
+                </div> */}
           
         {/* upload product image */}
                 <Title title='Upload Product Image'/>
-                <div class="flex items-center justify-center w-full">
+                <input type="text" id="number-input" aria-describedby="helper-text-explanation"
+                       class="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent !border-t-blue-gray-200 bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" 
+                        placeholder="Title" required 
+                        ref={productImageRef}       
+                        >            
+                     </input>
+                
+                {/* <div class="flex items-center justify-center w-full">
                       <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                           <div class="flex flex-col items-center justify-center pt-5 pb-6">
                               <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -112,7 +199,7 @@ const AddProductForm = () => {
                           </div>
                           <input id="dropzone-file" type="file" class="hidden" />
                  </label>
-                 </div> 
+                 </div>  */}
          {/* select quantity */}  
                 <div>
                     <div className=' flex'>
@@ -121,7 +208,9 @@ const AddProductForm = () => {
                       </div> 
                       <input type="number" id="number-input" aria-describedby="helper-text-explanation"
                        class="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent !border-t-blue-gray-200 bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" 
-                        placeholder="Available Stock" required>            
+                        placeholder="Available Stock" 
+                        ref={availableStockRef}
+                        >            
                      </input>
                 </div>
 
@@ -134,7 +223,9 @@ const AddProductForm = () => {
 
                       <input type="number" id="number-input" aria-describedby="helper-text-explanation"
                        class="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent !border-t-blue-gray-200 bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" 
-                        placeholder="Minimum Order Quantity" required>            
+                        placeholder="Minimum Order Quantity" required
+                        ref={minimumQuantityRef}
+                        >            
                      </input>
                 </div>
 
@@ -147,13 +238,15 @@ const AddProductForm = () => {
 
                        <input type="number" id="number-input" aria-describedby="helper-text-explanation"
                        class="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent !border-t-blue-gray-200 bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" 
-                        placeholder="Unit Price" required>            
+                        placeholder="Unit Price" required
+                        ref={unitPriceRef}
+                        >            
                      </input>
                 </div>
 
              {/* submit button */}
             <div className="flex gap-4 justify-end" >
-              < Button color="green" variant='gradient'> Post </Button>
+              < Button color="green" variant='gradient' onClick={addProducts}> Post </Button>
               <Button color="green" variant="outlined">Cancel</Button>
             </div>        
           </div>
