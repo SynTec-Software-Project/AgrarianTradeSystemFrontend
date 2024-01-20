@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useRef,useState } from 'react'
 import { Select, Option } from "@material-tailwind/react";
 import { Radio, Typography } from "@material-tailwind/react";
 import { Hint, Title } from './Hint';
 import { Button } from "@material-tailwind/react";
 const AddProductForm = () => {
+  const productTitleRef = useRef("");
+  const productDescriptionRef = useRef("");
+  const productImageRef = useRef("");
+  const productTypeRef = useRef("");
+  const categoryRef = useRef("");
+  const unitPriceRef = useRef(0);
+  const availableStockRef = useRef(0);
+  const minimumQuantityRef = useRef(0);
+  const dateCreatedRef = useRef("");
   return (
     <div>
       <div class="relative my-4 py-10 flex flex-col text-gray-700 bg-white shadow-none rounded-xl bg-clip-border ">
