@@ -1,14 +1,14 @@
 "use client";
 import { useState } from 'react';
 import React from 'react';
-import sellerTableData from '../../../../data/seller-table-data';
+import courierTableData from '../../data/courier-table-data';
 
 
-export default function Tab() {
-  const [data,setData] =useState(sellerTableData);
+export default function TabAndTables() {
+  const [data,setData] =useState(courierTableData);
   const [tab,setTab]=useState('');
   const filterResult=(statusItem)=>{
-    const result=sellerTableData.filter((curData)=>{
+    const result=courierTableData.filter((curData)=>{
       return curData.status===statusItem;
     } );
     setData(result);
@@ -56,7 +56,7 @@ export default function Tab() {
             <table class="w-full text-left table-auto min-w-max ">
               <thead>
                 <tr>
-                  <div class="flex flex-row justify-between border-b border-primary pr-16 pl-8 ml-4">
+                  <div class="flex flex-row justify-between border-b border-primary pr-12 pl-8">
                     <th class="p-4  ml-8  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                       Product
@@ -74,19 +74,21 @@ export default function Tab() {
                   </th>
                   <th class="p-4  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Quantity (Kg)
+                    Delivery Date
                     </p>
                   </th>
                   <th class="p-4  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Courier Id
+                    Quantity 
                     </p>
                   </th>
                   <th class="p-4  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Price (Rs)
+                    Courier charge 
                     </p>
                   </th>
+
+
                   </div>
                 </tr>
               </thead>
@@ -94,11 +96,11 @@ export default function Tab() {
               <tbody >
                 {data.map((values)=>{
         
-                  const {orderReference,product,orderPlaced,quantity,courierId,photoName,price,status}=values;    //destructuring
+                  const {orderReference,product,orderPlaced,quantity,deliveryDate,photoName,courierCharge,status}=values;    //destructuring
                   return(
                     <>
                     <tr>
-                      <div class='flex  flex-row justify-between  border-b border-blue-gray-50 pr-24 pl-10'>
+                      <div class='flex  flex-row justify-between  border-b border-blue-gray-50 pr-20 pl-10'>
                       <td class="p-3 w-24 ">
                           <div class="flex space-x-5  ">
                         <img src={photoName} alt={product} />
@@ -119,17 +121,17 @@ export default function Tab() {
                       </td>
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                        {quantity} 
+                         {deliveryDate}
                         </p>
                       </td>
                       <td class="p-3">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {courierId}
+                        {quantity}Kg
                         </p>
                       </td> 
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {price}
+                         Rs. {courierCharge}
                         </p>
                       </td> 
                       </div>       
@@ -147,7 +149,7 @@ export default function Tab() {
 
           <div class="sm:hidden">
           {data.map((values)=>{
-            const {orderReference,product,orderPlaced,quantity,courierId,photoName,price,status}=values;    //destructuring
+            const {orderReference,product,orderPlaced,quantity,photoName,courierCharge,deliveryDate,status}=values;    //destructuring
             return(
               <>
               <div className='bg-primary p-4  rounded-lg shadow mt-8 text-white '>
@@ -157,14 +159,21 @@ export default function Tab() {
                   <div className='grid grid-cols-2 gap-7 mt-2'>
                     <div className='pl-5 '>
                     <div className='text-base  font-medium'>{product} - {quantity}Kg</div>
-                    <div className='text-sm text-custom_gray'>Rs.{price}</div>
-                    <div className='text-sm text-gray-300'>{orderPlaced}</div>
+                    <div className='text-sm text-custom_gray'>Rs.{courierCharge}</div>
+                    <div className='text-sm text-gray-300'>{orderReference}</div>
                     </div >
-                    <div className='text-primary bg-gray-200 p-3 rounded w-32 '>
-                    <div className='text-sm '>courier Id: {courierId}</div>             
-                    <div className='text-md'> {orderReference}</div>
+
+                    <div className=' flex flex-col space-y-2 text-xs  italic -mt-8'>
+                    <div className=' bg-gray-200 p-3 rounded w-32'>
+                        <div className=' text-custom_gray'>Ordered Date:</div> 
+                        <div className='text-primary'>{orderPlaced}</div>
+                    </div>             
+                    <div className=' bg-gray-200 p-2 rounded w-32'>
+                        <div className=' text-custom_gray'> Delivery Date:</div>
+                        <div className='text-primary'>{deliveryDate}</div>                        
                     </div>
-                  
+                    </div>  
+
                   </div>
               </div>
               </>
