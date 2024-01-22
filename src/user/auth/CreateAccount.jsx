@@ -8,6 +8,8 @@ export default function CreateAccount() {
   const [confmpwd, setConfmpwd]=useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
+  const [NIC, setNIC] = useState("");
+  const [isnicValid, setIsnicValid] = useState(false);
 
   const [image, setImage]=useState(null);
   const imgInputRef=useRef(null);
@@ -15,6 +17,11 @@ export default function CreateAccount() {
   const validatePhoneNumber = (number) => {
     const phoneNumberRegex = /^[0-9]{10}$/;
     return phoneNumberRegex.test(number);
+  };
+
+  const validateNIC = (nic) => {
+    const nicRegex = /^[0-9]{12}$/;
+    return nicRegex.test(nic);
   };
   
 
@@ -39,10 +46,12 @@ export default function CreateAccount() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const isValid = validatePhoneNumber(phoneNumber);
-    setIsPhoneNumberValid(isValid);
+    //const isValid = validatePhoneNumber(phoneNumber);
+    //setIsPhoneNumberValid(isValid);
+    //const isValidNIC = validateNIC(nic);
+    //setIsPhoneNumberValid(isValidNIC);
 
-    if (!isValid) {
+    if (!isPhoneNumberValid) {
         alert("Please enter valid phone number");
         return;
     }
@@ -52,6 +61,14 @@ export default function CreateAccount() {
     }
     if (image==null) {
         alert("Please upload a phofile photo");
+        return;
+    }
+    if (pwd.length < 8) {
+        alert("Password minimum length should be 8 characters");
+        return;
+    }
+    if (!isnicValid) {
+        alert("Please enter valid NIC number");
         return;
     }
 
@@ -137,6 +154,12 @@ export default function CreateAccount() {
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
                                     type="password" placeholder="******" required onChange={(e)=>setPwd(e.target.value)}/>
+                                {
+                                    pwd && pwd.length<8 &&
+                                    <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
+                                        <MdOutlineErrorOutline size={20}/> &nbsp;Password minimum length should be 8 characters.
+                                    </p>
+                                }
                             </div>
                         </div>
                     </div>
@@ -175,7 +198,17 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="197419202757" required/>
+                                    type="text" placeholder="197419202757" required
+                                    onChange={(e) => {
+                                        const number = e.target.value;
+                                        setNIC(number);
+                                        setIsnicValid(validateNIC(number));
+                                    }}/>
+                                {(NIC!="" && !isnicValid) && 
+                                    <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
+                                        <MdOutlineErrorOutline size={20}/> &nbsp;Please enter a valid NIC number.
+                                    </p>
+                                }
                             </div>
                         </div>
                     </div>
