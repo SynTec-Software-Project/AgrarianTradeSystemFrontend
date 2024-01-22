@@ -1,13 +1,67 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineErrorOutline } from "react-icons/md";
+
 
 export default function CreateAccount() {
   const [pwd, setPwd]=useState("");
   const [confmpwd, setConfmpwd]=useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
+
+  const [image, setImage]=useState(null);
+  const imgInputRef=useRef(null);
+
+  const validatePhoneNumber = (number) => {
+    const phoneNumberRegex = /^[0-9]{10}$/;
+    return phoneNumberRegex.test(number);
+  };
+  
+
+  const handleImage=(e)=>{
+    const file=e.target.files[0];
+    console.log(file);
+    setImage(e.target.files[0]);
+  }
+
+  const handleDrag=(e)=>{
+    e.preventDefault();
+    setIsDragging(true);
+  }
+  const handleDrop=(e)=>{
+    e.preventDefault();
+    const file=e.dataTransfer.files[0];
+    if (file.type.startsWith('image/')) {
+        setImage(e.dataTransfer.files[0]);
+        console.log(file);
+    } 
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const isValid = validatePhoneNumber(phoneNumber);
+    setIsPhoneNumberValid(isValid);
+
+    if (!isValid) {
+        alert("Please enter valid phone number");
+        return;
+    }
+    if (pwd!=confmpwd) {
+        alert("Please make sure your passwords are match");
+        return;
+    }
+    if (image==null) {
+        alert("Please upload a phofile photo");
+        return;
+    }
+
+    // Submission with API
+
+  };
+
   return (
     <div>
-      <form className="py-16 bg-gray-100 dark:bg-gray-800">
+      <form className="py-16 bg-gray-100 dark:bg-gray-800" onSubmit={handleSubmit}>
         <div className="max-w-6xl px-4 mx-auto">
             <div className="p-6 bg-white border border-gray-100 rounded-lg shadow dark:bg-gray-900 dark:border-gray-900">
                 <div className="pb-6 border-b border-gray-100 dark:border-gray-700 ">
@@ -137,7 +191,17 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="07XXXXXXXX" required/>
+                                    type="text" placeholder="07XXXXXXXX" required
+                                    onChange={(e) => {
+                                        const number = e.target.value;
+                                        setPhoneNumber(number);
+                                        setIsPhoneNumberValid(validatePhoneNumber(number));
+                                      }}/>
+                                {(phoneNumber!="" && !isPhoneNumberValid) && 
+                                    <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
+                                        <MdOutlineErrorOutline size={20}/> &nbsp;Please enter a valid phone number.
+                                    </p>
+                                }
                             </div>
                         </div>
                     </div>
@@ -198,23 +262,33 @@ export default function CreateAccount() {
                             </div>
                             <div className="w-full p-3 md:flex-1">
                                 <div className="flex items-center justify-center w-full">
-                                    <label for="dropzone-file"
-                                        className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg cursor-pointer dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                                        <div className="flex flex-col items-center justify-center px-4 pt-5 pb-6">
-                                            <span className="text-primary dark:text-gray-400">
-                                                <IoCloudUploadOutline size={28} />
-                                            </span>
-                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                                <span className="font-semibold text-primary">Click to upload</span> or drag
-                                                and drop
-                                            </p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                SVG, PNG, JPG or
-                                                GIF (upto 10MB)
-                                            </p>
-                                        </div>
-                                        <input type="file" className="hidden"/>
+                                    <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDrop} 
+                                        className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
+                                        {!image && 
+                                          <div onClick={() => imgInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
+                                              <span className="text-primary dark:text-gray-400">
+                                                  <IoCloudUploadOutline size={28} />
+                                              </span>
+                                              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                  <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
+                                                  and drop
+                                              </p>
+                                              <input type='file' accept='image/*' hidden onChange={handleImage} ref={imgInputRef}/>
+                                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                  SVG, PNG, JPG or GIF
+                                              </p>
+                                          </div>
+                                        }
+                                        {
+                                          image &&
+                                            <div className='w-32 absolute'>
+                                                <span role='button' onClick={()=>setImage(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                                <img className='w-auto h-auto' src={(URL.createObjectURL(image))}/>
+                                              
+                                            </div>
+                                        }
                                     </label>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -223,7 +297,7 @@ export default function CreateAccount() {
                 <div className="flex pt-6 flex-wrap -m-1.5">
                     <div className="w-full md:w-auto p-1.5">
                         <input type='reset' value="Clear"
-                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-500 bg-white border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-100">
+                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-500 bg-white border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-100" onClick={()=>setImage(null)}>
                         </input>
                     </div>
                     <div className="w-full md:w-auto p-1.5">
