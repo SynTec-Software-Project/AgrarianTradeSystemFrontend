@@ -6,15 +6,21 @@ import { MdOutlineErrorOutline } from "react-icons/md";
 export default function CreateAccount() {
   const [pwd, setPwd]=useState("");
   const [confmpwd, setConfmpwd]=useState("");
+  const [NIC, setNIC] = useState("");
+  const [isNICValid, setIsNICValid] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
-
   const [image, setImage]=useState(null);
   const imgInputRef=useRef(null);
 
   const validatePhoneNumber = (number) => {
     const phoneNumberRegex = /^[0-9]{10}$/;
     return phoneNumberRegex.test(number);
+  };
+
+  const validateNIC = (number) => {
+    const nicRegex = /^[0-9]{12}$/;
+    return nicRegex.test(number);
   };
   
 
@@ -39,21 +45,28 @@ export default function CreateAccount() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const isValid = validatePhoneNumber(phoneNumber);
-    setIsPhoneNumberValid(isValid);
 
-    if (!isValid) {
-        alert("Please enter valid phone number");
+    if (pwd.length<8) {
+        alert("Password must be at least 8 characters long");
         return;
     }
     if (pwd!=confmpwd) {
         alert("Please make sure your passwords are match");
         return;
     }
+    if (!isNICValid) {
+        alert("Please enter valid NIC number");
+        return;
+    }
+    if (!isPhoneNumberValid) {
+        alert("Please enter valid phone number");
+        return;
+    }
     if (image==null) {
         alert("Please upload a phofile photo");
         return;
     }
+    
 
     // Submission with API
 
@@ -137,6 +150,11 @@ export default function CreateAccount() {
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
                                     type="password" placeholder="******" required onChange={(e)=>setPwd(e.target.value)}/>
+                                {pwd && pwd.length < 8 && (
+                                    <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
+                                        <MdOutlineErrorOutline size={20}/> &nbsp; Password must be at least 8 characters long.
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -175,7 +193,18 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="197419202757" required/>
+                                    type="text" placeholder="197419202757" required
+                                    onChange={(e) => {
+                                        const number = e.target.value;
+                                        setNIC(number);
+                                        setIsNICValid(validateNIC(number));
+                                    }}
+                                />
+                                {(NIC!="" && !isNICValid) && 
+                                    <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
+                                        <MdOutlineErrorOutline size={20}/> &nbsp;Please enter a valid NIC number.
+                                    </p>
+                                }
                             </div>
                         </div>
                     </div>
