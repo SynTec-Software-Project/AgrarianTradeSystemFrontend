@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import React from 'react';
 import sellerTableData from '../../../../data/seller-table-data';
-
+import {Link} from 'react-router-dom'
 
 export default function Tab() {
   const [data,setData] =useState(sellerTableData);
@@ -20,8 +20,9 @@ export default function Tab() {
     
 
   return (
+    
     <div>
-        <div className='flex sm:justify-end justify-center sm:mr-10 mr-0 text-custom-gray  font-medium'>
+        <div className='flex sm:justify-end justify-center sm:mr-16 mr-0 text-custom-gray  font-medium'>
 
             <div className='flex space-x-20 -mt-10 text-sm '>    
                 <button onClick={()=>{
@@ -52,39 +53,39 @@ export default function Tab() {
         </div>
 
         <div>
-          <div class="relative flex flex-col w-full h-full  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block ">
-            <table class="w-full text-left table-auto min-w-max ">
+          <div class="relative w-11/12   h-full ml-12 content-center  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block ">
+            <table class="w-full text-left table-auto  ">
               <thead>
                 <tr>
-                  <div class="flex flex-row justify-between border-b border-primary mr-6">
-                    <th class="p-4  ml-8  pt-8 pb-6 font-bold">
+                  <div class="pl-16 grid grid-cols-6 gap-4 border-b border-primary ">
+                    <th class="col-span-1  ml-6  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                       Product
                     </p>
                   </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
+                  <th class="col-span-1  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                       Order reference 
                     </p>
                   </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
+                  <th class="col-span-1  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                       Order Placed
                     </p>
                   </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
+                  <th class="col-span-1  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Quantity (Kg)
+                      Quantity 
                     </p>
                   </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
+                  <th class="col-span-1  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                       Courier Id
                     </p>
                   </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
+                  <th class="col-span-1  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Price (Rs)
+                      Price 
                     </p>
                   </th>
                   </div>
@@ -97,9 +98,11 @@ export default function Tab() {
                   const {orderReference,product,orderPlaced,quantity,courierId,photoName,price,status}=values;    //destructuring
                   return(
                     <>
-                    <tr>
-                      <div class='flex  flex-row justify-between mr-8 border-b border-blue-gray-50'>
-                      <td class="p-3 w-24 ">
+                    
+                    <tr key={orderReference} className='hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out'>
+                    <Link to={`/dashboard/my-orders/${orderReference}`}>
+                      <div class=' pl-12 grid grid-cols-6 gap-4 border-b border-blue-gray-50'>
+                      <td class="p-3 col-span-1 ">
                           <div class="flex space-x-5  ">
                         <img src={photoName} alt={product} />
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
@@ -107,33 +110,39 @@ export default function Tab() {
                         </p>
                         </div>
                       </td>
-                      <td class="p-3 ">
+                      
+                      <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                          
                           {orderReference}
+                          
                         </p>
                       </td>
-                      <td class="p-3 ">
+                      
+                      <td class= "p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                             {orderPlaced}
                         </p>
                       </td>
-                      <td class="p-3 ">
+                      <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                        {quantity} 
+                        {quantity}Kg 
                         </p>
                       </td>
-                      <td class="p-3">
+                      <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                           {courierId}
                         </p>
                       </td> 
-                      <td class="p-3 ">
+                      <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {price}
+                          Rs.{price}
                         </p>
                       </td> 
-                      </div>       
+                      </div>  
+                      </Link>     
                     </tr>
+                    
                     
                     </>
                   )
@@ -150,22 +159,24 @@ export default function Tab() {
             const {orderReference,product,orderPlaced,quantity,courierId,photoName,price,status}=values;    //destructuring
             return(
               <>
-              <div className='bg-primary p-4  rounded-lg shadow mt-8 text-white '>
+              <div className='group bg-gray-200 border hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out  p-4  rounded-lg shadow mt-8  '>
+              <Link to={`/dashboard/my-orders/${orderReference}`}>
             
                   <img src={photoName} alt={product} className='w-24 h-14 pl-8' />
 
-                  <div className='grid grid-cols-2 gap-7 mt-2'>
-                    <div className='pl-5 '>
-                    <div className='text-base  font-medium'>{product} - {quantity}Kg</div>
-                    <div className='text-sm text-custom_gray'>Rs.{price}</div>
-                    <div className='text-sm text-gray-300'>{orderPlaced}</div>
+                  <div className='grid grid-cols-2  gap-5 mt-2 '>
+                    <div className='pl-5'>
+                    <div className='text-md pb-2 font-medium text-gray-700 '>{product} - {quantity}Kg</div>
+                    <div className='text-sm  text-primary '>Rs.{price}</div>
+                    <div className='text-sm italic text-gray-400'>{orderPlaced}</div>
                     </div >
-                    <div className='text-primary bg-gray-200 p-3 rounded w-32 '>
+                    <div className='text-gray-600  p-3 rounded w-32 group-hover:text-custom_gray'>
                     <div className='text-sm '>courier Id: {courierId}</div>             
-                    <div className='text-md'> {orderReference}</div>
+                    <div className='text-md font-semibold'> {orderReference}</div>
                     </div>
                   
                   </div>
+                  </Link>
               </div>
               </>
             )  
@@ -177,10 +188,6 @@ export default function Tab() {
         </div>  
 
         
-    </div>
-        
-   
-
-
-  )
+    </div> 
+  );
 }
