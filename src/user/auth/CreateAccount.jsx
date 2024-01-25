@@ -11,7 +11,7 @@ export default function CreateAccount() {
   const [NIC, setNIC] = useState("");
   const [isnicValid, setIsnicValid] = useState(false);
 
-  const [image, setImage]=useState(null);
+  const [profileImg, setprofileImg]=useState(null);
   const imgInputRef=useRef(null);
 
   const validatePhoneNumber = (number) => {
@@ -25,10 +25,10 @@ export default function CreateAccount() {
   };
   
 
-  const handleImage=(e)=>{
+  const handleProfileImg=(e)=>{
     const file=e.target.files[0];
     console.log(file);
-    setImage(e.target.files[0]);
+    setprofileImg(e.target.files[0]);
   }
 
   const handleDrag=(e)=>{
@@ -39,7 +39,7 @@ export default function CreateAccount() {
     e.preventDefault();
     const file=e.dataTransfer.files[0];
     if (file.type.startsWith('image/')) {
-        setImage(e.dataTransfer.files[0]);
+        setprofileImg(e.dataTransfer.files[0]);
         console.log(file);
     } 
   }
@@ -59,7 +59,7 @@ export default function CreateAccount() {
         alert("Please make sure your passwords are match");
         return;
     }
-    if (image==null) {
+    if (profileImg==null) {
         alert("Please upload a phofile photo");
         return;
     }
@@ -291,13 +291,13 @@ export default function CreateAccount() {
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
                             <div className="w-full p-3 md:w-1/3">
-                                <p className="text-sm font-semibold text-gray-800 dark:text-gray-400">Profile photo</p>
+                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Profile photo</p>
                             </div>
                             <div className="w-full p-3 md:flex-1">
                                 <div className="flex items-center justify-center w-full">
                                     <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDrop} 
                                         className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                                        {!image && 
+                                        {!profileImg && 
                                           <div onClick={() => imgInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
                                               <span className="text-primary dark:text-gray-400">
                                                   <IoCloudUploadOutline size={28} />
@@ -306,17 +306,17 @@ export default function CreateAccount() {
                                                   <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
                                                   and drop
                                               </p>
-                                              <input type='file' accept='image/*' hidden onChange={handleImage} ref={imgInputRef}/>
-                                              <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                  SVG, PNG, JPG or GIF
+                                              <input type='file' accept='image/*' hidden onChange={handleProfileImg} ref={imgInputRef}/>
+                                              <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                any type of image
                                               </p>
                                           </div>
                                         }
                                         {
-                                          image &&
+                                          profileImg &&
                                             <div className='w-32 absolute'>
-                                                <span role='button' onClick={()=>setImage(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
-                                                <img className='w-auto h-auto' src={(URL.createObjectURL(image))}/>
+                                                <span role='button' onClick={()=>setprofileImg(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                                <img className='w-auto h-auto' src={(URL.createObjectURL(profileImg))}/>
                                               
                                             </div>
                                         }
@@ -330,12 +330,12 @@ export default function CreateAccount() {
                 <div className="flex pt-6 flex-wrap -m-1.5">
                     <div className="w-full md:w-auto p-1.5">
                         <input type='reset' value="Clear"
-                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-500 bg-white border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-100" onClick={()=>setImage(null)}>
+                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-500 bg-white border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-100 active:shadow-xl active:ring-2 active:ring-gray-300" onClick={()=>setprofileImg(null)}>
                         </input>
                     </div>
                     <div className="w-full md:w-auto p-1.5">
                         <input type='submit' value="Sign In"
-                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 ">
+                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl">
                         </input>
                     </div>
                 </div>
