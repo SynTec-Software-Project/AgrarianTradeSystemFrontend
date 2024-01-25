@@ -1,7 +1,9 @@
 import React from 'react'
 import { Routes,Route } from 'react-router-dom'
 import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/pages/SellerDashboard/dashboard";
-import AddProductForm from '@/pages/SellerDashboard/dashboard/tabs/MyProduct/AddProductForm';
+import AddProductForm from '@/pages/SellerDashboard/dashboard/forms/AddProductForm';
+
+
 import OrderDetails from '@/pages/SellerDashboard/dashboard/components/OrderDetails';
 
 const Routing = () => {
