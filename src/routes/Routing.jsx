@@ -2,13 +2,16 @@ import React from 'react'
 import { Routes,Route } from 'react-router-dom'
 import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/pages/SellerDashboard/dashboard";
 import AddProductForm from '@/pages/SellerDashboard/dashboard/forms/AddProductForm';
+
+
+import OrderDetails from '@/pages/SellerDashboard/dashboard/components/OrderDetails';
+
 const Routing = () => {
   return (
     <>
     <Routes>
-        <Route path='/my-products' element={<MyProducts />}>
-            
-        </Route>
+        <Route path='/my-products' element={<MyProducts />}></Route> 
+        
         <Route path='/new-orders' element={<NewOrders />}>  </Route>
 
         <Route path='/my-orders' element={<MyOrders />}>  </Route>
@@ -18,6 +21,9 @@ const Routing = () => {
         <Route path='/my-returns' element={<MyReturns />}>  </Route>
 
         <Route path='/add-products' element={<AddProductForm/>}>  </Route>
+
+        <Route path='my-orders/:orderReference' element={<OrderDetails/>}></Route>
+
         </Routes>
     </>
   )
