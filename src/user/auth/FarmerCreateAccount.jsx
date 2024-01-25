@@ -11,24 +11,68 @@ export default function CreateAccount() {
   const [isNICValid, setIsNICValid] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
-  const [image, setImage]=useState(null);
-  const imgInputRef=useRef(null);
+  const [profileImg, setprofileImg]=useState(null);
+  const [frontNIC, setfrontNIC] = useState(null);
+  const [backNIC, setbackNIC] = useState(null);
+  const [GSCertificate, setGSCertificate] = useState(null);
+  const profileInputRef=useRef(null);
+  const forntNICInputRef=useRef(null);
+  const backNICInputRef=useRef(null);
+  const GSCInputRef=useRef(null);
 
-  const handleImage=(e)=>{
+  const handleProfileImage=(e)=>{
     const file=e.target.files[0];
     console.log(file);
-    setImage(e.target.files[0]);
+    setprofileImg(e.target.files[0]);
+  }
+  const handleNICFront=(e)=>{
+    const file=e.target.files[0];
+    console.log(file);
+    setfrontNIC(e.target.files[0]);
+  }
+  const handleNICBack=(e)=>{
+    const file=e.target.files[0];
+    console.log(file);
+    setbackNIC(e.target.files[0]);
+  }
+  const handleGSCertificate=(e)=>{
+    const file=e.target.files[0];
+    console.log(file);
+    setGSCertificate(e.target.files[0]);
   }
 
   const handleDrag=(e)=>{
     e.preventDefault();
-    setIsDragging(true);
   }
-  const handleDrop=(e)=>{
+  const handleDropProfile=(e)=>{
     e.preventDefault();
     const file=e.dataTransfer.files[0];
     if (file.type.startsWith('image/')) {
-        setImage(e.dataTransfer.files[0]);
+        setprofileImg(e.dataTransfer.files[0]);
+        console.log(file);
+    } 
+  }
+  const handleDropFrontNIC=(e)=>{
+    e.preventDefault();
+    const file=e.dataTransfer.files[0];
+    if (file.type.startsWith('image/')) {
+        setfrontNIC(e.dataTransfer.files[0]);
+        console.log(file);
+    } 
+  }
+  const handleDropBackNIC=(e)=>{
+    e.preventDefault();
+    const file=e.dataTransfer.files[0];
+    if (file.type.startsWith('image/')) {
+        setbackNIC(e.dataTransfer.files[0]);
+        console.log(file);
+    } 
+  }
+  const handleDropGSCertificate=(e)=>{
+    e.preventDefault();
+    const file=e.dataTransfer.files[0];
+    if (file.type.startsWith('image/')) {
+        setGSCertificate(e.dataTransfer.files[0]);
         console.log(file);
     } 
   }
@@ -61,8 +105,20 @@ export default function CreateAccount() {
         alert("Please enter valid phone number");
         return;
     }
-    if (image==null) {
+    if (profileImg==null) {
         alert("Please upload a phofile photo");
+        return;
+    }
+    if (frontNIC==null) {
+        alert("Please upload a front image of National Identity Card");
+        return;
+    }
+    if (backNIC==null) {
+        alert("Please upload a back image of National Identity Card");
+        return;
+    }
+    if (GSCertificate==null) {
+        alert("Please upload a Grama Sewa NIladari Certificate");
         return;
     }
     
@@ -306,14 +362,14 @@ export default function CreateAccount() {
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
                                 <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-400">Profile photo</p>
+                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Profile photo</p>
                                 </div>
                                 <div className="w-full p-3 md:flex-1">
                                     <div className="flex items-center justify-center w-full">
-                                        <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDrop} 
+                                        <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropProfile} 
                                             className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                                            {!image && 
-                                                <div onClick={() => imgInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
+                                            {!profileImg && 
+                                                <div onClick={() => profileInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
                                                     <span className="text-primary dark:text-gray-400">
                                                         <IoCloudUploadOutline size={28} />
                                                     </span>
@@ -321,17 +377,17 @@ export default function CreateAccount() {
                                                         <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
                                                                 and drop
                                                     </p>
-                                                    <input type='file' accept='image/*' hidden onChange={handleImage} ref={imgInputRef}/>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                                SVG, PNG, JPG or GIF
+                                                    <input type='file' accept='image/*' hidden onChange={handleProfileImage} ref={profileInputRef}/>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                                any type of image
                                                     </p>
                                                 </div>
                                             }
                                             {
-                                                image &&
+                                                profileImg &&
                                                 <div className='w-32 absolute'>
-                                                    <span role='button' onClick={()=>setImage(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
-                                                    <img className='w-auto h-auto' src={(URL.createObjectURL(image))}/>
+                                                    <span role='button' onClick={()=>setprofileImg(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                                    <img className='w-auto h-auto' src={(URL.createObjectURL(profileImg))}/>
                                                 
                                                 </div>
                                             }
@@ -347,14 +403,14 @@ export default function CreateAccount() {
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
                                 <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-400">Front image of NIC</p>
+                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Front image of NIC</p>
                                 </div>
                                 <div className="w-full p-3 md:flex-1">
                                     <div className="flex items-center justify-center w-full">
-                                        <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDrop} 
+                                        <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropFrontNIC} 
                                             className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                                            {!image && 
-                                                <div onClick={() => imgInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
+                                            {!frontNIC && 
+                                                <div onClick={() => forntNICInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
                                                     <span className="text-primary dark:text-gray-400">
                                                         <IoCloudUploadOutline size={28} />
                                                     </span>
@@ -362,17 +418,17 @@ export default function CreateAccount() {
                                                         <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
                                                                 and drop
                                                     </p>
-                                                    <input type='file' accept='image/*' hidden onChange={handleImage} ref={imgInputRef}/>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                                SVG, PNG, JPG or GIF
+                                                    <input type='file' accept='image/*' hidden onChange={handleNICFront} ref={forntNICInputRef}/>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                                any type of image
                                                     </p>
                                                 </div>
                                             }
                                             {
-                                                image &&
+                                                frontNIC &&
                                                 <div className='w-32 absolute'>
-                                                    <span role='button' onClick={()=>setImage(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
-                                                    <img className='w-auto h-auto' src={(URL.createObjectURL(image))}/>
+                                                    <span role='button' onClick={()=>setfrontNIC(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                                    <img className='w-auto h-auto' src={(URL.createObjectURL(frontNIC))}/>
                                                 
                                                 </div>
                                             }
@@ -388,14 +444,14 @@ export default function CreateAccount() {
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
                                 <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-400">Back image of NIC</p>
+                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Back image of NIC</p>
                                 </div>
                                 <div className="w-full p-3 md:flex-1">
                                     <div className="flex items-center justify-center w-full">
-                                        <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDrop} 
+                                        <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropBackNIC} 
                                             className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                                            {!image && 
-                                                <div onClick={() => imgInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
+                                            {!backNIC && 
+                                                <div onClick={() => backNICInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
                                                     <span className="text-primary dark:text-gray-400">
                                                         <IoCloudUploadOutline size={28} />
                                                     </span>
@@ -403,17 +459,17 @@ export default function CreateAccount() {
                                                         <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
                                                                 and drop
                                                     </p>
-                                                    <input type='file' accept='image/*' hidden onChange={handleImage} ref={imgInputRef}/>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                                SVG, PNG, JPG or GIF
+                                                    <input type='file' accept='image/*' hidden onChange={handleNICBack} ref={backNICInputRef}/>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                                any type of image
                                                     </p>
                                                 </div>
                                             }
                                             {
-                                                image &&
+                                                backNIC &&
                                                 <div className='w-32 absolute'>
-                                                    <span role='button' onClick={()=>setImage(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
-                                                    <img className='w-auto h-auto' src={(URL.createObjectURL(image))}/>
+                                                    <span role='button' onClick={()=>setbackNIC(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                                    <img className='w-auto h-auto' src={(URL.createObjectURL(backNIC))}/>
                                                 
                                                 </div>
                                             }
@@ -429,14 +485,14 @@ export default function CreateAccount() {
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
                                 <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-400">Grama Sewa Niladari certificate</p>
+                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Grama Sewa Niladari certificate to prove you are a true farmer</p>
                                 </div>
                                 <div className="w-full p-3 md:flex-1">
                                     <div className="flex items-center justify-center w-full">
-                                        <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDrop} 
+                                        <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropGSCertificate} 
                                             className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                                            {!image && 
-                                                <div onClick={() => imgInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
+                                            {!GSCertificate && 
+                                                <div onClick={() => GSCInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
                                                     <span className="text-primary dark:text-gray-400">
                                                         <IoCloudUploadOutline size={28} />
                                                     </span>
@@ -444,17 +500,17 @@ export default function CreateAccount() {
                                                         <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
                                                                 and drop
                                                     </p>
-                                                    <input type='file' accept='image/*' hidden onChange={handleImage} ref={imgInputRef}/>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                                SVG, PNG, JPG or GIF
+                                                    <input type='file' accept='image/*' hidden onChange={handleGSCertificate} ref={GSCInputRef}/>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                                any type of image
                                                     </p>
                                                 </div>
                                             }
                                             {
-                                                image &&
+                                                GSCertificate &&
                                                 <div className='w-32 absolute'>
-                                                    <span role='button' onClick={()=>setImage(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
-                                                    <img className='w-auto h-auto' src={(URL.createObjectURL(image))}/>
+                                                    <span role='button' onClick={()=>setGSCertificate(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                                    <img className='w-auto h-auto' src={(URL.createObjectURL(GSCertificate))}/>
                                                 
                                                 </div>
                                             }
@@ -469,12 +525,12 @@ export default function CreateAccount() {
                     <div className="flex pt-6 flex-wrap -m-1.5">
                         <div className="w-full md:w-auto p-1.5">
                             <input type='reset' value="Clear"
-                                className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-500 bg-white border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-100" onClick={()=>setImage(null)}>
+                                className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-500 bg-white border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-100 active:shadow-xl active:ring-2 active:ring-gray-300" onClick={()=>{setprofileImg(null); setfrontNIC(null); setbackNIC(null); setGSCertificate(null)}}>
                             </input>
                         </div>
                         <div className="w-full md:w-auto p-1.5">
                             <input type='submit' value="Sign In"
-                                className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 ">
+                                className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl">
                             </input>
                         </div>
                     </div>
