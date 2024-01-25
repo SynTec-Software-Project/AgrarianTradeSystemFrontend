@@ -1,14 +1,15 @@
 import React from 'react'
+import MyProductsTable from './tables/MyProduct/MyProductsTable';
+
 
 export function MyProducts() {
   return (
-    <div className="mt-12">
-      <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-      <h1>This is My Products</h1>
-      
+    <>
+      <div >
+           <MyProductsTable/>
       </div>
- 
-    </div>
+     
+    </>
   );
 }
 

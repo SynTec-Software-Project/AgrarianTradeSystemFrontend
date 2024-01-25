@@ -1,8 +1,11 @@
 import React from 'react'
+import MainNav from './components/MainNav'
 
 const LandingPage = () => {
   return (
-    <div><h1>Hello this is landing page</h1></div>
+    <div className='bg-secondary'>
+      <MainNav />
+    </div>
   )
 }
 

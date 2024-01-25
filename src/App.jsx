@@ -1,6 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import LandingPage from "./user/LandingPage";
+import BuyerDashboard from "./buyer/layout/BuyerDashboard";
+import CourierDashboard from "./courier/layout/CourierDashboard";
+import ProductList from "./user/pages/ProductList";
+import Login from "./user/auth/Login";
 
 
 function App() {
@@ -13,8 +17,13 @@ function App() {
 
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/buyers/*" element={<BuyerDashboard/>}/>
+      <Route path="/couriers/*" element={<CourierDashboard/>}/>
+      <Route path="/products" element={<ProductList/>}/>
+      <Route path="/login" element={<Login/>}></Route>
     </Routes>
-
+    
+    
 
     
     </>
