@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { IoCloudUploadOutline } from "react-icons/io5";
-
 import FormLabel from '../components/FormLabel';
+import CourierBanner from '../components/CourierBanner';
 
 export default function CourierCreateAccount() {
     const [pwd, setPwd]=useState("");
@@ -129,7 +129,7 @@ export default function CourierCreateAccount() {
   
     return (
       <>
-          
+          <CourierBanner/>
           <div>
           <form className="py-16 bg-gray-100 dark:bg-gray-800" onSubmit={handleSubmit}>
               <div className="max-w-6xl px-4 mx-auto">
