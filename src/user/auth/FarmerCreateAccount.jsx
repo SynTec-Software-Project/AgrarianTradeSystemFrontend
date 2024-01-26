@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import FarmerBanner from '../components/FarmerBanner';
+import FormLabel from '../components/FormLabel';
 
 
 export default function CreateAccount() {
@@ -145,11 +146,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Name
-                                    </p>
-                                </div>
+                                <FormLabel>Name</FormLabel>
                                 <div className="w-full p-3 md:w-1/3">
                                     <input
                                         className="w-full dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -166,11 +163,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        User name
-                                    </p>
-                                </div>
+                                <FormLabel>User name</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -182,11 +175,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Email address
-                                    </p>
-                                </div>
+                                <FormLabel>Email address</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -198,11 +187,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Password
-                                    </p>
-                                </div>
+                                <FormLabel>Password</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -219,11 +204,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Confirm password
-                                    </p>
-                                </div>
+                                <FormLabel>Confirm password</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -242,11 +223,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        NIC number
-                                    </p>
-                                </div>
+                                <FormLabel>NIC number</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -269,11 +246,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Phone number
-                                    </p>
-                                </div>
+                                <FormLabel>Phone number</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -295,11 +268,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Address line 1
-                                    </p>
-                                </div>
+                                <FormLabel>Address line 1</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -311,11 +280,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Address line 2
-                                    </p>
-                                </div>
+                                <FormLabel>Address line 2</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -327,11 +292,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Address line 3
-                                    </p>
-                                </div>
+                                <FormLabel>Address line 3</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -344,11 +305,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                        Crop types
-                                    </p>
-                                </div>
+                                <FormLabel>Crop types</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -361,9 +318,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Profile photo</p>
-                                </div>
+                                <FormLabel>Profile photo</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <div className="flex items-center justify-center w-full">
                                         <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropProfile} 
@@ -402,9 +357,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Front image of NIC</p>
-                                </div>
+                                <FormLabel>Front image of NIC</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <div className="flex items-center justify-center w-full">
                                         <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropFrontNIC} 
@@ -443,9 +396,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Back image of NIC</p>
-                                </div>
+                                <FormLabel>Back image of NIC</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <div className="flex items-center justify-center w-full">
                                         <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropBackNIC} 
@@ -484,9 +435,7 @@ export default function CreateAccount() {
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
-                                <div className="w-full p-3 md:w-1/3">
-                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-400">Grama Sewa Niladari certificate to prove you are a true farmer</p>
-                                </div>
+                                <FormLabel>Grama Sewa Niladari certificate to prove you are a true farmer</FormLabel>
                                 <div className="w-full p-3 md:flex-1">
                                     <div className="flex items-center justify-center w-full">
                                         <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropGSCertificate} 
