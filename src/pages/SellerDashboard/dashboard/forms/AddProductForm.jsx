@@ -126,8 +126,8 @@ const AddProductForm = () => {
             </div>
 
             {/* select type  */}
-            <Title title="Select Category"></Title>
-            <div className="flex gap-10 -mt-3">
+            <Title title="Select Product Type"></Title>
+            <div className="flex gap-10 -mt-4">
               <Radio name="type"
                 value="vegetable"
                 checked={selectedProductType === 'vegetable'}
@@ -159,27 +159,28 @@ const AddProductForm = () => {
             </div>
 
             {/* select category */}
+            <Title title="Select Category"></Title>
             <div className="w-full">
-              <select label={'Select '+selectedProductType} value={selectedCategory} onChange={handleCategoryChange}
-               className='overflow-y-scroll
+              <select label={'Select ' + selectedProductType} value={selectedCategory} onChange={handleCategoryChange}
+                className='overflow-y-scroll
                h-full w-full rounded-md border border-blue-gray-200 border-t-transparent !border-t-blue-gray-200 bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 bg-gray-50 focus:ring-blue-500
                block  p-2.5'
-              
+
               >
-              
-               {selectedProductType === 'vegetable' ? (
-                    <>
-                      {vegetables.map((v) => (
-                        <option key={v.value} value={v.value}>{v.label}</option>
-                      ))}
-                    </>
-                  ) : selectedProductType === 'fruit' ? (
-                    <>
-                     {fruits.map((v) => (
-                        <option key={v.value} value={v.value}>{v.label}</option>
-                      ))}
-                    </>
-                  ) : null}
+
+                {selectedProductType === 'vegetable' ? (
+                  <>
+                    {vegetables.map((v) => (
+                      <option key={v.value} value={v.value}>{v.label}</option>
+                    ))}
+                  </>
+                ) : selectedProductType === 'fruit' ? (
+                  <>
+                    {fruits.map((v) => (
+                      <option key={v.value} value={v.value}>{v.label}</option>
+                    ))}
+                  </>
+                ) : null}
               </select>
             </div>
 
