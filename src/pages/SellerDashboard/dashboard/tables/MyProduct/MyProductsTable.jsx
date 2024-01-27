@@ -55,7 +55,7 @@ const MyProductsTable = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get("https://localhost:7282/api/Product/GetProduct")
+    axios.get("https://localhost:44376/api/product")
       .then((response) => {
         setProducts((data) => {
           return response.data;

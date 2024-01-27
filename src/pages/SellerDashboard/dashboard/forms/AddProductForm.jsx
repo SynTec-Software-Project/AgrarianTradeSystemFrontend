@@ -48,7 +48,7 @@ const AddProductForm = () => {
       minimumQuantity: minimumQuantityRef.current.value,
       dateCreated: dateCreatedRef.current.value,
     }
-    axios.post("https://localhost:7282/api/Product/PostProduct", product)
+    axios.post("https://localhost:44376/api/product", product)
       .then((respose) => {
         navigate(-1);
       })
