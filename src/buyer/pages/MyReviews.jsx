@@ -25,7 +25,7 @@ const MyReviews = () => {
         </NavLink>
 
         <NavLink to='history' style={NavLinkStyles}>
-          History
+          History(1)
         </NavLink>
       </nav>
       <Outlet />

@@ -36,7 +36,7 @@ const History = () => {
           
           <div className='ml-12 '>
             
-            <Button className="color bg-green-400 mx-96 ">Edit(1)</Button>
+            <Button className="color bg-green-400 mx-96 ">Edit</Button>
           </div>
         </div>
       </div>
