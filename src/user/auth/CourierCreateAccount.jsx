@@ -12,35 +12,27 @@ export default function CourierCreateAccount() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
     const [profileImg, setprofileImg]=useState(null);
-    const [frontNIC, setfrontNIC] = useState(null);
-    const [backNIC, setbackNIC] = useState(null);
-    const [GSCertificate, setGSCertificate] = useState(null);
+    const [vehicleImg, setVehicleImg] = useState(null);
+    const [dlImg, setDlImg] = useState(null);
     const profileInputRef=useRef(null);
-    const forntNICInputRef=useRef(null);
-    const backNICInputRef=useRef(null);
-    const GSCInputRef=useRef(null);
+    const vehicleInputRef=useRef(null);
+    const drivingLInputRef=useRef(null);
   
     const handleProfileImage=(e)=>{
       const file=e.target.files[0];
       console.log(file);
       setprofileImg(e.target.files[0]);
     }
-    const handleNICFront=(e)=>{
+    const handleVehicleImg=(e)=>{
       const file=e.target.files[0];
       console.log(file);
-      setfrontNIC(e.target.files[0]);
+      setVehicleImg(e.target.files[0]);
     }
-    const handleNICBack=(e)=>{
+    const handleDLImg=(e)=>{
       const file=e.target.files[0];
       console.log(file);
-      setbackNIC(e.target.files[0]);
+      setDlImg(e.target.files[0]);
     }
-    const handleGSCertificate=(e)=>{
-      const file=e.target.files[0];
-      console.log(file);
-      setGSCertificate(e.target.files[0]);
-    }
-  
     const handleDrag=(e)=>{
       e.preventDefault();
     }
@@ -52,27 +44,19 @@ export default function CourierCreateAccount() {
           console.log(file);
       } 
     }
-    const handleDropFrontNIC=(e)=>{
+    const handleDropVehicleImg=(e)=>{
       e.preventDefault();
       const file=e.dataTransfer.files[0];
       if (file.type.startsWith('image/')) {
-          setfrontNIC(e.dataTransfer.files[0]);
+          setVehicleImg(e.dataTransfer.files[0]);
           console.log(file);
       } 
     }
-    const handleDropBackNIC=(e)=>{
+    const handleDropDLImg=(e)=>{
       e.preventDefault();
       const file=e.dataTransfer.files[0];
       if (file.type.startsWith('image/')) {
-          setbackNIC(e.dataTransfer.files[0]);
-          console.log(file);
-      } 
-    }
-    const handleDropGSCertificate=(e)=>{
-      e.preventDefault();
-      const file=e.dataTransfer.files[0];
-      if (file.type.startsWith('image/')) {
-          setGSCertificate(e.dataTransfer.files[0]);
+          setDlImg(e.dataTransfer.files[0]);
           console.log(file);
       } 
     }
@@ -109,16 +93,12 @@ export default function CourierCreateAccount() {
           alert("Please upload a phofile photo");
           return;
       }
-      if (frontNIC==null) {
+      if (vehicleImg==null) {
           alert("Please upload a front image of National Identity Card");
           return;
       }
-      if (backNIC==null) {
+      if (dlImg==null) {
           alert("Please upload a back image of National Identity Card");
-          return;
-      }
-      if (GSCertificate==null) {
-          alert("Please upload a Grama Sewa NIladari Certificate");
           return;
       }
       
@@ -359,10 +339,10 @@ export default function CourierCreateAccount() {
                                   <FormLabel>Vehicle photo</FormLabel>
                                   <div className="w-full p-3 md:flex-1">
                                       <div className="flex items-center justify-center w-full">
-                                          <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropFrontNIC} 
+                                          <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropVehicleImg} 
                                               className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                                              {!frontNIC && 
-                                                  <div onClick={() => forntNICInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
+                                              {!vehicleImg && 
+                                                  <div onClick={() => vehicleInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
                                                       <span className="text-primary dark:text-gray-400">
                                                           <IoCloudUploadOutline size={28} />
                                                       </span>
@@ -370,17 +350,17 @@ export default function CourierCreateAccount() {
                                                           <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
                                                                   and drop
                                                       </p>
-                                                      <input type='file' accept='image/*' hidden onChange={handleNICFront} ref={forntNICInputRef}/>
+                                                      <input type='file' accept='image/*' hidden onChange={handleVehicleImg} ref={vehicleInputRef}/>
                                                       <p className="text-sm text-gray-500 dark:text-gray-400">
                                                                   any type of image
                                                       </p>
                                                   </div>
                                               }
                                               {
-                                                  frontNIC &&
+                                                  vehicleImg &&
                                                   <div className='w-32 absolute'>
-                                                      <span role='button' onClick={()=>setfrontNIC(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
-                                                      <img className='w-auto h-auto' src={(URL.createObjectURL(frontNIC))}/>
+                                                      <span role='button' onClick={()=>setVehicleImg(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                                      <img className='w-auto h-auto' src={(URL.createObjectURL(vehicleImg))}/>
                                                   
                                                   </div>
                                               }
@@ -398,10 +378,10 @@ export default function CourierCreateAccount() {
                                   <FormLabel>Driving license photo</FormLabel>
                                   <div className="w-full p-3 md:flex-1">
                                       <div className="flex items-center justify-center w-full">
-                                          <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropBackNIC} 
+                                          <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropDLImg} 
                                               className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
-                                              {!backNIC && 
-                                                  <div onClick={() => backNICInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
+                                              {!dlImg && 
+                                                  <div onClick={() => drivingLInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
                                                       <span className="text-primary dark:text-gray-400">
                                                           <IoCloudUploadOutline size={28} />
                                                       </span>
@@ -409,17 +389,17 @@ export default function CourierCreateAccount() {
                                                           <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
                                                                   and drop
                                                       </p>
-                                                      <input type='file' accept='image/*' hidden onChange={handleNICBack} ref={backNICInputRef}/>
+                                                      <input type='file' accept='image/*' hidden onChange={handleDLImg} ref={drivingLInputRef}/>
                                                       <p className="text-sm text-gray-500 dark:text-gray-400">
                                                                   any type of image
                                                       </p>
                                                   </div>
                                               }
                                               {
-                                                  backNIC &&
+                                                  dlImg &&
                                                   <div className='w-32 absolute'>
-                                                      <span role='button' onClick={()=>setbackNIC(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
-                                                      <img className='w-auto h-auto' src={(URL.createObjectURL(backNIC))}/>
+                                                      <span role='button' onClick={()=>setDlImg(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                                      <img className='w-auto h-auto' src={(URL.createObjectURL(dlImg))}/>
                                                   
                                                   </div>
                                               }
@@ -436,7 +416,7 @@ export default function CourierCreateAccount() {
                       <div className="flex pt-6 flex-wrap -m-1.5">
                           <div className="w-full md:w-auto p-1.5">
                               <input type='reset' value="Clear"
-                                  className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-500 bg-white border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-100 active:shadow-xl active:ring-2 active:ring-gray-300" onClick={()=>{setprofileImg(null); setfrontNIC(null); setbackNIC(null); setGSCertificate(null)}}>
+                                  className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-500 bg-white border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-100 active:shadow-xl active:ring-2 active:ring-gray-300" onClick={()=>{setprofileImg(null); setVehicleImg(null); setDlImg(null)}}>
                               </input>
                           </div>
                           <div className="w-full md:w-auto p-1.5">

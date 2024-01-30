@@ -4,6 +4,7 @@ import { BsCoin } from "react-icons/bs";
 import { Badge, IconButton, Avatar } from "@material-tailwind/react";
 import { HomeIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 const MainNav = () => {
 
@@ -51,17 +52,17 @@ const MainNav = () => {
                       <ShoppingCartIcon className="h-3 w-3" />
                     </IconButton>
                   </Badge>
-                  <button className='bg-transparent border-primary border rounded-full inline-flex items-center 
+                  <Link to={"/login"} className='bg-transparent border-primary border rounded-full inline-flex items-center 
                                       justify-center py-2 px-8 text-center text-sm font-medium  text-primary
                                       disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
                     Login
-                  </button>
+                  </Link>
 
-                  <button className='bg-primary border-primary border w-full rounded-full inline-flex items-center 
+                  <Link to={"/create"} className='bg-primary border-primary border w-full rounded-full inline-flex items-center 
                                       justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
                                       disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
                     SignUp
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
