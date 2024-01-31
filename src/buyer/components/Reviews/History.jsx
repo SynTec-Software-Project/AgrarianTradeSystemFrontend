@@ -1,13 +1,14 @@
 import React from 'react';
 import { Button } from "@material-tailwind/react";
 import { Rating } from "@material-tailwind/react";
-
+import { useNavigate } from 'react-router-dom';
 
 export function DefaultRating() {
   return <Rating value={4} />;
 }
 
 const History = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className='bg-white px-8 py-5 rounded-lg my-2 pb-1'>
@@ -36,7 +37,7 @@ const History = () => {
           
           <div className='ml-12 '>
             
-            <Button className="color bg-green-400 mx-96 ">Edit</Button>
+            <Button className="color bg-green-400 mx-96" onClick={()=>navigate('/buyers/edit')}  >Edit</Button>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from "@material-tailwind/react";
-import { MdMargin } from 'react-icons/md';
-import { BsGrid3X3Gap } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 
 const review=[
     {
@@ -15,7 +14,7 @@ const review=[
 
 
 export const AddReviewCard = () => {
- 
+    const navigate = useNavigate();
   return (          
     <>
     <div className=' bg-white px-8 py-5 rounded-lg my-2'>
@@ -35,7 +34,7 @@ export const AddReviewCard = () => {
              </div>
 
              <div className='items-end my-8'>
-                 <Button className="color bg-green-400"  >Review</Button>
+                 <Button className="color bg-green-400" onClick={()=>navigate('/buyers/review')} >Review</Button>
              </div>
         </div>
             

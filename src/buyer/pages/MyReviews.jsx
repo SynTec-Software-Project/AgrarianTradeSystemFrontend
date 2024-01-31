@@ -10,10 +10,7 @@ const MyReviews = () => {
       backgroundColor: isActive ? 'rgb(102 187 106 / var(--tw-bg-opacity))' : 'transparent',
       color: isActive ? 'white' : 'black',
       padding: '3px',
-      borderRadius: '8px',
-      
-     
-     
+      borderRadius: '8px',  
     };
   };
 
