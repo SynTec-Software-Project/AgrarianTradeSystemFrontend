@@ -1,11 +1,36 @@
-import React from 'react'
+import React from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
+
 
 const MyReviews = () => {
+  const NavLinkStyles = ({ isActive }) => {
+    return {
+      fontWeight: isActive ? 'bold' : 'normal',
+      textDecoration: 'none',
+      backgroundColor: isActive ? 'rgb(102 187 106 / var(--tw-bg-opacity))' : 'transparent',
+      color: isActive ? 'white' : 'black',
+      padding: '3px',
+      borderRadius: '8px',  
+    };
+  };
+
   return (
     <div>
-        <h1>buyers my reviews</h1>
-    </div>
-  )
-}
+      <nav className='flex gap-6 bg-white py-1 px-16 rounded-lg'>
+        <NavLink to='to-review' style={NavLinkStyles}   >
+          To Review (4)
+        </NavLink>
 
-export default MyReviews
+        <NavLink to='history' style={NavLinkStyles}>
+          History(1)
+        </NavLink>
+      </nav>
+      <Outlet />
+    </div>
+  );
+};
+
+
+
+
+export default MyReviews;
