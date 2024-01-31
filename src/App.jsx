@@ -7,6 +7,7 @@ import ProductList from "./user/pages/ProductList";
 import Login from "./user/auth/Login";
 import CreateAccount from "./user/auth/CreateAccount";
 import FarmerCreateAccount from "./user/auth/FarmerCreateAccount";
+import CourierCreateAccount from "./user/auth/CourierCreateAccount";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/login" element={<Login/>}></Route>
       <Route path="/create" element={<CreateAccount/>}/>
       <Route path="/farmercreate" element={<FarmerCreateAccount/>}/>
+      <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
     </Routes>
     
     
