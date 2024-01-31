@@ -94,7 +94,7 @@ const AddProductForm = () => {
   function addProducts() {
     setLoading(true);
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append('file', fileInputRef.current.value);
     formData.append('productTitle', productTitleRef.current.value);
     formData.append('productDescription', productDescriptionRef.current.value);
     formData.append('unitPrice', unitPriceRef.current.value);
@@ -337,6 +337,7 @@ const AddProductForm = () => {
                     type="file"
                     className="hidden"
                     onChange={handleFileChange}
+                    ref={fileInputRef}
                   />
 
                 </label>
