@@ -119,7 +119,7 @@ const MyProductsTable = () => {
                   <tr key={p.productID}>
                     <td className="p-4 border-b border-blue-gray-50">
                       <div className="flex items-center gap-3">
-                        <Avatar src={"https://syntecblobstorage.blob.core.windows.net/products/" + p.productImage} alt={p.productTitle} size="sm" />
+                        <Avatar src={"https://syntecblobstorage.blob.core.windows.net/products/" + p.productImageUrl} alt={p.productTitle} size="sm" />
                         <div className="flex flex-col">
                           <Typography
                             variant="small"

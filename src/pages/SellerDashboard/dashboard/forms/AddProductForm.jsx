@@ -35,21 +35,16 @@ function showUploading() {
 }
 const AddProductForm = () => {
   // get user inputs
-  const [uploadedFileName, setUploadedFileName] = useState('');
   const productTitleRef = useRef(null);
   const productDescriptionRef = useRef(null);
   const unitPriceRef = useRef(null);
   const availableStockRef = useRef(null);
   const minimumQuantityRef = useRef(null);
-  const dateCreatedRef = useRef(null);
-  const fileInputRef = useRef(null);
-  const navigate = useNavigate();
   const [selectedProductType, setSelectedProductType] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
-
-
+  const navigate = useNavigate();
 
   // category selection functions
   const handleProductTypeChange = (event) => {
@@ -66,80 +61,33 @@ const AddProductForm = () => {
     }
   };
 
-
-
-
-  // const handleUpload = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const formData = new FormData();
-  //     formData.append('ProductImageFile', selectedFile);
-
-  //     const response = await axios.post('https://localhost:44376/api/File/upload', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data'
-  //       }
-
-  //     });
-  //     // Set the uploaded filename received from the server response
-  //     setUploadedFileName(response.data);
-  //     console.log("file uploaded");
-  //     setLoading(false);
-
-  //   } catch (error) {
-  //     console.error('Error uploading image:', error);
-  //   }
-  // };
-
+  //upload product function
   function addProducts() {
     setLoading(true);
     const formData = new FormData();
-    formData.append('file', fileInputRef.current.value);
     formData.append('productTitle', productTitleRef.current.value);
     formData.append('productDescription', productDescriptionRef.current.value);
     formData.append('unitPrice', unitPriceRef.current.value);
     formData.append('availableStock', availableStockRef.current.value);
     formData.append('minimumQuantity', minimumQuantityRef.current.value);
-    formData.append('dateCreated', dateCreatedRef.current.value);
     formData.append('productType', selectedProductType);
     formData.append('category', selectedCategory);
-
+    formData.append('file', selectedFile);
     axios.post('https://localhost:44376/api/product', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
       .then(response => {
-        console.log('Product added:', response.data);
+        console.log('Product added');
         setLoading(false);
         navigate(-1);
-        // Add your logic here after successful product addition
       })
       .catch(error => {
         console.error('Error adding product:', error);
-        // Handle error
       });
   }
 
-
-  // function addProducts() {
-  //   console.log(uploadedFileName);
-  //   var product = {
-  //     productTitle: productTitleRef.current.value,
-  //     productDescription: productDescriptionRef.current.value,
-  //     productImage: uploadedFileName,
-  //     productType: selectedProductType,
-  //     category: selectedCategory,
-  //     unitPrice: unitPriceRef.current.value,
-  //     availableStock: availableStockRef.current.value,
-  //     minimumQuantity: minimumQuantityRef.current.value,
-  //     dateCreated: dateCreatedRef.current.value,
-  //   }
-  //   axios.post("https://localhost:44376/api/product", product)
-  //     .then((respose) => {
-  //       navigate(-1);
-  //     })
-  // }
 
   var vegetables = [
     { value: "artichoke", label: "Artichoke" },
@@ -198,12 +146,9 @@ const AddProductForm = () => {
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
-    console.log(selectedFile);
   };
 
-
   return (
-
     <div>
       <div className="relative my-4 py-10 flex flex-col text-gray-700 bg-white shadow-none rounded-xl bg-clip-border ">
         <form className="max-w-screen-lg mt-8 ml-8 mb-2 w-80 sm:w-96">
@@ -337,7 +282,6 @@ const AddProductForm = () => {
                     type="file"
                     className="hidden"
                     onChange={handleFileChange}
-                    ref={fileInputRef}
                   />
 
                 </label>
@@ -355,7 +299,7 @@ const AddProductForm = () => {
 
                       </div>
                     </div>
-                    
+
                   </div>
 
                 ) : null}
