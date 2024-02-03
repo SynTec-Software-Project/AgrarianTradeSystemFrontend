@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineErrorOutline } from "react-icons/md";
+import axios from 'axios';
 
 
 export default function CreateAccount() {
@@ -12,6 +13,16 @@ export default function CreateAccount() {
   const [isnicValid, setIsnicValid] = useState(false);
 
   const [profileImg, setprofileImg]=useState(null);
+  const fnameRef=useRef(null);
+  const lnameRef=useRef(null);
+  const usernameRef=useRef(null);
+  const emailRef=useRef(null);
+  const pwdRef=useRef(null);
+  const nicRef=useRef(null);
+  const phoneRef=useRef(null);
+  const add1Ref=useRef(null);
+  const add2Ref=useRef(null);
+  const add3Ref=useRef(null);
   const imgInputRef=useRef(null);
 
   const validatePhoneNumber = (number) => {
@@ -43,13 +54,15 @@ export default function CreateAccount() {
         console.log(file);
     } 
   }
+//   const handleFormData = (e) => {
+//     setFormData({
+//       ...formData,
+//       [e.target.name]: e.target.value,
+//     });
+//   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //const isValid = validatePhoneNumber(phoneNumber);
-    //setIsPhoneNumberValid(isValid);
-    //const isValidNIC = validateNIC(nic);
-    //setIsPhoneNumberValid(isValidNIC);
 
     if (!isPhoneNumberValid) {
         alert("Please enter valid phone number");
@@ -71,8 +84,26 @@ export default function CreateAccount() {
         alert("Please enter valid NIC number");
         return;
     }
-
-    // Submission with API
+    var formData = {
+        username: usernameRef.current.value,
+        password: pwdRef.current.value,
+        First_Name: fnameRef.current.value,
+        Last_Name: lnameRef.current.value,
+        Email: emailRef.current.value,
+        Phone: phoneRef.current.value,
+        NICNumber: nicRef.current.value,
+        AddressLine1: add1Ref.current.value,
+        AddressLine2: add2Ref.current.value,
+        AddressLine3: add3Ref.current.value
+      }
+    
+    console.log(formData);
+    try {
+        const response = await axios.post('https://localhost:7144/Auth/register', formData);
+        console.log('Server Response:', response.data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 
   };
 
@@ -100,12 +131,12 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:w-1/3">
                                 <input
                                     className="w-full dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="First name" required/>
+                                    type="text" placeholder="First name" name="First_Name" required ref={fnameRef}/>
                             </div>
                             <div className="w-full p-3 md:w-1/3">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="Last name" required/>
+                                    type="text" placeholder="Last name" name="Last_Name" required ref={lnameRef}/>
                             </div>
                         </div>
                     </div>
@@ -121,7 +152,7 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="username" required/>
+                                    type="text" placeholder="username" name='username' required ref={usernameRef}/>
                             </div>
                         </div>
                     </div>
@@ -137,7 +168,7 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="email" placeholder="name@gmail.com" required/>
+                                    type="email" placeholder="name@gmail.com" name='Email' required ref={emailRef}/>
                             </div>
                         </div>
                     </div>
@@ -175,7 +206,7 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="password" placeholder="******" required onChange={(e)=>setConfmpwd(e.target.value)}/>
+                                    type="password" placeholder="******" name='password' required onChange={(e) => { setConfmpwd(e.target.value)}} ref={pwdRef}/>
                                     {
                                       pwd!=confmpwd && 
                                       <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
@@ -198,7 +229,7 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="197419202757" required
+                                    type="text" placeholder="197419202757" name='NICNumber' required ref={nicRef}
                                     onChange={(e) => {
                                         const number = e.target.value;
                                         setNIC(number);
@@ -224,12 +255,12 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="07XXXXXXXX" required
+                                    type="text" placeholder="07XXXXXXXX" name='Phone' required ref={phoneRef}
                                     onChange={(e) => {
                                         const number = e.target.value;
                                         setPhoneNumber(number);
                                         setIsPhoneNumberValid(validatePhoneNumber(number));
-                                      }}/>
+                                    }}/>
                                 {(phoneNumber!="" && !isPhoneNumberValid) && 
                                     <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
                                         <MdOutlineErrorOutline size={20}/> &nbsp;Please enter a valid phone number.
@@ -250,7 +281,7 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="No. 100" required/>
+                                    type="text" placeholder="No. 100" name='AddressLine1' required ref={add1Ref}/>
                             </div>
                         </div>
                     </div>
@@ -266,7 +297,7 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="Main road" required/>
+                                    type="text" placeholder="Main road" name='AddressLine2' required ref={add2Ref}/>
                             </div>
                         </div>
                     </div>
@@ -282,7 +313,7 @@ export default function CreateAccount() {
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="Colombo" required/>
+                                    type="text" placeholder="Colombo" name='AddressLine3' required ref={add3Ref}/>
                             </div>
                         </div>
                     </div>
