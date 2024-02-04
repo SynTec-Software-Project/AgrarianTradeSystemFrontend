@@ -5,6 +5,7 @@ import { Hint, Title } from './Hint';
 import { BsX } from "react-icons/bs";
 import { Button } from "@material-tailwind/react";
 import axios from 'axios';
+import Swal from 'sweetalert2'
 
 const AddProductForm = () => {
   // get user inputs
@@ -19,6 +20,15 @@ const AddProductForm = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const filesavedPopup = () =>{
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your product has been Uploaded",
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
   // category selection functions
   const handleProductTypeChange = (event) => {
     const value = event.target.value;
@@ -54,6 +64,7 @@ const AddProductForm = () => {
       .then(response => {
         console.log('Product added');
         setLoading(false);
+        filesavedPopup();
         navigate(-1);
       })
       .catch(error => {
