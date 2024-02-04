@@ -1,38 +1,11 @@
 import React, { useRef, useState } from 'react'
-import { Select, Option } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 import { Radio, Typography } from "@material-tailwind/react";
 import { Hint, Title } from './Hint';
 import { BsX } from "react-icons/bs";
 import { Button } from "@material-tailwind/react";
 import axios from 'axios';
-import { FaUpload, FaRegFileImage, FaRegFile } from "react-icons/fa";
-import Swal from 'sweetalert2'
 
-function showUploading() {
-  let timerInterval;
-  Swal.fire({
-    title: "Auto close alert!",
-    html: "I will close in <b></b> milliseconds.",
-    timer: 2000,
-    timerProgressBar: true,
-    didOpen: () => {
-      Swal.showLoading();
-      const timer = Swal.getPopup().querySelector("b");
-      timerInterval = setInterval(() => {
-        timer.textContent = `${Swal.getTimerLeft()}`;
-      }, 100);
-    },
-    willClose: () => {
-      clearInterval(timerInterval);
-    }
-  }).then((result) => {
-    /* Read more about handling dismissals below */
-    if (result.dismiss === Swal.DismissReason.timer) {
-      console.log("I was closed by the timer");
-    }
-  });
-}
 const AddProductForm = () => {
   // get user inputs
   const productTitleRef = useRef(null);
@@ -357,7 +330,7 @@ const AddProductForm = () => {
               < Button color="green" variant='gradient' onClick={addProducts} disabled={loading}>
                 {loading ? 'Uploading...' : 'Add Product'}
               </Button>
-              <Button color="green" variant="outlined">Cancel</Button>
+              <Button color="green" variant="outlined"  onClick={() => navigate(-1)}>Cancel</Button>
             </div>
           </div>
         </form>
