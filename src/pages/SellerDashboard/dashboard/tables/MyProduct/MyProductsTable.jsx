@@ -44,7 +44,6 @@ const TABLE_HEAD = ["Product", "Product Number", "Date Created", "Unit Price", "
 const MyProductsTable = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const[productNum , setProductNum]=useState(0);
   const[itemToDelete,setItemToDelete]=useState(0);
   const  PopupHandler = () =>{
     Swal.fire({
@@ -78,14 +77,13 @@ const MyProductsTable = () => {
         setItemToDelete(0);
     })
   }
-  function showConfirmPopupHandler(id){
+  const showConfirmPopupHandler =(id) =>{
     setItemToDelete(id);
     console.log(itemToDelete);
      if(itemToDelete != 0){
         PopupHandler();
      }
   }
-  
   useEffect(() => {
     axios.get("https://localhost:44376/api/product")
       .then((response) => {
@@ -143,11 +141,12 @@ const MyProductsTable = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((p) => {
+              {products.map((p, index) => {
+                const key = p.productID || index;
                 const dateTimeString = p.dateCreated;
                 const date = moment(dateTimeString).format("YYYY-MM-DD")
                 return (
-                  <tr key={p.productID}>
+                  <tr key={key}>
                     <td className="p-4 border-b border-blue-gray-50">
                       <div className="flex items-center gap-3">
                         <Avatar src={"https://syntecblobstorage.blob.core.windows.net/products/" + p.productImageUrl} alt={p.productTitle} size="sm" />
@@ -225,7 +224,8 @@ const MyProductsTable = () => {
                     {/* edit button column */}
                     <td className="p-4 border-b border-blue-gray-50">
                       <Tooltip content="Edit Product">
-                        <IconButton variant="text">
+                        <IconButton variant="text"
+                        >
                           <PencilIcon className="h-4 w-4"
                            />
                         </IconButton>
@@ -233,10 +233,11 @@ const MyProductsTable = () => {
                     </td>
                     <td className="p-4 border-b border-blue-gray-50">
                       <Tooltip content="Delete Product">
-                        <IconButton variant="text" color='red'>
+                        <IconButton variant="text" color='red'
+                         onClick={()=>{showConfirmPopupHandler(p.productID);}}
+                        >
                           <HiTrash className="h-4 w-4" 
-                           onClick={()=>{showConfirmPopupHandler(p.productID);}}
-                          />
+/>
                         </IconButton>
                       </Tooltip>
                     </td>

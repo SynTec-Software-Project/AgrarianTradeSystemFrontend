@@ -4,12 +4,14 @@ import { BsCoin } from "react-icons/bs";
 import { Badge, IconButton, Avatar } from "@material-tailwind/react";
 import { HomeIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
 import SearchBar from "./SearchBar";
+import MainNavSide from "./MainNavSide";
 
 const MainNav = () => {
 
   return (
     <>
       <div className="grid grid-cols-3 gap-0 px-8 py-2">
+       
         <div className="">
           {/* image */}
           <div className="w-50 max-w-full px-4 ">
@@ -22,7 +24,7 @@ const MainNav = () => {
             </a>
           </div>
         </div>
-        <div className="col-span-2">
+        <div className="  md:col-span-2">
           <div className="grid grid-rows-2 ">
             <div>
               {/* delivery */}
