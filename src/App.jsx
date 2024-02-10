@@ -8,6 +8,7 @@ import Login from "./user/auth/Login";
 import CreateAccount from "./user/auth/CreateAccount";
 import FarmerCreateAccount from "./user/auth/FarmerCreateAccount";
 import CourierCreateAccount from "./user/auth/CourierCreateAccount";
+import ForgotPassword from "./user/auth/ForgotPassword";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path="/create" element={<CreateAccount/>}/>
       <Route path="/farmercreate" element={<FarmerCreateAccount/>}/>
       <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
+      <Route path="/forgotpassword" element={<ForgotPassword/>}/>
     </Routes>
     
     
