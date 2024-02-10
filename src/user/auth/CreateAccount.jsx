@@ -54,12 +54,6 @@ export default function CreateAccount() {
         console.log(file);
     } 
   }
-//   const handleFormData = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,13 +96,17 @@ export default function CreateAccount() {
         const response = await axios.post('https://localhost:7144/Auth/register', formData);
         console.log('Server Response:', response.data);
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error.response.data);
+        if(error.response.data === "Email exist"){
+            alert('Error: Email already exists and you can not register from existing email address');
+        }
     }
 
   };
 
   return (
     <div>
+        {/* <div class="border-gray-300 h-20 w-20 animate-spin rounded-full border-8 border-t-blue-600" /> */}
       <form className="py-16 bg-gray-100 dark:bg-gray-800" onSubmit={handleSubmit}>
         <div className="max-w-6xl px-4 mx-auto">
             <div className="p-6 bg-white border border-gray-100 rounded-lg shadow dark:bg-gray-900 dark:border-gray-900">
