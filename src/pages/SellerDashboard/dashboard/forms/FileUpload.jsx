@@ -1,73 +1,72 @@
-import React, { useState } from 'react';
-
-function FileUpload({ onUpload }) {
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
-  const handleFileInputChange = (event) => {
-    const files = event.target.files;
-    setSelectedFiles([...selectedFiles, ...files]);
-    onUpload([...selectedFiles, ...files]);
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
-  };
-  const handleRemoveFile = (index) => {
-    const newFiles = selectedFiles.filter((_, i) => i !== index);
-    setSelectedFiles(newFiles);
-  };
-
-
-  const handleDrop = (event) => {
-    event.preventDefault();
-    const files = event.dataTransfer.files;
-    setSelectedFiles([...selectedFiles, ...files]);
-    onUpload([...selectedFiles, ...files]);
-  };
-
+import React from 'react';
+import { BsX } from "react-icons/bs";
+const FileUpload = props => {
+  const { handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleFileChange,
+    handleRemoveFile,
+    selectedFile } = props;
   return (
-    <div>
-      <input
-        type="file"
-        multiple
-        onChange={handleFileInputChange}
-        className="hidden"
-        id="fileInput"
-      />
-      <label
-        htmlFor="fileInput"
-        className="block border border-gray-300 rounded-md py-2 px-4 bg-blue-500 text-white text-center cursor-pointer"
-      >
-        Click to Upload
-      </label>
-      <div
-        className="border border-gray-300 rounded-md min-h-20 mt-4 py-8 px-4 text-center"
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-      >
-        Drop Files Here
-      </div>
-      {selectedFiles.length === 0 ? (
-          <p></p>
-        ) : (
-          <div>
-            <h2 className="mt-4">Selected Files:</h2>
-            <ul className="list-disc list-inside">
-              {selectedFiles.map((file, index) => (
-                <div key={index} className="mt-2">
-                  <span>{file.name}</span>
-                  <button
-                    className="ml-2 text-red-600"
-                    onClick={() => handleRemoveFile(index)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))}
-            </ul>
+    <div className="flex items-center justify-center w-full">
+      <div className='flex p-4 flex-col items-center justify-center w-full h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100'>
+        <label
+          htmlFor="dropzone-file"
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+            <svg
+              className="w-8 h-8 mb-4 text-gray-500"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              ></path>
+            </svg>
+            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              <span className="font-semibold">Click to upload</span> or drag and drop
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              PNG or JPG  (MAX. 800x400px)
+            </p>
           </div>
-        )}
+          <input
+            id="dropzone-file"
+            type="file"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+
+        </label>
+        {selectedFile ? (
+          <div className='-mt-12'>
+            <div className=" bg-secondary w-full px-4 py-2 rounded-lg">
+              <h2 className="my-4 text-sm text-gray-700" >Selected File:</h2>
+              <div
+                className="text-gray-500 text-[17px] cursor-pointer"
+                onClick={handleRemoveFile}
+              >
+                <BsX className="ml-auto text-red-700 " size={24} />
+                <img src={URL.createObjectURL(selectedFile)} alt="Selected file" className='w-[150px] rounded-md' />
+                <span className='text-sm'>{selectedFile.name}</span>
+              </div>
+            </div>
+          </div>
+
+        ) : null}
+
+      </div>
     </div>
+
   );
 }
 

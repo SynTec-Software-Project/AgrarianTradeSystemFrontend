@@ -1,10 +1,8 @@
 import React from 'react'
 import { Routes,Route } from 'react-router-dom'
 import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/pages/SellerDashboard/dashboard";
-import AddProductForm from '@/pages/SellerDashboard/dashboard/forms/AddProductForm';
-
-
 import OrderDetails from '@/pages/SellerDashboard/dashboard/components/OrderDetails';
+import ProductForm from '@/pages/SellerDashboard/dashboard/forms/ProductForm';
 
 const Routing = () => {
   return (
@@ -20,7 +18,7 @@ const Routing = () => {
 
         <Route path='/my-returns' element={<MyReturns />}>  </Route>
 
-        <Route path='/add-products' element={<AddProductForm/>}>  </Route>
+        <Route path='/add-products' element={<ProductForm/>}>  </Route>
 
         <Route path='my-orders/:orderReference' element={<OrderDetails/>}></Route>
 
