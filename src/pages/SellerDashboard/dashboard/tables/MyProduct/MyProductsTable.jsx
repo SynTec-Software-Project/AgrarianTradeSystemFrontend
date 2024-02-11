@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios"
 import { PencilIcon, UserPlusIcon, } from "@heroicons/react/24/solid";
 import { HiTrash } from "react-icons/hi2";
+import moment from 'moment';
+import Swal from 'sweetalert2'
 import {
   Card,
   CardHeader,
@@ -36,26 +38,54 @@ const TABS = [
   },
 ];
 
-const TABLE_HEAD = ["Order", "Product Number", "Date Created", "Unit Price", "Stock", "Total Price", "", ""];
+const TABLE_HEAD = ["Product", "Product Number", "Date Created", "Unit Price", "Stock", "Minimum Order", "", ""];
 
-const TABLE_ROWS = [
-  {
-    img: "https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202203151011.jpg?im=Resize=(1000,1000)",
-    name: "Carrot",
-    number: "PO-20001",
-    date: "23/04/23",
-    unitPrice: "300.00",
-    stock: "50",
-    total: "15000.00"
-  },
 
-];
 const MyProductsTable = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-
+  const[itemToDelete,setItemToDelete]=useState(0);
+  const  PopupHandler = () =>{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#44bd32",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteConfirmHandler();
+        console.log("deleted");
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }else{
+        setItemToDelete(0);
+        console.log("Canceled " + itemToDelete);
+      }
+    });
+  }
+  
+  function deleteConfirmHandler(){
+    axios.delete(`https://localhost:44376/api/Product/${itemToDelete}`)
+    .then((response)=>{         
+        setProducts(response.data);
+        setItemToDelete(0);
+    })
+  }
+  const showConfirmPopupHandler =(id) =>{
+    setItemToDelete(id);
+    console.log(itemToDelete);
+     if(itemToDelete != 0){
+        PopupHandler();
+     }
+  }
   useEffect(() => {
-    axios.get("https://localhost:7282/api/Product/GetProduct")
+    axios.get("https://localhost:44376/api/product")
       .then((response) => {
         setProducts((data) => {
           return response.data;
@@ -63,10 +93,7 @@ const MyProductsTable = () => {
       });
   }, []);
 
-
-
   return (
-
     <div>
 
       {/* Header card */}
@@ -114,12 +141,15 @@ const MyProductsTable = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((p) => {
+              {products.map((p, index) => {
+                const key = p.productID || index;
+                const dateTimeString = p.dateCreated;
+                const date = moment(dateTimeString).format("YYYY-MM-DD")
                 return (
-                  <tr key={p.productID}>
+                  <tr key={key}>
                     <td className="p-4 border-b border-blue-gray-50">
                       <div className="flex items-center gap-3">
-                        <Avatar src={p.productImage} alt={p.productTitle} size="sm" />
+                        <Avatar src={"https://syntecblobstorage.blob.core.windows.net/products/" + p.productImageUrl} alt={p.productTitle} size="sm" />
                         <div className="flex flex-col">
                           <Typography
                             variant="small"
@@ -157,7 +187,7 @@ const MyProductsTable = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {p.dateCreated}
+                        {date}
                       </Typography>
                     </td>
 
@@ -194,15 +224,20 @@ const MyProductsTable = () => {
                     {/* edit button column */}
                     <td className="p-4 border-b border-blue-gray-50">
                       <Tooltip content="Edit Product">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
+                        <IconButton variant="text"
+                        >
+                          <PencilIcon className="h-4 w-4"
+                           />
                         </IconButton>
                       </Tooltip>
                     </td>
                     <td className="p-4 border-b border-blue-gray-50">
                       <Tooltip content="Delete Product">
-                        <IconButton variant="text" color='red'>
-                          <HiTrash className="h-4 w-4" />
+                        <IconButton variant="text" color='red'
+                         onClick={()=>{showConfirmPopupHandler(p.productID);}}
+                        >
+                          <HiTrash className="h-4 w-4" 
+/>
                         </IconButton>
                       </Tooltip>
                     </td>

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
 import { HomeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { TbCategory } from "react-icons/tb";
-import { MdOutlineRateReview,MdAssignmentReturn } from "react-icons/md";
+import { MdOutlineRateReview, MdAssignmentReturn } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
 import {
   Avatar,
@@ -25,9 +25,8 @@ export function SideBar() {
 
   return (
     <aside
-      className={`${sidenavTypes[sidenavType]} ${
-        openSidenav ? "translate-x-0" : "-translate-x-80"
-      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
+      className={`${sidenavTypes[sidenavType]} ${openSidenav ? "translate-x-0" : "-translate-x-80"
+        } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
       <div
         className={`relative`}
@@ -51,144 +50,144 @@ export function SideBar() {
           <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
         </IconButton>
       </div>
-     
+
       <div className="m-4">
-          <ul className="mb-4 flex flex-col gap-1">
-            
-              <li className="mx-3.5 mt-4 mb-2">
-                <Typography
-                  variant="small"
-                  color={sidenavType === "dark" ? "white" : "blue-gray"}
-                  className="font-black uppercase opacity-75"
+        <ul className="mb-4 flex flex-col gap-1">
+
+          <li className="mx-3.5 mt-4 mb-2">
+            <Typography
+              variant="small"
+              color={sidenavType === "dark" ? "white" : "blue-gray"}
+              className="font-black uppercase opacity-75"
+            >
+              Products
+            </Typography>
+          </li>
+          <li>
+            <NavLink to='my-orders'>
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                        ? "white"
+                        : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
                 >
-                  Products
-                </Typography>
-              </li>
-            <li>
-               <NavLink to='my-orders'>
-               {({ isActive }) => (
-                    <Button
-                      variant={isActive ? "gradient" : "text"}
-                      color={
-                        isActive
-                          ? sidenavColor
-                          : sidenavType === "dark"
-                          ? "white"
-                          : "blue-gray"
-                      }
-                      className="flex items-center gap-4 px-4 capitalize"
-                      fullWidth
-                    >
-                     <TbCategory  size={24}/>
-                    
-                      <Typography
-                        color="inherit"
-                        className="font-medium capitalize"
-                      >
-                        My Orders
-                      </Typography>
-                    </Button>
-                  )}  
-               </NavLink>
-            </li>
+                  <TbCategory size={24} />
 
-            <li>
-               <NavLink to='my-reviews'>
-               {({ isActive }) => (
-                    <Button
-                      variant={isActive ? "gradient" : "text"}
-                      color={
-                        isActive
-                          ? sidenavColor
-                          : sidenavType === "dark"
-                          ? "white"
-                          : "blue-gray"
-                      }
-                      className="flex items-center gap-4 px-4 capitalize"
-                      fullWidth
-                    >
-                      <MdOutlineRateReview size={24} />
-                      <Typography
-                        color="inherit"
-                        className="font-medium capitalize"
-                      >
-                        My Reviews
-                      </Typography>
-                    </Button>
-                  )}  
-               </NavLink>
-            </li>
-             
-            <li>
-               <NavLink to='my-returns'>
-               {({ isActive }) => (
-                    <Button
-                      variant={isActive ? "gradient" : "text"}
-                      color={
-                        isActive
-                          ? sidenavColor
-                          : sidenavType === "dark"
-                          ? "white"
-                          : "blue-gray"
-                      }
-                      className="flex items-center gap-4 px-4 capitalize"
-                      fullWidth
-                    >
-                      <MdAssignmentReturn size={24} />
-                      <Typography
-                        color="inherit"
-                        className="font-medium capitalize"
-                      >
-                        My Returns
-                      </Typography>
-                    </Button>
-                  )}  
-               </NavLink>
-            </li>
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    My Orders
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
 
-            <li className="mx-3.5 mt-4 mb-2">
-                <Typography
-                  variant="small"
-                  color={sidenavType === "dark" ? "white" : "blue-gray"}
-                  className="font-black uppercase opacity-75"
+          <li>
+            <NavLink to='my-reviews'>
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                        ? "white"
+                        : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
                 >
-                  Profile
-                </Typography>
-              </li>
-            <li>
-               <NavLink to='profile'>
-               {({ isActive }) => (
-                    <Button
-                      variant={isActive ? "gradient" : "text"}
-                      color={
-                        isActive
-                          ? sidenavColor
-                          : sidenavType === "dark"
-                          ? "white"
-                          : "blue-gray"
-                      }
-                      className="flex items-center gap-4 px-4 capitalize"
-                      fullWidth
-                    >
-                     <FaRegUserCircle  size={24}/>
-                    
-                      <Typography
-                        color="inherit"
-                        className="font-medium capitalize"
-                      >
-                        Profile
-                      </Typography>
-                    </Button>
-                  )}  
-               </NavLink>
-            </li> 
+                  <MdOutlineRateReview size={24} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    My Reviews
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
 
-             
-           
-           
-              
-          
-          </ul>
+          <li>
+            <NavLink to='my-returns'>
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                        ? "white"
+                        : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <MdAssignmentReturn size={24} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    My Returns
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+
+          <li className="mx-3.5 mt-4 mb-2">
+            <Typography
+              variant="small"
+              color={sidenavType === "dark" ? "white" : "blue-gray"}
+              className="font-black uppercase opacity-75"
+            >
+              Profile
+            </Typography>
+          </li>
+          <li>
+            <NavLink to='profile'>
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                        ? "white"
+                        : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <FaRegUserCircle size={24} />
+
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Profile
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+
+
+
+
+
+
+        </ul>
 
       </div>
     </aside>

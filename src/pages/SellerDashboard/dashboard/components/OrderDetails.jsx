@@ -1,5 +1,5 @@
 import React from 'react'
-import OrderOverview from '@/components/OrderOverview'
+import OrderOverview from '@/buyer/components/OrderOverview'
 import { useParams } from 'react-router-dom'
 
 

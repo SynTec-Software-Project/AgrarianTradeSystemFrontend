@@ -18,7 +18,7 @@ export default function OrderOverview(props) {
         <div>
             <div className=' flex sm:flex-row flex-col justify-center sm:space-x-24 sm:mt-16 mt-8 '>
                 
-            <div className='group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-sm shadow-primary rounded-lg shadow hover:bg-primary  transition duration-400 ease-out hover:shadow-black sm:mb-0 mb-4'>
+            <div className='group basis-1/4 sm:p-6 p-3 bg-gray-200 border shadow-primary rounded-lg shadow hover:bg-primary  transition duration-400 ease-out hover:shadow-black sm:mb-0 mb-4'>
                 <div className='mb-2 sm:text-2xl text-xl font-bold  text-primary group-hover:text-white text-center'>Customer Details</div>
                 <div className=' text-gray-800 group-hover:text-white sm:space-y-3 space-y-2 p-1 ml-3 text-center'>
                 <div>AK Prasanna</div>
@@ -27,7 +27,7 @@ export default function OrderOverview(props) {
                 </div>
             </div>
 
-            <div className='group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-sm shadow-primary rounded-lg shadow hover:bg-primary  transition duration-300 ease-out hover:shadow-black '>
+            <div className='group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-primary rounded-lg shadow hover:bg-primary  transition duration-300 ease-out hover:shadow-black '>
                 <div className='mb-2 sm:text-2xl text-xl font-bold  text-primary group-hover:text-white text-center'>{props.title}</div>
                 <div className=' text-gray-800 group-hover:text-white sm:space-y-3 space-y-2 p-1 ml-3 text-center'>
                 <div>AK Prasanna</div>
