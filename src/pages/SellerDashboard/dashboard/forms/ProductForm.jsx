@@ -18,6 +18,7 @@ const ProductForm = () => {
   const [selectedProductType, setSelectedProductType] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+ 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -72,37 +73,12 @@ const ProductForm = () => {
         console.error('Error adding product:', error);
       });
   }
-
-  //file input functions
-  const handleDragOver = (event) => {
-    event.preventDefault();
-    event.target.classList.add('border-blue-500');
-  };
-
-  const handleDragLeave = (event) => {
-    event.preventDefault();
-    event.target.classList.remove('border-blue-500');
-  };
-
-  const handleDrop = (event) => {
-    event.preventDefault();
-    event.target.classList.remove('border-blue-500');
-
-    const file = event.dataTransfer.files[0];
-    setSelectedFile(file);
-    console.log('Selected file:', file);
-  };
-
-  const handleRemoveFile = () => {
-    setSelectedFile(null);
-  };
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
  
-
+  //file upload function from FileUpload.jsx
+  const handleFileSelect = (file) => {
+      setSelectedFile(file);
+  }
+ 
   return (
     <div>
       <div className="relative my-4 py-10 flex flex-col text-gray-700 bg-white shadow-none rounded-xl bg-clip-border ">
@@ -182,14 +158,7 @@ const ProductForm = () => {
 
             {/* upload product image */}
             <Title title='Upload Product Image' />
-            <FileUpload
-                 handleDragOver ={handleDragOver}
-                 handleDragLeave ={handleDragLeave}
-                 handleDrop ={handleDrop}
-                 handleFileChange ={handleFileChange}
-                 handleRemoveFile ={handleRemoveFile}
-                 selectedFile = {selectedFile}
-            />
+            <FileUpload onFileSelect={handleFileSelect}/>
 
             {/* select quantity */}
             <InputField

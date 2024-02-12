@@ -1,12 +1,35 @@
 import React from 'react';
+import { useState } from 'react';
 import { BsX } from "react-icons/bs";
-const FileUpload = props => {
-  const { handleDragOver,
-    handleDragLeave,
-    handleDrop,
-    handleFileChange,
-    handleRemoveFile,
-    selectedFile } = props;
+const FileUpload = ({ onFileSelect }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    event.target.classList.add('border-blue-500');
+  };
+  const handleDragLeave = (event) => {
+    event.preventDefault();
+    event.target.classList.remove('border-blue-500');
+  };
+  const handleDrop = (event) => {
+    event.preventDefault();
+    event.target.classList.remove('border-blue-500');
+
+    const file = event.dataTransfer.files[0];
+    setSelectedFile(file);
+    onFileSelect(file);
+    console.log('Selected file:', file);
+  };
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    onFileSelect(null);
+  };
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    onFileSelect(file);
+  };
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className='flex p-4 flex-col items-center justify-center w-full h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100'>
@@ -61,7 +84,6 @@ const FileUpload = props => {
               </div>
             </div>
           </div>
-
         ) : null}
 
       </div>
