@@ -185,6 +185,7 @@ const MyProductsTable = () => {
                     <td className="p-4 border-b border-blue-gray-50">
                       <Tooltip content="Edit Product">
                         <IconButton variant="text"
+                         onClick={()=> navigate(`/dashboard/update-product/${p.productID}`)}
                         >
                           <PencilIcon className="h-4 w-4"
                            />

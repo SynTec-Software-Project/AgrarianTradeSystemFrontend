@@ -1,14 +1,13 @@
-import React, { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react'
 import { Radio, Typography } from "@material-tailwind/react";
 import { InputField, Title } from './FormComponents';
 import { Button } from "@material-tailwind/react";
-import axios from 'axios';
-import Swal from 'sweetalert2'
 import { fruits, productTypes, vegetables } from '@/data/product-type-data';
 import FileUpload from './FileUpload';
+import { useNavigate } from 'react-router-dom';
 
-const ProductForm = () => {
+const ProductForm = ({onSubmitData ,productData}) => {
+  const navigate = useNavigate();
   // get user inputs
   const productTitleRef = useRef(null);
   const productDescriptionRef = useRef(null);
@@ -18,19 +17,8 @@ const ProductForm = () => {
   const [selectedProductType, setSelectedProductType] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
- 
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const filesavedPopup = () => {
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Your product has been Uploaded",
-      showConfirmButton: false,
-      timer: 1500
-    });
-  }
+ 
   // category selection functions
   const handleProductTypeChange = (event) => {
     const value = event.target.value;
@@ -45,9 +33,19 @@ const ProductForm = () => {
       console.log(event.target.value);
     }
   };
+ useEffect(() => {
+  productData && setSelectedProductType(productData.productType);
+  productData && setSelectedCategory(productData.category);
+  productData && productTitleRef.current && (productTitleRef.current.value = productData.productTitle);
+  productData && productDescriptionRef.current && (productDescriptionRef.current.value = productData.productDescription);
+  productData && unitPriceRef.current && (unitPriceRef.current.value = productData.unitPrice);
+  productData && availableStockRef.current && (availableStockRef.current.value = productData.availableStock);
+  productData && minimumQuantityRef.current && (minimumQuantityRef.current.value = productData.minimumQuantity);
+  selectedFile && setSelectedFile(productData.file);
 
+ }, [productData]);
   //upload product function
-  function addProducts() {
+  function addFormData() {
     setLoading(true);
     const formData = new FormData();
     formData.append('productTitle', productTitleRef.current.value);
@@ -58,22 +56,8 @@ const ProductForm = () => {
     formData.append('productType', selectedProductType);
     formData.append('category', selectedCategory);
     formData.append('file', selectedFile);
-    axios.post('https://localhost:44376/api/product', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then(response => {
-        console.log('Product added');
-        setLoading(false);
-        filesavedPopup();
-        navigate(-1);
-      })
-      .catch(error => {
-        console.error('Error adding product:', error);
-      });
+    onSubmitData(formData);
   }
- 
   //file upload function from FileUpload.jsx
   const handleFileSelect = (file) => {
       setSelectedFile(file);
@@ -189,7 +173,7 @@ const ProductForm = () => {
 
             {/* submit button */}
             <div className="flex gap-4 justify-end" >
-              < Button color="green" variant='gradient' onClick={addProducts} disabled={loading}>
+              < Button color="green" variant='gradient' onClick={addFormData} disabled={loading}>
                 {loading ? 'Uploading...' : 'Add Product'}
               </Button>
               <Button color="green" variant="outlined" onClick={() => navigate(-1)}>Cancel</Button>

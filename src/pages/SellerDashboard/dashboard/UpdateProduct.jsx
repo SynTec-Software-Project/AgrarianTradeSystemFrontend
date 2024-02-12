@@ -1,20 +1,28 @@
 import React from 'react'
-import { useState } from 'react';
+import axios from 'axios';
+import ProductForm from './forms/ProductForm';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
 const UpdateProduct = () => {
-  const [product, setProduct] = useState('');
+  const {id} =useParams();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState([]);
 
-  const updateProduct = async () => {
-    try {
-      const response = await axios.put('/api/products', product);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  useEffect(()=>{
+    axios.get(`https://localhost:44376/api/Product/${id}`)
+    .then(response => {
+       setProduct(response.data);
+    })
+},[] );
+  const handleUpdateproduct = (formData) => {
+    axios.put(`https://localhost:44376/api/Product/${id}`, formData)
+        .then((respose) => {
+            navigate(-1);
+        })
+  }
   return (
     <div>
-      
+      <ProductForm onSubmitData={handleUpdateproduct} productData={product}/>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { Routes,Route } from 'react-router-dom'
 import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/pages/SellerDashboard/dashboard";
 import OrderDetails from '@/pages/SellerDashboard/dashboard/components/OrderDetails';
 import AddProducts from '@/pages/SellerDashboard/dashboard/AddProducts';
+import UpdateProduct from '@/pages/SellerDashboard/dashboard/UpdateProduct';
 const Routing = () => {
   return (
     <>
@@ -20,6 +21,8 @@ const Routing = () => {
         <Route path='/add-products' element={<AddProducts/>}>  </Route>
 
         <Route path='my-orders/:orderReference' element={<OrderDetails/>}></Route>
+
+        <Route path='/update-product/:id' element={<UpdateProduct/>}></Route>
 
         </Routes>
     </>
