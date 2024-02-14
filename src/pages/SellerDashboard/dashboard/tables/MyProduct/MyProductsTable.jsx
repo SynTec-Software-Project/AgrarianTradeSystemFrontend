@@ -6,46 +6,13 @@ import { PencilIcon, UserPlusIcon, } from "@heroicons/react/24/solid";
 import { HiTrash } from "react-icons/hi2";
 import moment from 'moment';
 import Swal from 'sweetalert2'
-import {
-  Card,
-  CardHeader,
-  Input,
-  Typography,
-  Button,
-  CardBody,
-  Chip,
-  CardFooter,
-  Tabs,
-  TabsHeader,
-  Tab,
-  Avatar,
-  IconButton,
-  Tooltip,
-} from "@material-tailwind/react";
-
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
-
+import { Card, CardHeader,Typography,Button,CardBody,CardFooter,Avatar,IconButton,Tooltip,} from "@material-tailwind/react";
 const TABLE_HEAD = ["Product", "Product Number", "Date Created", "Unit Price", "Stock", "Minimum Order", "", ""];
-
 
 const MyProductsTable = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const[itemToDelete,setItemToDelete]=useState(0);
-  const  PopupHandler = () =>{
+  const  PopupHandler = (id) =>{
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -56,7 +23,9 @@ const MyProductsTable = () => {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteConfirmHandler();
+        if(id != 0){
+          deleteConfirmHandler(id);
+        }
         console.log("deleted");
         Swal.fire({
           title: "Deleted!",
@@ -64,25 +33,16 @@ const MyProductsTable = () => {
           icon: "success"
         });
       }else{
-        setItemToDelete(0);
-        console.log("Canceled " + itemToDelete);
+        console.log("Canceled " + id);
       }
     });
   }
   
-  function deleteConfirmHandler(){
-    axios.delete(`https://localhost:44376/api/Product/${itemToDelete}`)
+  function deleteConfirmHandler(productId){
+    axios.delete(`https://localhost:44376/api/Product/${productId}`)
     .then((response)=>{         
         setProducts(response.data);
-        setItemToDelete(0);
     })
-  }
-  const showConfirmPopupHandler =(id) =>{
-    setItemToDelete(id);
-    console.log(itemToDelete);
-     if(itemToDelete != 0){
-        PopupHandler();
-     }
   }
   useEffect(() => {
     axios.get("https://localhost:44376/api/product")
@@ -225,6 +185,7 @@ const MyProductsTable = () => {
                     <td className="p-4 border-b border-blue-gray-50">
                       <Tooltip content="Edit Product">
                         <IconButton variant="text"
+                         onClick={()=> navigate(`/dashboard/update-product/${p.productID}`)}
                         >
                           <PencilIcon className="h-4 w-4"
                            />
@@ -234,7 +195,7 @@ const MyProductsTable = () => {
                     <td className="p-4 border-b border-blue-gray-50">
                       <Tooltip content="Delete Product">
                         <IconButton variant="text" color='red'
-                         onClick={()=>{showConfirmPopupHandler(p.productID);}}
+                         onClick={()=> PopupHandler(p.productID)}
                         >
                           <HiTrash className="h-4 w-4" 
 />

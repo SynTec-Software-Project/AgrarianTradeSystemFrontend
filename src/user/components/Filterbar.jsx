@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Radio, Typography } from "@material-tailwind/react"
-import { Title } from '@/pages/SellerDashboard/dashboard/forms/Hint';
+import { Title } from '@/pages/SellerDashboard/dashboard/forms/FormComponents';
 import { Select, Option } from "@material-tailwind/react";
 
 const Checkbox = ({ id, label }) => {
