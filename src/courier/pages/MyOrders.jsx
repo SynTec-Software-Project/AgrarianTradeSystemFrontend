@@ -1,7 +1,6 @@
 import React from 'react'
 import TabAndTables from '../components/TabAndTables'
 
-
 const MyOrders = () => {
   return (
     <div className="mt-12">

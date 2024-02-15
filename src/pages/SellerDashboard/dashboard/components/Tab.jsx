@@ -144,17 +144,17 @@ export default function Tab() {
                       <td className="p-3 col-span-1  ">
                           {status==='readytopickup' && (
                             <p className=" bg-red-300 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              {status}
+                              Ready to Pickup
                             </p>
                           )}
                           {status==='pickedup' && (
                             <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              {status}
+                              Picked up
                             </p>
                           )}
                           {status==='delivered' && (
                             <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              {status}
+                              Delivered
                             </p>
                           )}  
                       </td> 
