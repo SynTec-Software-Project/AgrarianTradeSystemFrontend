@@ -1,45 +1,52 @@
 import React from 'react'
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
+import ReviewCard from '@/reuseble seller/ReviewCard';
 
-const review=[
-    {
-        category: 'vegitable',
-        productName:'Leeks 1kg',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
+const data=[
+{
+    type:'Vegetable Gallery',
+    pDate:'Purchased on 16 Dec 2023',
+    img:'https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220',
+    iType:'Leeks Stock-500kg',
+    Button:'Review',
+},
+{
+    type:'Vegetable Gallery',
+    pDate:'Purchased on 16 Dec 2023',
+    img:'https://purepng.com/public/uploads/large/purepng.com-carrotscarrotvegetablesfreshdeliciousefoodhealthycarrots-481521740717jmglq.png',
+    iType:'Leeks Stock-500kg',
+    Button:'Review',
+},
+{
+    type:'Vegetable Gallery',
+    pDate:'Purchased on 16 Dec 2023',
+    img:'https://snaped.fns.usda.gov/sites/default/files/styles/crop_ratio_7_5/public/seasonal-produce/2018-05/pumpkin.jpg?itok=IXGgRg1X',
+    iType:'Leeks Stock-500kg',
+    Button:'Review',
+}
 
 
-    }
 ]
+
 
 
 export const AddReviewCard = () => {
     const navigate = useNavigate();
   return (          
     <>
-    <div className=' bg-white px-8 py-5 rounded-lg my-2'>
-        <div className=' mb-5'>
-            <h1 className='my-2'>Vegitable Gallery </h1>
-            <p>Purches date 01/04/2024</p>
-        </div>
-        <div className=' flex w-full gap-4 items-end'>
-            <img src="https://1.bp.blogspot.com/-9zP_jm8uVmc/WRruNnx2RsI/AAAAAAAAAKU/uXJQQzdPX2kQlJCvIlChiIUXkDcgQ-YcACLcB/s1600/2.jpg" 
-            alt="" className=' w-[160px] h-[150px]'/>
-             
-             <div className='w-full px-3'>
-                <h1 className=' font-semibold text-gray-800 text-lg my-3'>Leeks 1kg</h1>
-                <p className='text-blue-gray-500'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem, libero optio voluptate accusantium temporibus quis aperiam soluta nihil est magnam omnis, 
-                    aliquam architecto necessitatibus quaerat delectus eveniet in totam quos.
-                </p>
-             </div>
-
-             <div className='items-end my-8'>
-                 <Button className="color bg-green-400" onClick={()=>navigate('/buyers/review')} >Review</Button>
-             </div>
-        </div>
-            
-    </div>
+    
+    {data.map((item,index)=>(
+      <ReviewCard
+      key={index}
+      type={item.type}
+      iType={item.iType}
+      Button={item.Button}
+      img={item.img}
+      />
+    ))}
     </>
+    
   )
 
 }

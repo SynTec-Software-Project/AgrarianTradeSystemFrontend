@@ -1,15 +1,58 @@
-import React from 'react'
+import React, { useState } from 'react';
+
+const paragraStyles = {
+  WebkitLineClamp: 3,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
+  display: '-webkit-box',
+};
+import ImageModal from './components/ImageModal';
+import ImageGallery from './components/ImageGallery';
+import RPDCard from '../../../reuseble seller/RPDCard';
+import ReturnFormCard from '@/reuseble seller/ReturnFormCard';
 
 
 export function NewOrders() {
-  return (
-    <div className="mt-12">
-      <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-      <h1>This is new orders page</h1>
-      
-      </div>
+  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
  
-    </div>
+
+  const [returnImgs, setReturnImgs] = useState([
+    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
+    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
+    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
+    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
+    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
+    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
+    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
+    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
+  ])
+  const data = [
+    {
+      CN: "Methsara",
+      CA: "Kurunagala",
+      CCN: "0713600779",
+      OID: "214059"
+    }
+
+  ]
+  const B = [
+    {
+      BaN: "BOC",
+      BRN: "Kurunegala",
+      ACN: "1234556778908",
+      ACNO: "595425248589"
+    }
+
+  ]
+ 
+
+  return (
+    <>
+      <ReturnFormCard/>
+    </>  
+    
   );
 }
 

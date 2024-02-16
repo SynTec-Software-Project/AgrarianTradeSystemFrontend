@@ -37,10 +37,11 @@ const History = () => {
           
           <div className='ml-12 '>
             
-            <Button className="color bg-green-400 mx-96" onClick={()=>navigate('/buyers/edit')}  >Edit</Button>
+            <Button className="color bg-green-400 mx-96" onClick={()=>navigate('/buyers/review')}  >Edit</Button>
           </div>
         </div>
       </div>
+      
     </>
   );
 }

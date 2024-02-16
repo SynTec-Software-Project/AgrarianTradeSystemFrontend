@@ -2,6 +2,7 @@ import React from 'react';
 import { Rating } from "@material-tailwind/react";
 import { MdPhotoCamera } from "react-icons/md";
 import { FaVideo } from "react-icons/fa";
+import FileSelect from './FileSelect';
 
 export default function ReviewForm() {
   const DefaultRating = () => {
@@ -50,22 +51,19 @@ export default function ReviewForm() {
       </div>
       <div className='bg-white rounded-lg my-2 py-5 '>
         <h1 className='px-8'>Add Photos and videos</h1>
-
-        <div className='flex justify-center'>
-          <button className=' bg-[#F7FFF1] items-center rounded-lg '>
+        <FileSelect/> 
+        {/* <div className='flex justify-center gap-10'>
+          <div className=' bg-[#F7FFF1] items-center rounded-lg '>
             <MdPhotoCamera className='text-[#44BD32] h-[45px] w-auto relative px-8' />
             Add Photo
-          </button>
-          <div className='w-32'>
-
           </div>
-
+          
           <button className=' bg-[#F7FFF1] items-center rounded-lg'>
             <FaVideo className='text-[#44BD32] h-[45px] w-auto relative px-8' />
             Add Video
           </button>
 
-        </div>
+        </div> */}
 
 
       </div>
