@@ -11,7 +11,8 @@ export const sellerTableData=[
         price: 5000,
         unitPrice: 100,
         Delivery: "Pending",
-        isCancelled:"n"
+        isCancelled:"n",
+        Delivery_Fee: 1500
     },
     {
         
@@ -25,7 +26,8 @@ export const sellerTableData=[
         price: 3000,
         unitPrice: 100,
         Delivery: "Pending",
-        isCancelled:"y"
+        isCancelled:"y",
+        Delivery_Fee: 1500
     },
     {
         
@@ -39,7 +41,8 @@ export const sellerTableData=[
         price: 4000,
         unitPrice: 100,
         Delivery: "Pending",
-        isCancelled:"n"
+        isCancelled:"n",
+        Delivery_Fee: 1500
     },
     {
         
@@ -53,7 +56,8 @@ export const sellerTableData=[
         price: 2500,
         unitPrice: 100,
         Delivery: "Pending",
-        isCancelled:"n"
+        isCancelled:"n",
+        Delivery_Fee: 1500
     },
 ];
 

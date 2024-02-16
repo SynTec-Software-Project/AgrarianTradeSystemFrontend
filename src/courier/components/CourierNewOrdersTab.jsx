@@ -1,15 +1,15 @@
 "use client";
 import { useState } from 'react';
 import React from 'react';
-import sellerTableData from '../../../../data/seller-table-data';
+import sellerTableData from '../../data/seller-table-data';
 import { Select, Option } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 
 
-export default function NewOrdersTab() {
+export default function CourierNewOrdersTab() {
   const [data, setData] = useState(sellerTableData);
   const [tab, setTab] = useState('');
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const filterResult = (filterValue) => {
     let result;
 
@@ -30,9 +30,8 @@ export default function NewOrdersTab() {
   }
 
   const handleRowClick = (values) => {
-    // Handle row click, e.g., select-couriernavigate to details page
-    navigate('/dashboard/select-courier')
-    
+    // Handle row click, e.g., navigate to details page
+    navigate('orderlist-details')
   }
  
   return (
@@ -79,11 +78,7 @@ export default function NewOrdersTab() {
                       Order Placed
                     </p>
                   </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Unit Price
-                    </p>
-                  </th>
+                  
                   <th class="p-4  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                     Quantity (Kg)
@@ -96,7 +91,7 @@ export default function NewOrdersTab() {
                   </th>
                   <th class="p-4  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Delivery
+                      Delivery Fee
                     </p>
                   </th>
                   </div>
@@ -108,7 +103,7 @@ export default function NewOrdersTab() {
               <tbody >
                 {data.map((values)=>{
         
-                  const {orderReference,product,orderPlaced,unitPrice,quantity,photoName,price,Delivery}=values;    //destructuring
+                  const {orderReference,product,orderPlaced,unitPrice,quantity,photoName,price,Delivery_Fee}=values;    //destructuring
                   return(
                     <>
                     <tr key={orderReference} onClick={() => handleRowClick(values)}>
@@ -131,11 +126,6 @@ export default function NewOrdersTab() {
                             {orderPlaced}
                         </p>
                       </td>
-                      <td class="p-3 ">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                        {unitPrice} 
-                        </p>
-                      </td>
                       <td class="p-3">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                           {quantity}
@@ -148,7 +138,7 @@ export default function NewOrdersTab() {
                       </td> 
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {Delivery}
+                          {Delivery_Fee}
                         </p>
                       </td>
                       </div>       

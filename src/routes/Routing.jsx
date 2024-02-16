@@ -2,6 +2,7 @@ import React from 'react'
 import { Routes,Route } from 'react-router-dom'
 import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/pages/SellerDashboard/dashboard";
 import AddProductForm from '@/pages/SellerDashboard/dashboard/tabs/MyProduct/AddProductForm';
+import SelectCourier from '@/pages/SellerDashboard/dashboard/components/SelectCourier';
 const Routing = () => {
   return (
     <>
@@ -18,6 +19,9 @@ const Routing = () => {
         <Route path='/my-returns' element={<MyReturns />}>  </Route>
 
         <Route path='/add-products' element={<AddProductForm/>}>  </Route>
+          
+        <Route path='/select-courier' element={<SelectCourier/>}>  </Route>
+        
         </Routes>
     </>
   )
