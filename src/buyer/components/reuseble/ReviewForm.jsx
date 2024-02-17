@@ -50,22 +50,8 @@ export default function ReviewForm() {
         </div>
       </div>
       <div className='bg-white rounded-lg my-2 py-5 '>
-        <h1 className='px-8'>Add Photos and videos</h1>
+        <h1 className='px-8'>Add Photos</h1>
         <FileSelect/> 
-        {/* <div className='flex justify-center gap-10'>
-          <div className=' bg-[#F7FFF1] items-center rounded-lg '>
-            <MdPhotoCamera className='text-[#44BD32] h-[45px] w-auto relative px-8' />
-            Add Photo
-          </div>
-          
-          <button className=' bg-[#F7FFF1] items-center rounded-lg'>
-            <FaVideo className='text-[#44BD32] h-[45px] w-auto relative px-8' />
-            Add Video
-          </button>
-
-        </div> */}
-
-
       </div>
 
       <div className='bg-[#ffff] rounded-lg'>
@@ -87,7 +73,7 @@ export default function ReviewForm() {
 
       <div className='bg-white text-center  my-2 rounded-lg pt-6 pb-4'>
         <div>
-          <button type='submit' className='bg-[#44BD32] px-28 rounded-lg h-9'>Submit</button>
+          <button type='submit' className='bg-[#44BD32] px-28 rounded-lg h-9 text-white'>Submit</button>
         </div>
       </div>
     </>

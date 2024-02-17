@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MdPhotoCamera } from 'react-icons/md';
-import { FaVideo } from 'react-icons/fa';
+
 
 const FileSelect = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -18,10 +18,10 @@ const FileSelect = () => {
 
     return (
         <>
-        <div className='flex justify-center gap-10'>
-        <label htmlFor='photo' className='bg-[#F7FFF1] items-center rounded-lg cursor-pointer'>
-        <MdPhotoCamera className='text-[#44BD32] h-[45px] w-auto relative px-8' />
-        Add Photos
+        <div className='flex justify-center'>
+        <label htmlFor='photo' className='bg-[#F7FFF1] rounded-lg cursor-pointer py-4'>
+        <MdPhotoCamera className='text-[#44BD32] h-[45px] w-auto relative px-8 mx-auto ' />
+         <p className=' mx-auto px-8'>Add Photos</p>
         <input
           type='file'
           id='photo'
@@ -31,18 +31,6 @@ const FileSelect = () => {
           multiple
         />
       </label>
-
-            <label htmlFor='video' className='bg-[#F7FFF1] items-center rounded-lg cursor-pointer'>
-                <FaVideo className='text-[#44BD32] h-[45px] w-auto relative px-8' />
-                Add Video
-                <input
-                    type='file'
-                    id='video'
-                    className='hidden'
-                    onChange={handleFileChange}
-                    accept='video/*' // Allow only video files
-                />
-            </label>
         </div>
         <div>
         {selectedFiles.map((file, index) => (
