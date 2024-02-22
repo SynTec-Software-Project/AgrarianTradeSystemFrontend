@@ -6,7 +6,7 @@ import { fruits, productTypes, vegetables } from '@/data/product-type-data';
 import FileUpload from './FileUpload';
 import { useNavigate } from 'react-router-dom';
 
-const ProductForm = ({onSubmitData ,productData}) => {
+const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
   const navigate = useNavigate();
   // get user inputs
   const productTitleRef = useRef(null);
@@ -174,7 +174,7 @@ const ProductForm = ({onSubmitData ,productData}) => {
             {/* submit button */}
             <div className="flex gap-4 justify-end" >
               < Button color="green" variant='gradient' onClick={addFormData} disabled={loading}>
-                {loading ? 'Uploading...' : 'Add Product'}
+                {loading ? 'Uploading...' : isUpdate? 'Update Product' : 'Add Product'}
               </Button>
               <Button color="green" variant="outlined" onClick={() => navigate(-1)}>Cancel</Button>
             </div>

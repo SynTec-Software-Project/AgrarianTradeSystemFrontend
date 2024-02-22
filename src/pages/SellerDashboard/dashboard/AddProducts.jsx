@@ -31,7 +31,7 @@ const AddProducts = () => {
       });
   }
   return (
-    <div><ProductForm onSubmitData={handleSubmit} productData={null} /></div>
+    <div><ProductForm onSubmitData={handleSubmit} productData={null} isUpdate={false} /></div>
   )
 }
 

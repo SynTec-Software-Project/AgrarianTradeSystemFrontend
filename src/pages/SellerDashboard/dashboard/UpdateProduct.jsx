@@ -22,7 +22,7 @@ const UpdateProduct = () => {
   }
   return (
     <div>
-      <ProductForm onSubmitData={handleUpdateproduct} productData={product}/>
+      <ProductForm onSubmitData={handleUpdateproduct} productData={product} isUpdate={true}/>
     </div>
   )
 }

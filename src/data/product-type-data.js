@@ -5,6 +5,7 @@ export  const productTypes = [
 ];
 
 export var vegetables = [
+    { value: null, label: "Select Vegitable" },
     { value: "artichoke", label: "Artichoke" },
     { value: "asparagus", label: "Asparagus" },
     { value: "bell-pepper", label: "Bell Pepper" },
@@ -23,6 +24,7 @@ export var vegetables = [
   ];
 
   export var fruits = [
+    { value: null, label: "Select Fruit" },
     { value: "apple", label: "Apple" },
     { value: "banana", label: "Banana" },
     { value: "orange", label: "Orange" },
