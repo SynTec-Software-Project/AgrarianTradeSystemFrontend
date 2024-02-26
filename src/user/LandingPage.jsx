@@ -10,6 +10,7 @@ const LandingPage = () => {
       <MainNav />
       <HeroSection />
       <AboutSection />   
+      <Category />
     </div>
   )
 }

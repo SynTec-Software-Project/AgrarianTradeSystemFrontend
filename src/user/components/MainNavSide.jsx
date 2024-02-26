@@ -14,7 +14,7 @@ const MainNavSide = () => {
   }
   return (
     <div>
-         <section className="md:hidden font-poppins">
+    <section className="md:hidden font-poppins">
       <div className="max-w-6xl px-4 mx-auto">
         <nav className="flex items-center justify-between py-4">
           <ul className="hidden lg:w-auto lg:space-x-12 lg:items-center ">
