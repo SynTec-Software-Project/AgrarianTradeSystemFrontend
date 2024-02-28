@@ -2,22 +2,45 @@ import React from 'react'
 import MainNav from '../components/MainNav'
 import Filterbar from '../components/Filterbar'
 import ProductsCard from '../components/ProductsCard'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 
 const ProductList = () => {
+  const [products, setProducts] = useState([])
+  
+  useEffect(() => {
+    axios.get("https://localhost:44376/api/product")
+      .then((response) => {
+        setProducts((data) => {
+          return response.data;
+        });
+      });
+  }, []);
+
+
   return (
     <div>
       <MainNav />
-      <div className='grid grid-cols-4'>
-        <Filterbar />
-        <div className=' flex flex-wrap py-4 px-3 justify-between col-span-3 bg-secondary'>
-          <div className="justify-center px-4 py-4 mx-auto lg:py-0">
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 md:grid-cols-2">
-              <ProductsCard />
-              <ProductsCard />
-              <ProductsCard />
-            </div>
-          </div>
+      <div className='flex'>
+        <Filterbar  />
+        <div className='overflow-y-auto flex flex-wrap py-4 px-3 gap-6  bg-secondary'>
+            {products.map((product,index) => {
+              const key=product.productID || index
+              return(    
+                <ProductsCard
+                  key={key}
+                  productID={product.productID}
+                  productTitle={product.productTitle}
+                  productImageUrl={product.productImageUrl}
+                  minimumQuantity={product.minimumQuantity}
+                  availableStock={product.availableStock}
+                  unitPrice={product.unitPrice}
+                 />
+              );
+            },
+            )}
         </div>
       </div>
     </div>

@@ -8,17 +8,20 @@ import Login from "./user/auth/Login";
 import CreateAccount from "./user/auth/CreateAccount";
 import FarmerCreateAccount from "./user/auth/FarmerCreateAccount";
 import CourierCreateAccount from "./user/auth/CourierCreateAccount";
+import ProductDetails from "./user/pages/ProductDetails";
+import PageNotFound from "./user/pages/PageNotFound";
 
 function App() {
   return (
     <>
      <Routes>
       <Route path="/dashboard/*" element={<Dashboard />} />
-      {/* <Route path="*" element={<Navigate to="/dashboard/home" replace />} /> */}
+      
     </Routes> 
 
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="*" element={<PageNotFound/>} />
       <Route path="/buyers/*" element={<BuyerDashboard/>}/>
       <Route path="/couriers/*" element={<CourierDashboard/>}/>
       <Route path="/products" element={<ProductList/>}/>
@@ -26,6 +29,8 @@ function App() {
       <Route path="/create" element={<CreateAccount/>}/>
       <Route path="/farmercreate" element={<FarmerCreateAccount/>}/>
       <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
+      <Route path='/product-details/:id' element={<ProductDetails/>}></Route>
+      
     </Routes>
     
     

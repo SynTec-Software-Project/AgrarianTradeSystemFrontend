@@ -40,7 +40,7 @@ const Category = () => {
         }}
       >
         {data.map(({ label, value }) => (
-          <Tab key={value} value={value} onClick={()=>setTabvalue(value)} activeClassName='text-white'>
+          <Tab key={value} value={value} defaultChecked={true} onClick={()=>setTabvalue(value)} activeClassName='text-white'>
             {label}
           </Tab>
         ))}

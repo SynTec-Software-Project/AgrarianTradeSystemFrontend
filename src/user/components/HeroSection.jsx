@@ -3,13 +3,13 @@ import { Carousel } from "@material-tailwind/react";
 import MainNav from './MainNav';
 const HeroSection = () => {
     return (
-        <div className='h-[80vh] px-12'>
+        <div className='md:h-[80vh] w-auto md:px-12  overflow-hidden'>
         
-            <Carousel className='rounded-lg'>
+            <Carousel className='rounded-lg overflow-y-hidden'>
                 <img
                     src="https://syntecblobstorage.blob.core.windows.net/bussinescard/Card1 (1).png"
                     alt="image 1"
-                    className="h-full w-full object-cover"
+                    className=" w-auto object-cover"
                 />
                 <img
                     src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"

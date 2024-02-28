@@ -84,8 +84,8 @@ const Filterbar = () => {
     "Green Beans"
   ];
   return (
-    <div>
-      <div className='px-8 border-r border-gray-200'>
+    <div className='hidden md:block'>
+      <div className='px-12 border-r border-gray-200'>
         {/* filter form */}
         <form >
           <div className='mb-8'>
