@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineErrorOutline } from "react-icons/md";
-import axios from 'axios';
+import AuthService from '../../services/apiService.js';
 
 
 export default function CreateAccount() {
@@ -89,18 +89,40 @@ export default function CreateAccount() {
         AddressLine1: add1Ref.current.value,
         AddressLine2: add2Ref.current.value,
         AddressLine3: add3Ref.current.value
-      }
+    }
+    var emailData = {
+        To: emailRef.current.value,
+        Subject: "Agrarian Trading System User Registration",
+        Body: "<h1>Thank you for registering to Agrarian Trading System</h1>"
+    }
     
     console.log(formData);
     try {
-        const response = await axios.post('https://localhost:7144/Auth/register', formData);
-        console.log('Server Response:', response.data);
+        const registerResponse = await AuthService.register(formData);
+        console.log('Server Response:', registerResponse);
+        const emailResponse = await AuthService.sendEmail(emailData);
+        console.log('Email Response:', emailResponse);
+        
     } catch (error) {
-        console.error('Error:', error.response.data);
-        if(error.response.data === "Email exist"){
-            alert('Error: Email already exists and you can not register from existing email address');
+        console.error('Error:', error);
+        if (error === "Email exist") {
+          alert('Error: Email already exists and you cannot register with an existing email address');
         }
     }
+  
+    // try {
+    //     const response = await axios.post('https://localhost:7144/Auth/register', formData);
+    //     console.log('Server Response:', response.data);
+    //     if (response.status === 200) {
+    //         const emailResponse = await axios.post('https://localhost:7144/api/Email', emaildata);
+    //         console.log('Email Response:', emailResponse.data);
+    //     }
+    // } catch (error) {
+    //     console.error('Error:', error.response.data);
+    //     if(error.response.data === "Email exist"){
+    //         alert('Error: Email already exists and you can not register from existing email address');
+    //     }
+    // }
 
   };
 
