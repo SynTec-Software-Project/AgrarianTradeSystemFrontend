@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import AuthService from '../../services/apiService.js';
+import ConfirmAlert from '@/user/components/ConfirmAlert.jsx';
+import ErrorAlert from '@/user/components/ErrorAlert.jsx';
 
 
 export default function CreateAccount() {
@@ -11,6 +13,7 @@ export default function CreateAccount() {
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
   const [NIC, setNIC] = useState("");
   const [isnicValid, setIsnicValid] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [profileImg, setprofileImg]=useState(null);
   const fnameRef=useRef(null);
@@ -58,26 +61,27 @@ export default function CreateAccount() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isPhoneNumberValid) {
-        alert("Please enter valid phone number");
+    if (pwd.length < 8) {
+        ErrorAlert({ message: "Password minimum length should be 8 characters" });
         return;
     }
     if (pwd!=confmpwd) {
-        alert("Please make sure your passwords are match");
-        return;
-    }
-    if (profileImg==null) {
-        alert("Please upload a phofile photo");
-        return;
-    }
-    if (pwd.length < 8) {
-        alert("Password minimum length should be 8 characters");
+        ErrorAlert({ message: "Please make sure your passwords are match" });
         return;
     }
     if (!isnicValid) {
-        alert("Please enter valid NIC number");
+        ErrorAlert({ message: "Please enter valid NIC number" });
         return;
     }
+    if (!isPhoneNumberValid) {
+        ErrorAlert({ message: "Please enter valid phone number" });
+        return;
+    }
+    if (profileImg==null) {
+        ErrorAlert({ message: "Please upload a phofile photo" });
+        return;
+    }
+
     var formData = {
         username: usernameRef.current.value,
         password: pwdRef.current.value,
@@ -95,10 +99,12 @@ export default function CreateAccount() {
         Subject: "Agrarian Trading System User Registration",
         Body: "<h1>Thank you for registering to Agrarian Trading System</h1>"
     }
-    
+    setLoading(true);
     console.log(formData);
     try {
-        const registerResponse = await AuthService.register(formData);
+        const registerResponse = await AuthService.userRegister(formData).then(async () => {
+            await ConfirmAlert();
+        });
         console.log('Server Response:', registerResponse);
         const emailResponse = await AuthService.sendEmail(emailData);
         console.log('Email Response:', emailResponse);
@@ -109,7 +115,7 @@ export default function CreateAccount() {
           alert('Error: Email already exists and you cannot register with an existing email address');
         }
     }
-  
+    setLoading(false);
     // try {
     //     const response = await axios.post('https://localhost:7144/Auth/register', formData);
     //     console.log('Server Response:', response.data);
@@ -385,8 +391,8 @@ export default function CreateAccount() {
                         </input>
                     </div>
                     <div className="w-full md:w-auto p-1.5">
-                        <input type='submit' value="Sign In"
-                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl">
+                        <input type='submit' value={loading==false?"Sign In":"Signing..."}
+                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl disabled:cursor-not-allowed" disabled={loading}>
                         </input>
                     </div>
                 </div>

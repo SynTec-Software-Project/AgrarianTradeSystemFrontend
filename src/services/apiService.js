@@ -3,7 +3,7 @@ import axios from 'axios';
 const BASE_URL = 'https://localhost:7144';
 
 const AuthService = {
-  register: async (formData) => {
+  userRegister: async (formData) => {
     try {
       const response = await axios.post(`${BASE_URL}/Auth/UserRegister`, formData);
       return response.data;
@@ -11,7 +11,22 @@ const AuthService = {
       throw error.response.data;
     }
   },
-
+  farmerRegister: async (formData) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/Auth/FarmerRegister`, formData);
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
+  courierRegister: async (formData) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/Auth/CourierRegister`, formData);
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
   sendEmail: async (emailData) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/Email`, emailData);
