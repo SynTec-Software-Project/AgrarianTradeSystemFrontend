@@ -1,8 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import AuthService from '../../services/apiService.js';
 import FarmerBanner from '../components/FarmerBanner';
 import FormLabel from '../components/FormLabel';
+import ConfirmAlert from '@/user/components/ConfirmAlert.jsx';
+import ErrorAlert from '@/user/components/ErrorAlert.jsx';
 
 
 export default function CreateAccount() {
@@ -16,10 +19,22 @@ export default function CreateAccount() {
   const [frontNIC, setfrontNIC] = useState(null);
   const [backNIC, setbackNIC] = useState(null);
   const [GSCertificate, setGSCertificate] = useState(null);
+  const [loading, setLoading] = useState(false);
   const profileInputRef=useRef(null);
   const forntNICInputRef=useRef(null);
   const backNICInputRef=useRef(null);
   const GSCInputRef=useRef(null);
+  const fnameRef=useRef(null);
+  const lnameRef=useRef(null);
+  const usernameRef=useRef(null);
+  const emailRef=useRef(null);
+  const pwdRef=useRef(null);
+  const nicRef=useRef(null);
+  const phoneRef=useRef(null);
+  const add1Ref=useRef(null);
+  const add2Ref=useRef(null);
+  const add3Ref=useRef(null);
+  const cropRef=useRef(null);
 
   const handleProfileImage=(e)=>{
     const file=e.target.files[0];
@@ -91,41 +106,67 @@ export default function CreateAccount() {
     e.preventDefault();
 
     if (pwd.length<8) {
-        alert("Password must be at least 8 characters long");
+        ErrorAlert({ message: "Password must be at least 8 characters long" });
         return;
     }
     if (pwd!=confmpwd) {
-        alert("Please make sure your passwords are match");
+        ErrorAlert({ message: "Please make sure your passwords are match" });
         return;
     }
     if (!isNICValid) {
-        alert("Please enter valid NIC number");
+        ErrorAlert({ message: "Please enter valid NIC number" });
         return;
     }
     if (!isPhoneNumberValid) {
-        alert("Please enter valid phone number");
+        ErrorAlert({ message: "Please enter valid phone number" });
         return;
     }
     if (profileImg==null) {
-        alert("Please upload a phofile photo");
+        ErrorAlert({ message: "Please upload a phofile photo" });
         return;
     }
     if (frontNIC==null) {
-        alert("Please upload a front image of National Identity Card");
+        ErrorAlert({ message: "Please upload a front image of National Identity Card" });
         return;
     }
     if (backNIC==null) {
-        alert("Please upload a back image of National Identity Card");
+        ErrorAlert({ message: "Please upload a back image of National Identity Card" });
         return;
     }
     if (GSCertificate==null) {
-        alert("Please upload a Grama Sewa NIladari Certificate");
+        ErrorAlert({ message: "Please upload a Grama Sewa NIladari Certificate" });
         return;
     }
-    
-
-    // Submission with API
-
+    var formData = {
+        username: usernameRef.current.value,
+        password: pwdRef.current.value,
+        First_Name: fnameRef.current.value,
+        Last_Name: lnameRef.current.value,
+        Email: emailRef.current.value,
+        Phone: phoneRef.current.value,
+        NICNumber: nicRef.current.value,
+        AddressLine1: add1Ref.current.value,
+        AddressLine2: add2Ref.current.value,
+        AddressLine3: add3Ref.current.value,
+        cropDetails: cropRef.current.value
+    }
+    setLoading(true);
+    console.log(formData);
+    try {
+        const registerResponse = AuthService.farmerRegister(formData).then(async () => {
+            await ConfirmAlert();
+        });
+        console.log('Server Response:', registerResponse);
+        const emailResponse = AuthService.sendEmail(emailData);
+        console.log('Email Response:', emailResponse);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        if (error === "Email exist") {
+          alert('Error: Email already exists and you cannot register with an existing email address');
+        }
+    }
+    setLoading(false);
   };
 
   return (
@@ -150,12 +191,12 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:w-1/3">
                                     <input
                                         className="w-full dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="First name" required/>
+                                        type="text" placeholder="First name" required ref={fnameRef}/>
                                 </div>
                                 <div className="w-full p-3 md:w-1/3">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="Last name" required/>
+                                        type="text" placeholder="Last name" required ref={lnameRef}/>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +208,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="username" required/>
+                                        type="text" placeholder="username" required ref={usernameRef}/>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +220,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="email" placeholder="name@gmail.com" required/>
+                                        type="email" placeholder="name@gmail.com" required ref={emailRef}/>
                                 </div>
                             </div>
                         </div>
@@ -208,7 +249,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="password" placeholder="******" required onChange={(e)=>setConfmpwd(e.target.value)}/>
+                                        type="password" placeholder="******" required onChange={(e)=>setConfmpwd(e.target.value)} ref={pwdRef}/>
                                         {
                                             pwd!=confmpwd && 
                                             <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
@@ -227,7 +268,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="197419202757" required
+                                        type="text" placeholder="197419202757" required ref={nicRef}
                                         onChange={(e) => {
                                             const number = e.target.value;
                                             setNIC(number);
@@ -250,7 +291,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="07XXXXXXXX" required
+                                        type="text" placeholder="07XXXXXXXX" required ref={phoneRef}
                                         onChange={(e) => {
                                             const number = e.target.value;
                                             setPhoneNumber(number);
@@ -272,7 +313,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="No. 100" required/>
+                                        type="text" placeholder="No. 100" required ref={add1Ref}/>
                                 </div>
                             </div>
                         </div>
@@ -284,7 +325,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="Main road" required/>
+                                        type="text" placeholder="Main road" required ref={add2Ref}/>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +337,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="Colombo" required/>
+                                        type="text" placeholder="Colombo" required ref={add3Ref}/>
                                 </div>
                             </div>
                         </div>
@@ -309,7 +350,7 @@ export default function CreateAccount() {
                                 <div className="w-full p-3 md:flex-1">
                                     <input
                                         className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                        type="text" placeholder="Carrot, Pumpkin, Tomato, ..." required/>
+                                        type="text" placeholder="Carrot, Pumpkin, Tomato, ..." required ref={cropRef}/>
                                 </div>
                             </div>
                         </div>

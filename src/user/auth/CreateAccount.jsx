@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineErrorOutline } from "react-icons/md";
+import FormLabel from '../components/FormLabel';
 import AuthService from '../../services/apiService.js';
 import ConfirmAlert from '@/user/components/ConfirmAlert.jsx';
 import ErrorAlert from '@/user/components/ErrorAlert.jsx';
@@ -102,11 +103,11 @@ export default function CreateAccount() {
     setLoading(true);
     console.log(formData);
     try {
-        const registerResponse = await AuthService.userRegister(formData).then(async () => {
+        const registerResponse = AuthService.userRegister(formData).then(async () => {
             await ConfirmAlert();
         });
         console.log('Server Response:', registerResponse);
-        const emailResponse = await AuthService.sendEmail(emailData);
+        const emailResponse = AuthService.sendEmail(emailData);
         console.log('Email Response:', emailResponse);
         
     } catch (error) {
@@ -149,20 +150,16 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    Name
-                                </p>
-                            </div>
+                            <FormLabel>Name</FormLabel>
                             <div className="w-full p-3 md:w-1/3">
                                 <input
                                     className="w-full dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="First name" name="First_Name" required ref={fnameRef}/>
+                                    type="text" placeholder="First name" required ref={fnameRef}/>
                             </div>
                             <div className="w-full p-3 md:w-1/3">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="Last name" name="Last_Name" required ref={lnameRef}/>
+                                    type="text" placeholder="Last name" required ref={lnameRef}/>
                             </div>
                         </div>
                     </div>
@@ -170,15 +167,11 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    User name
-                                </p>
-                            </div>
+                            <FormLabel>User name</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="username" name='username' required ref={usernameRef}/>
+                                    type="text" placeholder="username" required ref={usernameRef}/>
                             </div>
                         </div>
                     </div>
@@ -186,15 +179,11 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    Email address
-                                </p>
-                            </div>
+                            <FormLabel>Email address</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="email" placeholder="name@gmail.com" name='Email' required ref={emailRef}/>
+                                    type="email" placeholder="name@gmail.com" required ref={emailRef}/>
                             </div>
                         </div>
                     </div>
@@ -202,11 +191,7 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    Password
-                                </p>
-                            </div>
+                            <FormLabel>Password</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
@@ -224,15 +209,11 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    Confirm password
-                                </p>
-                            </div>
+                            <FormLabel>Confirm password</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="password" placeholder="******" name='password' required onChange={(e) => { setConfmpwd(e.target.value)}} ref={pwdRef}/>
+                                    type="password" placeholder="******" required onChange={(e) => { setConfmpwd(e.target.value)}} ref={pwdRef}/>
                                     {
                                       pwd!=confmpwd && 
                                       <p className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
@@ -247,15 +228,11 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    NIC number
-                                </p>
-                            </div>
+                            <FormLabel>NIC number</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="197419202757" name='NICNumber' required ref={nicRef}
+                                    type="text" placeholder="197419202757" required ref={nicRef}
                                     onChange={(e) => {
                                         const number = e.target.value;
                                         setNIC(number);
@@ -273,15 +250,11 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    Phone number
-                                </p>
-                            </div>
+                            <FormLabel>Phone number</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="07XXXXXXXX" name='Phone' required ref={phoneRef}
+                                    type="text" placeholder="07XXXXXXXX" required ref={phoneRef}
                                     onChange={(e) => {
                                         const number = e.target.value;
                                         setPhoneNumber(number);
@@ -299,15 +272,11 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    Address line 1
-                                </p>
-                            </div>
+                            <FormLabel>Address line 1</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="No. 100" name='AddressLine1' required ref={add1Ref}/>
+                                    type="text" placeholder="No. 100" required ref={add1Ref}/>
                             </div>
                         </div>
                     </div>
@@ -315,15 +284,11 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    Address line 2
-                                </p>
-                            </div>
+                            <FormLabel>Address line 2</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="Main road" name='AddressLine2' required ref={add2Ref}/>
+                                    type="text" placeholder="Main road" required ref={add2Ref}/>
                             </div>
                         </div>
                     </div>
@@ -331,15 +296,11 @@ export default function CreateAccount() {
                 <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-full md:w-9/12">
                         <div className="flex flex-wrap -m-3">
-                            <div className="w-full p-3 md:w-1/3">
-                                <p className="text-base font-semibold text-gray-700 dark:text-gray-400">
-                                    Address line 3
-                                </p>
-                            </div>
+                            <FormLabel>Address line 3</FormLabel>
                             <div className="w-full p-3 md:flex-1">
                                 <input
                                     className="w-full px-4 py-2.5 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-500 dark:text-gray-400  text-base text-gray-900 rounded-lg font-normal border border-gray-200"
-                                    type="text" placeholder="Colombo" name='AddressLine3' required ref={add3Ref}/>
+                                    type="text" placeholder="Colombo" required ref={add3Ref}/>
                             </div>
                         </div>
                     </div>
