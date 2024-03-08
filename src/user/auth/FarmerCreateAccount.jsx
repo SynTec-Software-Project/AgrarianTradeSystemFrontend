@@ -102,7 +102,7 @@ export default function CreateAccount() {
     return nicRegex.test(number);
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (pwd.length<8) {
@@ -122,7 +122,7 @@ export default function CreateAccount() {
         return;
     }
     if (profileImg==null) {
-        ErrorAlert({ message: "Please upload a phofile photo" });
+        ErrorAlert({ message: "Please upload a profile photo" });
         return;
     }
     if (frontNIC==null) {
@@ -153,9 +153,11 @@ export default function CreateAccount() {
     setLoading(true);
     console.log(formData);
     try {
-        const registerResponse = AuthService.farmerRegister(formData).then(async () => {
-            await ConfirmAlert();
-        });
+        const registerResponse = await AuthService.farmerRegister(formData)
+        //.then(async () => {
+            //await ConfirmAlert();
+        //});
+        await ConfirmAlert();
         console.log('Server Response:', registerResponse);
         const emailResponse = AuthService.sendEmail(emailData);
         console.log('Email Response:', emailResponse);
@@ -163,7 +165,8 @@ export default function CreateAccount() {
     } catch (error) {
         console.error('Error:', error);
         if (error === "Email exist") {
-          alert('Error: Email already exists and you cannot register with an existing email address');
+            console.log("hi")
+            alert('Error: Email already exists and you cannot register with an existing email address');
         }
     }
     setLoading(false);
@@ -520,7 +523,7 @@ export default function CreateAccount() {
                         </div>
                         <div className="w-full md:w-auto p-1.5">
                             <input type='submit' value="Sign In"
-                                className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl">
+                                className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl disabled:cursor-not-allowed" disabled={loading}>
                             </input>
                         </div>
                     </div>

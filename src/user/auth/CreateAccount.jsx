@@ -79,7 +79,7 @@ export default function CreateAccount() {
         return;
     }
     if (profileImg==null) {
-        ErrorAlert({ message: "Please upload a phofile photo" });
+        ErrorAlert({ message: "Please upload a profile photo" });
         return;
     }
 
@@ -103,12 +103,12 @@ export default function CreateAccount() {
     setLoading(true);
     console.log(formData);
     try {
-        const registerResponse = AuthService.userRegister(formData).then(async () => {
+        const registerResponse = await AuthService.userRegister(formData).then(async () => {
             await ConfirmAlert();
+            const emailResponse = AuthService.sendEmail(emailData);
+            console.log('Email Response:', emailResponse);
         });
         console.log('Server Response:', registerResponse);
-        const emailResponse = AuthService.sendEmail(emailData);
-        console.log('Email Response:', emailResponse);
         
     } catch (error) {
         console.error('Error:', error);
