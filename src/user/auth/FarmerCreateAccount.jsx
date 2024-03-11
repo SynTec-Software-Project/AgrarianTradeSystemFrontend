@@ -153,10 +153,7 @@ export default function CreateAccount() {
     setLoading(true);
     console.log(formData);
     try {
-        const registerResponse = await AuthService.farmerRegister(formData)
-        //.then(async () => {
-            //await ConfirmAlert();
-        //});
+        const registerResponse = await AuthService.farmerRegister(formData);
         await ConfirmAlert();
         console.log('Server Response:', registerResponse);
         const emailResponse = AuthService.sendEmail(emailData);
@@ -165,8 +162,7 @@ export default function CreateAccount() {
     } catch (error) {
         console.error('Error:', error);
         if (error === "Email exist") {
-            console.log("hi")
-            alert('Error: Email already exists and you cannot register with an existing email address');
+            ErrorAlert({ message: "Error: Email already exists and you cannot register with an existing email address" });
         }
     }
     setLoading(false);

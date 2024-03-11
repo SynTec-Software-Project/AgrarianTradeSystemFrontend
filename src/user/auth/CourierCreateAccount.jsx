@@ -133,9 +133,8 @@ export default function CourierCreateAccount() {
         setLoading(true);
         console.log(formData);
         try {
-            const registerResponse = await AuthService.courierRegister(formData).then(async () => {
-                await ConfirmAlert();
-            });
+            const registerResponse = await AuthService.courierRegister(formData);
+            await ConfirmAlert();
             console.log('Server Response:', registerResponse);
             const emailResponse = AuthService.sendEmail(emailData);
             console.log('Email Response:', emailResponse);
@@ -143,7 +142,7 @@ export default function CourierCreateAccount() {
         } catch (error) {
             console.error('Error:', error);
             if (error === "Email exist") {
-                alert('Error: Email already exists and you cannot register with an existing email address');
+                ErrorAlert({ message: "Error: Email already exists and you cannot register with an existing email address" });
             }
         }
         setLoading(false);
