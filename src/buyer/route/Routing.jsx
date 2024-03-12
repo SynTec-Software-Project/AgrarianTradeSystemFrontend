@@ -4,6 +4,7 @@ import MyOrders from '../pages/MyOrders'
 import MyReviews from '../pages/MyReviews'
 import MyReturns from '../pages/MyReturns'
 import Profile from '../pages/auth/Profile'
+import BuyerOrderDetails from '../components/BuyerOrderDetails'
 const Routing = () => {
   return (
     <>
@@ -12,6 +13,7 @@ const Routing = () => {
          <Route path='/my-reviews' element={<MyReviews />}/>
          <Route path='/my-returns' element={<MyReturns/>} />
          <Route path='/profile' element={<Profile/>} />
+         <Route path='my-orders/:orderReference' element={<BuyerOrderDetails/>}></Route>
      </Routes>
     </>
   )
