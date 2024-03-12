@@ -10,6 +10,7 @@ import FarmerCreateAccount from "./user/auth/FarmerCreateAccount";
 import CourierCreateAccount from "./user/auth/CourierCreateAccount";
 import ProductDetails from "./user/pages/ProductDetails";
 import PageNotFound from "./user/pages/PageNotFound";
+import ShoppingCart from "./user/pages/ShoppingCart";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
       <Route path="/farmercreate" element={<FarmerCreateAccount/>}/>
       <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
       <Route path='/product-details/:id' element={<ProductDetails/>}></Route>
-      
+      <Route path="/cart" element={<ShoppingCart/>}/>
     </Routes>
     
     

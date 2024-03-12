@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Radio, Typography } from "@material-tailwind/react";
 import { InputField, Title } from './FormComponents';
 import { Button } from "@material-tailwind/react";
-import { fruits, productTypes, vegetables } from '@/data/product-type-data';
+import { fruits, productTypes, productTypesSelect, vegetables } from '@/data/product-type-data';
 import FileUpload from './FileUpload';
 import { useNavigate } from 'react-router-dom';
 
@@ -97,7 +97,7 @@ const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
             {/* select type  */}
             <Title title="Select Product Type"></Title>
             <div className="flex gap-10 -mt-4">
-              {productTypes.map(type => (
+              {productTypesSelect.map(type => (
                 <Radio
                   key={type.value}
                   name="type"
@@ -126,12 +126,14 @@ const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
               >
                 {selectedProductType === 'vegetable' ? (
                   <>
+                    <option value="">Select a Vegitable</option>
                     {vegetables.map((v) => (
                       <option key={v.value} value={v.value}>{v.label}</option>
                     ))}
                   </>
                 ) : selectedProductType === 'fruit' ? (
                   <>
+                   <option value="">Select a fruit</option>
                     {fruits.map((v) => (
                       <option key={v.value} value={v.value}>{v.label}</option>
                     ))}

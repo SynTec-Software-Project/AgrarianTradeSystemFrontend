@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
 import { BsCoin } from "react-icons/bs";
 import { Badge, IconButton, Avatar } from "@material-tailwind/react";
 import { HomeIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
 import SearchBar from "./SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MainNavSide from "./MainNavSide";
-
+import axios from "axios";
+const BuyerId = 1;
 const MainNav = () => {
+    const navigate = useNavigate();
+    const [cartCount, setCartCount] = useState(0);
 
+    useEffect(() => {
+      axios.get(`https://localhost:44376/api/ShoppingCart/items?customerId=${BuyerId}`)
+      .then((response) => {
+         setCartCount(response.data.length);
+      });
+    }, [cartCount]);
   return (
     <>
       <MainNavSide/>   
@@ -49,8 +58,10 @@ const MainNav = () => {
               <div className="flex items-center justify-end px-4 ">
                 <SearchBar />
                 <div className="hidden justify-end pr-16 gap-3 sm:flex lg:pr-0 items-center ">
-                  <Badge content="5" color="green" className="mx-3">
-                    <IconButton color="gray" variant="outlined" className="rounded-full">
+                  <Badge content={cartCount} color="green" className="mx-3">
+                    <IconButton color="gray" variant="outlined" className="rounded-full"
+                     onClick={() => navigate("/cart")}
+                    >
                       <ShoppingCartIcon className="h-3 w-3" />
                     </IconButton>
                   </Badge>
