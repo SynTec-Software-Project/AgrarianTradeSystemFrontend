@@ -34,6 +34,15 @@ const AuthService = {
     } catch (error) {
       throw error.response.data;
     }
+  },
+  login: async (data) => {
+    try{
+      const response = await axios.post(`${BASE_URL}/Auth/login`, data);
+      return response.data;
+    }
+    catch (error){
+      throw error.response.data;
+    }
   }
 };
 
