@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 import ReviewCard from '@/reuseble seller/ReviewCard';
+import axios from 'axios';
 
 const data=[
 {
@@ -29,20 +30,40 @@ const data=[
 
 ]
 
+const client = axios.create({
+  baseURL: "https://localhost:7144/api/Product" 
+});
 
 
 export const AddReviewCard = () => {
     const navigate = useNavigate();
+    const [productData, setProductData] = useState([]);
+
+    const fetchProducts = async () => {
+      client.get().then((response) => {
+        setProductData(response.data)
+        console.log(response)
+      })
+      console.log(data);
+    }
+
+    useEffect(() => {
+      fetchProducts();
+    },[]);
+
   return (          
     <>
     
-    {data.map((item,index)=>(
+    {productData.map((item,index)=>(
       <ReviewCard
       key={index}
-      type={item.type}
-      iType={item.iType}
-      Button={item.Button}
-      img={item.img}
+      id={item.productID}
+      type={item.productType}
+      iType={item.productTitle}
+      Button={"Review"}
+      img={item.productImageUrl}
+      description={item.productDescription}
+      stock={item.availableStock}
       />
     ))}
     </>

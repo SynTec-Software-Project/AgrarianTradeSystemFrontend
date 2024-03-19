@@ -99,8 +99,18 @@ const Review = () => {
             <ImageModal images={returnImgs} open={open} setOpen={setOpen} />
             <ImageGallery returnImgs={returnImgs} handleOpen={handleOpen} />
           </div>
+          <div className='flex py-7 ml-52'>
+              <div>
+              <img src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg" alt="" className='w-[50px] h-auto rounded-[20px] py-2 ml-8' />
+            </div>
+            <div className='ml-6'>
+              <p>Emma Robet</p>
+              <p className='text-blue-gray-400'>14 February 2023</p>
+            </div>
+          </div>
+          <p className='ml-80'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. </p>
 
-          <div className=' my-8 flex justify-end'>
+          <div className=' my-8 flex ml-[750px]'>
             <Button className="color bg-green-400 " onClick={handlePopupOpen} >{isSubmited?"Edit":"Reply"}</Button>
           </div>
         </div>

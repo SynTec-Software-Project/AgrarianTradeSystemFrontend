@@ -1,30 +1,69 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Rating } from "@material-tailwind/react";
 import { MdPhotoCamera } from "react-icons/md";
 import { FaVideo } from "react-icons/fa";
 import FileSelect from './FileSelect';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function ReviewForm() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const client = axios.create({
+    baseURL: "https://localhost:7144/api/Product/" + id
+  });
+
+  const addClient = axios.create({
+    baseURL: "https://localhost:7144/api/Review"
+  })
+
   const DefaultRating = () => {
     return <Rating value={4} />;
   };
 
+  const [product, setProduct] = useState();
+
+  const [reviewData, setReviewData] = useState({
+    SellerRating: "",
+    DeliverRating: "",
+    ProductRating: "",
+    Comment: "",
+    ReviewImageUrl: "",
+  })
+
+  useEffect(() => {
+    client.get().then((response) => {
+      console.log(response);
+      setProduct(response.data)
+    })
+  }, [])
+
+  const handleAddReview = async () => {
+    addClient.post('', reviewData).then((res) => {
+      if (res.status === 200) {
+        console.log("Success!", res);
+        navigate('/buyers/my-reviews')
+      } 
+    })
+  }
+
   return (
     <>
       <div>
-        <div className='bg-white px-8 py-5 rounded-lg my-2 pb-1'>
+        {product ? <div className='bg-white px-8 py-5 rounded-lg my-2 pb-1'>
           <div className='mb-5'>
-            <h1 className='my-2'>Vegetable Gallery </h1>
-            <p>Purchase date 01/04/2024</p>
+            <h1 className='my-2'>{product && product.productType}</h1>
+            <p>Purchase date {product && product.dateCreated.split("T")[0]}</p>
           </div>
           <div className='flex w-full gap-4 items-end'>
             <img src="https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220"
               alt="" className='w-[160px] h-[120px]' />
 
             <div className='w-full px-3'>
-              <h1 className='font-semibold text-gray-800 text-lg my-3'>Leeks 1kg</h1>
-              <p className='text-blue-gray-500'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem, libero optio voluptate accusantium temporibus quis aperiam soluta nihil est magnam omnis,
-                aliquam architecto necessitatibus quaerat delectus eveniet in totam quos.
+              <h1 className='font-semibold text-gray-800 text-lg my-3'>{product && product.productTitle} - {product && product.availableStock}Kg</h1>
+              <p className='text-blue-gray-500'>
+                {product.productDescription}
               </p>
             </div>
           </div>
@@ -32,26 +71,32 @@ export default function ReviewForm() {
           <div className='flex gap-20 my-8'>
             <h1>Product rating</h1>
             <div className='pr-4'>
-              <DefaultRating />
+              <Rating value={4} onChange={(value) => {
+                setReviewData((prev) => ({ ...prev, ProductRating: value }))
+              }} />
             </div>
           </div>
 
-        </div>
+        </div> : "Loading..."}
       </div>
 
       <div className='bg-white  rounded-lg py-5  '>
         <div className='flex gap-20  px-8'>
           <h1>Seller Service</h1>
-          <DefaultRating />
+          <Rating value={4} onChange={(value) => {
+            setReviewData((prev) => ({ ...prev, SellerRating: value }))
+          }} />
         </div>
         <div className='flex gap-16 px-8 pt-3'>
           <h1>Delivery Service</h1>
-          <DefaultRating />
+          <Rating value={4} onChange={(value) => {
+            setReviewData((prev) => ({ ...prev, DeliverRating: value }))
+          }} />
         </div>
       </div>
       <div className='bg-white rounded-lg my-2 py-5 '>
         <h1 className='px-8'>Add Photos</h1>
-        <FileSelect/> 
+        <FileSelect />
       </div>
 
       <div className='bg-[#ffff] rounded-lg'>
@@ -64,7 +109,9 @@ export default function ReviewForm() {
           </div>
         </div>
         <div className='text-center ' >
-          <input type='text' placeholder='How’s the Quality of the product?' className='w-[600px] h-12 bg-[#F7FFF1] rounded-lg text-center'></input>
+          <input type='text' placeholder='How’s the Quality of the product?' className='w-[600px] h-12 bg-[#F7FFF1] rounded-lg text-center' onChange={(e) => {
+            setReviewData((prev) => ({...prev, Comment: e.target.value}))
+          }}></input>
         </div>
         <div className='pt-5'>
 
@@ -73,7 +120,10 @@ export default function ReviewForm() {
 
       <div className='bg-white text-center  my-2 rounded-lg pt-6 pb-4'>
         <div>
-          <button type='submit' className='bg-[#44BD32] px-28 rounded-lg h-9 text-white'>Submit</button>
+          <button type='submit' className='bg-[#44BD32] px-28 rounded-lg h-9 text-white' onClick={(e) => {
+            e.preventDefault();
+            handleAddReview()
+          }}>Submit</button>
         </div>
       </div>
     </>
