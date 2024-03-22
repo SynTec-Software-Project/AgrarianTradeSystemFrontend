@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 import { MdOutlineClose } from "react-icons/md";
 const TABLE_HEAD = ["Item", "Price", "Qty", "Sub Total", ""];   
-const BuyerId = 1;// buyer id is harcoded
+const BuyerId = 'example@gmail.com';// buyer id is harcoded
  
-export function CartTable() {
-  const[cartItems, setCartItems] = useState([]);
+export function CartTable({ cartItems ,handleDeleteItem}) {
+  //const[cartItems, setCartItems] = useState([]);
   const  PopupHandler = (id) =>{
     Swal.fire({
       title: "Are you sure?",
@@ -34,20 +34,14 @@ export function CartTable() {
       }
     });
   }
-  
+
   function deleteConfirmHandler(itemId){
     axios.delete(`https://localhost:44376/api/ShoppingCart/delete-cart-item?buyerId=${BuyerId}&cartItemId=${itemId}`)
     .then((response)=>{         
-        setCartItems(response.data);
+        handleDeleteItem(response.data);
     })
   }
-  useEffect(() => {
-    axios.get(`https://localhost:44376/api/ShoppingCart/items?customerId=${BuyerId}`)
-    .then((response) => {
-      setCartItems(response.data);
-    });
-  }, [cartItems]);
-  
+ 
   return (
     <Card className="h-full w-full overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">

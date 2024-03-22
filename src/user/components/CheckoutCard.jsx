@@ -1,6 +1,17 @@
 import React from 'react'
 
-const CheckoutCard = () => {
+const CheckoutCard = ({cartItems}) => {
+        // Function to calculate total price of each item
+const calculateTotalPrice = (item) => {
+    return item.quantity * item.price;
+  };
+  
+  // Calculate sum of total prices
+  const sumTotalPrices = cartItems.reduce((total, item) => {
+    return total + calculateTotalPrice(item);
+  }, 0);
+// Calculate shipping cost
+    const shippingCost = 0;
     return (
         <>
             <div className='px-4 py-4 bg-white rounded-md '>
@@ -8,11 +19,11 @@ const CheckoutCard = () => {
                 <div>
                     <div className=' flex justify-between my-3 border-b-2 py-4 text-gray-600 font-semibold  text-sm'>
                         <h1>Sub Total :</h1>
-                        <p>Rs 12,400.00</p>
+                        <p>Rs {sumTotalPrices.toLocaleString() + '.00'}</p>
                     </div>
                     <div className=' flex justify-between my-3 border-b-2 py-4 text-gray-600 font-semibold  text-sm'>
                         <h1>Shipping cost :</h1>
-                        <p>Rs 1200.00</p>
+                        <p>Rs {shippingCost +'.00'}</p>
                     </div>
                     <div className=' flex justify-between my-3 border-b-2 py-4 text-gray-600 font-semibold text-sm '>
                         <h1>Tax estimate :</h1>
@@ -20,7 +31,7 @@ const CheckoutCard = () => {
                     </div>
                     <div className=' flex justify-between my-4 py-4 text-gray-800 font-semibold '>
                         <h1>Order Total :</h1>
-                        <p>Rs 13,500.00</p>
+                        <p>Rs {(sumTotalPrices + shippingCost).toLocaleString() + '.00'}</p>
                     </div>
                     <div className='mt-3 py-3'>
                         <button className='bg-primary w-full rounded-md text-white py-2 text-sm hover:bg-green-500'>Checkout Order</button>
