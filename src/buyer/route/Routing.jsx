@@ -9,23 +9,22 @@ import History from '../components/Reviews/History'
 import ReviewForm from '../components/Reviews/ReviewForm'
 import HistoryForm from '../components/Reviews/HistoryForm'
 import ReturnForm from '../components/Returns/ReturnForm'
+import BuyerOrderDetails from '../components/BuyerOrderDetails'
 const Routing = () => {
   return (
     <>
       <Routes>
         <Route path='/my-orders' element={<MyOrders />} />
-        
         <Route path='my-reviews' element={<MyReviews />}>
-          <Route index element={<AddReviewCard />} />
-          <Route path='to-review' element={<AddReviewCard />} />
-          <Route path='history' element={<History />} />
-        </Route>
-       
+        <Route index element={<AddReviewCard />} />
+        <Route path='to-review' element={<AddReviewCard />} />
+        <Route path='history' element={<History />} />
         <Route path='/my-returns' element={<MyReturns />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/review' element={<ReviewForm />} />
         <Route path='/edit' element={<HistoryForm/>} />
         <Route path='/return' element={<ReturnForm/>} />
+        <Route path='my-orders/:orderReference' element={<BuyerOrderDetails/>}></Route>
       </Routes>
     </>
   )
