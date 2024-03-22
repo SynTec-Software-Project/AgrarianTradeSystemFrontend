@@ -1,22 +1,60 @@
 "use client";
-import {React, useState } from 'react';
+import {React, useState,useEffect } from 'react';
 import courierTableData from '../../data/courier-table-data';
-import {Link} from 'react-router-dom'
+import {Link,useLocation} from 'react-router-dom'
+import axios from 'axios';
 
-export default function TabAndTables() {
-  const [data,setData] =useState(courierTableData);
-  const [tab,setTab]=useState('');
-
-  const filterResult=(statusItem)=>{
-    const result=courierTableData.filter((curData)=>{
-      return curData.status===statusItem;
-    } );
-    setData(result);
-  };
+export default function TabAndTables({defaultTab}) {
+  const [data,setData] =useState([]);
+  const [tab,setTab]=useState(defaultTab);
+  const [filteredData, setFilteredData] = useState([]);
+  const location = useLocation();
   
-  const clickTab = (newTab) =>{
-    setTab(newTab);
-  }
+
+  // const filterResult=(statusItem)=>{
+  //   const result=courierTableData.filter((curData)=>{
+  //     return curData.status===statusItem;
+  //   } );
+  //   setData(result);
+  // };
+  
+  // const clickTab = (newTab) =>{
+  //   setTab(newTab);
+  // }
+
+  useEffect(() => {
+    getAllAssigns();
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname === '/my-orders') {
+      setTab(defaultTab);
+    }
+  }, [location.pathname,defaultTab]);
+
+
+  const getAllAssigns = async () => {
+    try {
+      // Api call for fetching start locations
+      const response = await axios.get("https://localhost:7144/api/assigns");
+      console.log("Response from backend:", response.data); // for checking the response is correct or not
+      setData(response.data);
+      setFilteredData(response.data); // Initialize filteredData with the same data
+    } catch (error) {
+      console.error("Error while sending date to backend", error);
+    }
+  };
+
+  const filterResult = (statusItem) => {
+    if (statusItem === 'All') {
+      setFilteredData(data);
+    } else {
+      const result = data.filter(assign => assign.status.toLowerCase() === statusItem.toLowerCase());
+      setFilteredData(result);
+    }
+    setTab(statusItem);
+  };
+
     
 
   return (
@@ -25,34 +63,38 @@ export default function TabAndTables() {
 
             <div className='flex  -mt-10 text-sm  border-b-2 '> 
                 <button onClick={()=>{
-                  setData(courierTableData);
-                  clickTab("All")
+                  // setData(courierTableData);
+                  // clickTab("All")
+                  filterResult("All")
                 }}  
-                  className={`focus:outline-none  sm:w-44 w-28 transition duration-300 ease-in-out  ${tab === "All" ? 'text-primary border-b-2 border-primary border-b-2 ' : 'text-custom_gray '}`} >
+                  className={`focus:outline-none  sm:w-40 w-28 transition duration-300 ease-in-out  ${tab === "All" ? 'text-primary border-b-2 border-primary border-b-2 ' : 'text-custom_gray '}`} >
                     All
                 </button>
 
                  <button onClick={()=>{
-                  filterResult('readytopickup');
-                  clickTab("Ready to pickup")
+                  filterResult('Ready to pickup');
+                  // filterResult('readytopickup');
+                  // clickTab("Ready to pickup")
                 }}  
-                  className={`focus:outline-none  sm:w-44 w-28 transition duration-300 ease-in-out  ${tab === "Ready to pickup" ? 'text-primary border-b-2 border-primary border-b-2 ' : 'text-custom_gray '}`} >
+                  className={`focus:outline-none  sm:w-40 w-28 transition duration-300 ease-in-out  ${tab === "Ready to pickup" ? 'text-primary border-b-2 border-primary border-b-2 ' : 'text-custom_gray '}`} >
                     Ready to pickup
                 </button>
 
                  <button onClick={()=>{
-                  filterResult('pickedup');
-                  clickTab("Picked up")
+                  filterResult('Picked up');
+                  // filterResult('pickedup');
+                  // clickTab("Picked up")
                 }}
-                className={`focus:outline-none  sm:w-44 w-28 transition duration-300 ease-in-out ${tab === "Picked up" ? 'text-primary border-b-2 border-primary ' : 'text-custom_gray'}`}>
+                className={`focus:outline-none  sm:w-40 w-28 transition duration-300 ease-in-out ${tab === "Picked up" ? 'text-primary border-b-2 border-primary ' : 'text-custom_gray'}`}>
                     Picked up
                 </button>
 
                   <button onClick={()=>{
-                  filterResult('delivered');
-                  clickTab("Delivered")
+                    filterResult('Delivered');
+                  // filterResult('delivered');
+                  // clickTab("Delivered")
                 }}
-                className={`focus:outline-none  sm:w-44 w-28 transition duration-300 ease-in-out ${tab === "Delivered" ? 'text-primary border-b-2 border-primary ' : 'text-custom_gray '}`}>
+                className={`focus:outline-none  sm:w-40 w-28 transition duration-300 ease-in-out ${tab === "Delivered" ? 'text-primary border-b-2 border-primary ' : 'text-custom_gray '}`}>
                     Delivered
                 </button>
 
@@ -65,35 +107,35 @@ export default function TabAndTables() {
             <table class="w-full text-left table-auto  ">
               <thead>
                 <tr>
-                  <div class="pl-4 pr-4 grid grid-cols-7 gap-x-6 gap-4 border-b border-primary ">
+                  <div class="pl-4 pr-4 grid grid-cols-7 gap-x-6 gap-4 border-b border-primary bg-green-500 text-gray-100 text-md">
                     <th class="col-span-1  ml-6  pt-8 pb-6 font-bold">
 
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
                       Product
                     </p>
                   </th>
                   <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
                       Order reference 
                     </p>
                   </th>
                   <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
                     Delivery Date
                     </p>
                   </th>
                   <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                    Quantity 
+                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
+                    Pickup Date 
                     </p>
                   </th>
                   <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
                     Courier charge
                     </p>
                   </th>
                   <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
                       Location
                     </p>
                   </th>
@@ -107,14 +149,14 @@ export default function TabAndTables() {
               </thead>
               
               <tbody >
-                {data.map((values)=>{
+                {filteredData.map((values)=>{
         
-                  const {orderReference,product,location,deliveryDate,quantity,photoName,courierCharge,status}=values;    //destructuring
+                  const {orderId,product,street,deliveryDate,pickupDate,photoName,deliveryFee,status}=values;    //destructuring
                   return(
                     <>                  
-                    <tr key={orderReference} className='hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out ease-in'>
+                    <tr key={orderId} className='hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out ease-in'>
                     <Link to={{
-                      pathname:`/couriers/my-orders/${orderReference}`,
+                      pathname:`/couriers/my-orders/${orderId}`,
                       state: {status} 
                       }}
                       >
@@ -130,7 +172,7 @@ export default function TabAndTables() {
                       
                       <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {orderReference}  
+                          {orderId}  
                         </p>
                       </td>
                       
@@ -141,36 +183,36 @@ export default function TabAndTables() {
                       </td>
                       <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                        {quantity}Kg 
+                        {pickupDate} 
                         </p>
                       </td>
                       <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          Rs.{courierCharge}
+                          Rs.{deliveryFee}
                         </p>
                       </td> 
                       <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {location}
+                          {street}
                         </p>
                       </td>
-                      <td class="p-3 col-span-1  ">
-                          {status==='readytopickup' && (
-                            <p class=" bg-red-300 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                      <td className="p-3 col-span-1  ">
+                          {status==='Ready to pickup' && (
+                            <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               Ready to Pickup
                             </p>
                           )}
-                          {status==='pickedup' && (
-                            <p class=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              Picked Up
+                          {status==='Picked up' && (
+                            <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                              Picked up
                             </p>
                           )}
-                          {status==='delivered' && (
-                            <p class=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          {status==='Delivered' && (
+                            <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               Delivered
                             </p>
                           )}  
-                      </td> 
+                      </td>  
                       </div>  
                       </Link>     
                     </tr>
@@ -187,19 +229,19 @@ export default function TabAndTables() {
           </div>
 
           <div class="sm:hidden">
-          {data.map((values)=>{
-            const {orderReference,product,location,quantity,deliveryDate,photoName,courierCharge,status}=values;    //destructuring
-            return(
+          {filteredData.map((values)=>{
+                  const {orderId,product,location,deliveryDate,pickupDate,photoName,deliveryFee,status}=values;    //destructuring
+                  return(
               <>
               <div className='group bg-gray-200 border hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out  p-4  rounded-lg shadow mt-8  '>
-              <Link to={`/couriers/my-orders/${orderReference}`}>
+              <Link to={`/couriers/my-orders/${orderId}`}>
                 <div className='grid grid-cols-2 gap-x-10 mt-2'>
                 <div>
                   <img src={photoName} alt={product} className='w-24 h-14 pl-8' />
                   <div className='pl-5 mt-8'>
-                  <div className='text-md pb-2 font-medium text-gray-700 '>{product} - {quantity}Kg</div>
-                  <div className='text-sm  text-primary '>Rs.{courierCharge}</div>
-                  <div className='text-sm italic text-gray-400'>{orderReference}</div>
+                  <div className='text-md pb-2 font-medium text-gray-700 '>{product}</div>
+                  <div className='text-sm  text-primary '>Rs.{deliveryFee}</div>
+                  <div className='text-sm italic text-gray-400'>{orderId}</div>
                   </div >
                 </div>
                 <div>
@@ -209,17 +251,17 @@ export default function TabAndTables() {
                     <div className='text-md font-semibold'> {location}</div>
                     </div>
                     <div>
-                    {status==='readytopickup' && (
-                            <p class=" bg-red-300 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                    {status==='Ready to pickup' && (
+                            <p class=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               {status}
                             </p>
                           )}
-                          {status==='pickedup' && (
+                          {status==='Picked up' && (
                             <p class=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               {status}
                             </p>
                           )}
-                          {status==='delivered' && (
+                          {status==='Delivered' && (
                             <p class=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               {status}
                             </p>
@@ -228,6 +270,10 @@ export default function TabAndTables() {
                     <div>
                     <div className='text-sm '> Delivery Date:</div>             
                     <div className='text-md font-semibold'> {deliveryDate}</div>
+                    </div>
+                    <div>
+                    <div className='text-sm '> Pickup Date:</div>             
+                    <div className='text-md font-semibold'> {pickupDate}</div>
                     </div>
                     
 

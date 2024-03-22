@@ -1,49 +1,73 @@
 import React from 'react';
 import carrot from '../../../public/img/carrot.png';
-
+import { Stepper, Step, Typography } from "@material-tailwind/react";
+import {
+  CogIcon,
+  UserIcon,
+  BuildingLibraryIcon,
+} from "@heroicons/react/24/outline";
 
 export default function MTimeline(props) {
-    
-  return (
+
+  const [activeStep, setActiveStep] = React.useState(0);
+  
+  // Define the order status
+  const orderStatus = "Ready to Pickup";
+
+  React.useEffect(() => {
+    // Set active step based on order status
+    switch (orderStatus) {
+      case "Ready to Pickup":
+        setActiveStep(0);
+        break;
+      case "Picked Up":
+        setActiveStep(1);
+        break;
+      case "Delivered":
+        setActiveStep(2);
+        break;
+      default:
+        setActiveStep(0);
+    }
+  }, [orderStatus]);
+
+
+    return (
     <div className='sm:mt-10 mt-4 text-custom_gray font-popins'>
         {/* <div className='sm:mb-8 mb-7 sm:ml-60 ml-5 font-medium sm:text-2xl text-xl italic '>Order Details</div> */}
-        <div className='text-center'>Your Order {props.orderReference} is <span className="text-primary">Ready to Pickup</span></div>
+        <div className='text-center mb-8'>Your Order {props.orderReference} is <span className="text-primary">{orderStatus}</span></div>
 
-       <div className="flex items-center justify-center mt-14">
-            <div className="flex items-center space-x-20">
-                <div className="flex flex-col items-center">
-                <div className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6 text-primary">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-                    </svg>
-                </div>
-                <div className="text-sm">Ready to Pickup</div>
-                </div>
-                <div className="border-t border-gray-300 h-0 w-20"></div>
-                <div className="flex flex-col items-center">
-                <div className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6 text-primary">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-                    </svg>
-                </div>
-                <div className="text-sm">Picked up</div>
-                </div>
-                <div className="border-t border-gray-300 h-0 w-20"></div>
-                <div className="flex flex-col items-center">
-                <div className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6 text-primary">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-                    </svg>
-                </div>
-                <div className="text-sm">Delivered</div>
-                </div>
-            </div>
-        </div> 
-        
-
+      <div className="w-8/12 mx-auto px-24 py-4 mb-8">
+        <Stepper activeStep={activeStep}>
+          <Step  className={` ${activeStep === 0 ?  'border border-green-500 ' : ''}`}>
+            <UserIcon className="h-5 w-5" />
+            <Typography variant="h6"
+              color={activeStep === 0 ? "green" : "gray"}
+              className="absolute -bottom-[3rem] w-max text-center">
+              Ready to Pickup
+            </Typography>
+          </Step>
+          <Step className={` ${activeStep >= 1 ? 'border border-green-500' : ''}`}>
+            <CogIcon className="h-5 w-5" />
+            <Typography variant="h6"
+              color={activeStep === 1 ? "green" : "gray"}
+              className="absolute -bottom-[3rem] w-max text-center">
+              Picked Up
+            </Typography>
+          </Step>
+          <Step className={` ${activeStep >= 2 ? 'border border-green-500' : ''}`}>
+            <BuildingLibraryIcon className="h-5 w-5" />
+            <Typography variant="h6"
+              color={activeStep === 2 ? "green" : "gray"}
+              className="absolute -bottom-[3rem] w-max text-center">
+              Delivered
+            </Typography>
+          </Step>
+        </Stepper>
+      </div>     
 
         <div className="flex justify-center">
-  <div className="relative w-9/12 h-full text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-10 hidden sm:block">
+        <div className="relative w-9/12 h-full text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-10 hidden sm:block">
     <table className="w-full text-left table-auto">
       <thead>
         <tr>
