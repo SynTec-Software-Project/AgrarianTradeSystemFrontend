@@ -1,11 +1,20 @@
 import React from 'react'
 
-const NewOrders = () => {
+import CourierNewOrdersTab from '../components/CourierNewOrdersTab'
+
+
+
+function CourierNewOrders() {
   return (
-    <div><h1>
-        couriers new orders
-        </h1></div>
+    <div>
+      <div className="mt-12">
+      <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
+      </div>
+      <CourierNewOrdersTab/>
+      
+    </div>
+    </div>
   )
 }
 
-export default NewOrders
+export default CourierNewOrders

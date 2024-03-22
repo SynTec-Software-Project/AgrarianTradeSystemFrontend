@@ -8,7 +8,11 @@ export const sellerTableData=[
         courierId : 123,
         photoName:"/img/carrot.png",
         status: "readytopickup",
-        price: 2000
+        price: 5000,
+        unitPrice: 100,
+        Delivery: "Pending",
+        isCancelled:"n",
+        Delivery_Fee: 1500
     },
     {
         
@@ -19,7 +23,11 @@ export const sellerTableData=[
         courierId : 231,
         photoName:"/img/carrot.png",
         status: "readytopickup",
-        price: 3000
+        price: 3000,
+        unitPrice: 100,
+        Delivery: "Pending",
+        isCancelled:"y",
+        Delivery_Fee: 1500
     },
     {
         
@@ -30,7 +38,11 @@ export const sellerTableData=[
         courierId : 426,
         photoName:"/img/carrot.png",
         status: "pickedup",
-        price: 4000
+        price: 4000,
+        unitPrice: 100,
+        Delivery: "Pending",
+        isCancelled:"n",
+        Delivery_Fee: 1500
     },
     {
         
@@ -41,7 +53,11 @@ export const sellerTableData=[
         courierId : 426,
         photoName:"./../../public/img/carrot.png",
         status: "delivered",
-        price: 2500
+        price: 2500,
+        unitPrice: 100,
+        Delivery: "Pending",
+        isCancelled:"n",
+        Delivery_Fee: 1500
     },
 ];
 

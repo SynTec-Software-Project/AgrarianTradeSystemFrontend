@@ -4,8 +4,8 @@ import MyOrders from '../pages/MyOrders'
 import NewOrders from '../pages/NewOrders'
 import OrderHistory from '../pages/OrderHistory'
 import Profile from '../pages/auth/Profile'
+import { CourierOrderDetail } from '../components/CourierOrderDetail'
 import CourierOrderDetails from '../components/CourierOrderDetails'
-
 const Routing = () => {
   return (
     <>
