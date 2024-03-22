@@ -1,9 +1,9 @@
 import Swal from 'sweetalert2'
-export default function ConfirmAlert(){
+export default function ConfirmAlert({message}){
     return(Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "User account has been created",
+        title: message,
         showConfirmButton: false,
         timer: 2000
       })

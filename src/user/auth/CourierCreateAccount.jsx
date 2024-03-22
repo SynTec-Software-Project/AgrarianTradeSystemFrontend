@@ -134,7 +134,8 @@ export default function CourierCreateAccount() {
         console.log(formData);
         try {
             const registerResponse = await AuthService.courierRegister(formData);
-            await ConfirmAlert();
+            await ConfirmAlert({message:"User account has been created"});
+            window.location.reload();
             console.log('Server Response:', registerResponse);
             const emailResponse = AuthService.sendEmail(emailData);
             console.log('Email Response:', emailResponse);

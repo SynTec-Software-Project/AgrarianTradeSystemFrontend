@@ -43,6 +43,24 @@ const AuthService = {
     catch (error){
       throw error.response.data;
     }
+  },
+  forgetPwd: async(email) => {
+    try{
+      const response = await axios.post(`${BASE_URL}/Auth/forgot-password`, email);
+      return response.data;
+    }
+    catch(error){
+      throw error.response.data;
+    }
+  },
+  resetPwd: async(data) => {
+    try{
+      const response = await axios.post(`${BASE_URL}/Auth/reset-password`, data);
+      return response.data;
+    }
+    catch(error){
+      throw error.response.data;
+    }
   }
 };
 

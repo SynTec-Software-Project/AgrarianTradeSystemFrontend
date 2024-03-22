@@ -6,6 +6,7 @@ import FarmerBanner from '../components/FarmerBanner';
 import FormLabel from '../components/FormLabel';
 import ConfirmAlert from '@/user/components/ConfirmAlert.jsx';
 import ErrorAlert from '@/user/components/ErrorAlert.jsx';
+import { Navigate } from 'react-router-dom';
 
 
 export default function CreateAccount() {
@@ -154,7 +155,8 @@ export default function CreateAccount() {
     console.log(formData);
     try {
         const registerResponse = await AuthService.farmerRegister(formData);
-        await ConfirmAlert();
+        await ConfirmAlert({message:"User account has been created"});
+        window.location.reload();
         console.log('Server Response:', registerResponse);
         const emailResponse = AuthService.sendEmail(emailData);
         console.log('Email Response:', emailResponse);
