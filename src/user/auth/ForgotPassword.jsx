@@ -1,24 +1,34 @@
 import axios from 'axios';
-import React, { useRef } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useRef, useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { MdOutlineErrorOutline } from "react-icons/md";
+import AuthService from '@/services/apiService.js';
+import ResetPassword from '../components/ResetPasswordComponent.jsx';
 
 export default function ForgotPassword() {
     const emailRef = useRef(null);
+    const [error, setError] = useState(false);
+    const [pwdResetState, setPwdResetState] = useState(false);
     const handleReset = async (e) => {
         e.preventDefault();
 
         const email = { email: emailRef.current.value };
         try{
+            setError(false);
             console.log(emailRef.current.value);
-            const response = await axios.post('https://localhost:7144/Auth/forgot-password', email);
-            console.log('Server Response:', response.data);
+            const response = await AuthService.forgetPwd(email);
+            console.log('Server Response:', response);
+            setPwdResetState(true);
+            
         }
-        catch{
-            console.error('Error:', error.response.data);
+        catch(error){
+            setError(true);
+            console.error('Error:', error);
         }
     }
     return (
         <>
+        {!pwdResetState &&
             <section className=" font-poppins">
                 <div className="max-w-6xl px-0 mx-auto lg:px-6">
                     <div className="flex flex-col items-center h-full md:flex-row">
@@ -36,7 +46,11 @@ export default function ForgotPassword() {
                                             className="w-full px-4 py-3 mt-4 bg-white rounded-lg dark:text-gray-100 dark:bg-gray-800 dark:border dark:border-gray-800"
                                             placeholder="Enter your email" ref={emailRef}/>
                                     </div>
-                                    
+                                    {error &&
+                                        <div className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
+                                            <MdOutlineErrorOutline size={20}/> &nbsp; Email is invalid
+                                        </div>
+                                    }
                                     <button
                                         className="w-full px-4 py-3 mt-16 font-semibold text-gray-200 bg-primary rounded-lg hover:text-gray-700 hover:bg-green-300 "
                                         onClick={handleReset}>RESET</button>
@@ -51,6 +65,10 @@ export default function ForgotPassword() {
                     </div>
                 </div>
             </section>
+        }
+        {pwdResetState &&
+            <ResetPassword/>
+        }   
         </>
     )
 }
