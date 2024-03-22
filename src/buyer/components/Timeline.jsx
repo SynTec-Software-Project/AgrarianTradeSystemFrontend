@@ -12,7 +12,7 @@ export default function MTimeline(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   
   // Define the order status
-  const orderStatus = "Ready to Pickup";
+  const orderStatus = "Picked Up";
 
   React.useEffect(() => {
     // Set active step based on order status
