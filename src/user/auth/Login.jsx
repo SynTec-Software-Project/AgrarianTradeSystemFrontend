@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import AuthService from '../../services/apiService.js';
@@ -8,8 +8,10 @@ import { jwtDecode } from 'jwt-decode';
 function Login(){
     const [visibility, setVisibility]=useState(false);
     const emailRef = useRef(null);
+    const navigate = useNavigate();
     const passwordRef = useRef(null);
     const [logError, setLogError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
     
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -21,17 +23,17 @@ function Login(){
             const response = await AuthService.login(data);
             console.log("Server response: ", response);
             sessionStorage.setItem('jwtToken', response.accessToken);
-            sessionStorage.setItem('refreshToken', response.refreshToken);
             setLogError(false);
-            const token = sessionStorage.getItem('jwtToken');
-            const decodedToken = jwtDecode(token);
-            const user = decodedToken;
-            const jobRole = decodedToken.role;
-            console.log(jobRole);
-            console.log(user);
+            // const token = sessionStorage.getItem('jwtToken');
+            // const decodedToken = jwtDecode(token);
+            // const user = decodedToken;
+            // const jobRole = decodedToken.role;
+            // console.log(jobRole);
+            // console.log(user);
         }
         catch (error){
             setLogError(true);
+            setErrorMsg(error);
             console.error("Error: ", error);
         }
         
@@ -67,7 +69,7 @@ function Login(){
                                     </div>
                                     {logError && 
                                         <div className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
-                                            <MdOutlineErrorOutline size={20}/> &nbsp; Email or password is incorrect
+                                            <MdOutlineErrorOutline size={20}/> &nbsp; {errorMsg}
                                         </div>
                                     }
                                     <div className="mt-4 text-right">
