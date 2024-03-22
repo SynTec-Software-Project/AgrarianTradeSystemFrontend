@@ -5,6 +5,7 @@ const LandingPage = () => {
   return (
     <div className='bg-secondary'>
       <MainNav/>
+      
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 import {
     Card,
@@ -8,6 +8,7 @@ import {
     Button,
   } from "@material-tailwind/react";
 import { CourierList } from './couriers/CourierList';
+import { SearchBar } from './SearchBar';
 
 
 
@@ -15,6 +16,8 @@ import { CourierList } from './couriers/CourierList';
   
 
 function SelectCourier() {
+  const [search, setSearch] = useState();
+
   return (
     <>
   <div className='grid grid-cols-2 gap-4'>
@@ -72,9 +75,11 @@ function SelectCourier() {
   </div>
 </div>
 
-
+<div className='mt-10'>
+  <SearchBar setSearch={setSearch}/>
+</div>
 <div class="mt-10 overflow-y-auto max-h-screen">
-  <CourierList/>
+  <CourierList search={search}/>
 </div>
 
 

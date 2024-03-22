@@ -7,9 +7,11 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function NewOrdersTab() {
+  
   const [data, setData] = useState(sellerTableData);
   const [tab, setTab] = useState('');
- const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const filterResult = (filterValue) => {
     let result;
 

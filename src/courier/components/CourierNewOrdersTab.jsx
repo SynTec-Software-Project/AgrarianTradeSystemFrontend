@@ -1,29 +1,50 @@
 "use client";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import React from 'react';
-import sellerTableData from '../../data/seller-table-data';
+//import sellerTableData from '../../data/seller-table-data';
 import { Select, Option } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 export default function CourierNewOrdersTab() {
-  const [data, setData] = useState(sellerTableData);
+  const [newOrders,setnewOrders]=useState([])
+  const [data, setData] = useState([]);
+
+  //const [data, setData] = useState(sellerTableData);
   const [tab, setTab] = useState('');
   const navigate = useNavigate();
+
   const filterResult = (filterValue) => {
     let result;
 
     if (filterValue === 'all') {
       // Show all results when "All" is selected
-      result = sellerTableData;
+      result = newOrders;
     } else {
       // Filter based on 'n' or 'y' for New Orders or Cancelled
-      result = sellerTableData.filter((curData) => curData.isCancelled === filterValue);
+      result = newOrders.filter((curData) => curData.isCancelled === filterValue);
     }
-
     setData(result);
   };
 
+  useEffect(() => {
+    axios.get("https://localhost:7294/api/CourierNewO")
+        .then((response) => {
+
+          console.log("HEllo")
+          
+            setnewOrders(response.data);
+            setData(response.data);
+           
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.error('Error fetching appointments:', error);
+        });
+  
+
+}, []); // Ensure dependencies are included in the dependency array
   
   const clickTab = (newTab) =>{
     setTab(newTab);
@@ -63,6 +84,7 @@ export default function CourierNewOrdersTab() {
               <thead>
                 <tr>
                   <div class="flex flex-row justify-between border-b border-primary mr-6">
+                    
                     <th class="p-4  ml-8  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                       Product
@@ -101,21 +123,26 @@ export default function CourierNewOrdersTab() {
               {/* display items in objects of array */}
 
               <tbody >
-                {data.map((values)=>{
+                {data ? data.map((values)=>{
         
-                  const {orderReference,product,orderPlaced,unitPrice,quantity,photoName,price,Delivery_Fee}=values;    //destructuring
+                  const {orderReference,name,date,unitPrice,quantity,image,total,deliveryFee}=values;    //destructuring
                   return(
                     <>
                     <tr key={orderReference} onClick={() => handleRowClick(values)}>
                       <div class='flex  flex-row justify-between mr-8 border-b border-blue-gray-50'>
-                      <td class="p-3 w-24 ">
-                          <div class="flex space-x-5  ">
-                        <img src={photoName} alt={product} />
+                      <td class="p-3 w-12 flex items-center">
+                        <img src={image} alt={name} style={{borderRadius:"50%", height:"30px" ,width:"30px", marginRight:"8px"}}/>
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {product}
+                          {name}
                         </p>
-                        </div>
+                      {/* <div class="flex space-x-5  ">
+                        </div> */}
                       </td>
+                      {/* <td class="p-3 w-24 ">
+                          <div class="flex space-x-5  ">
+                       
+                        </div>
+                      </td> */}
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                           {orderReference}
@@ -123,7 +150,7 @@ export default function CourierNewOrdersTab() {
                       </td>
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                            {orderPlaced}
+                            {date}
                         </p>
                       </td>
                       <td class="p-3">
@@ -133,12 +160,12 @@ export default function CourierNewOrdersTab() {
                       </td> 
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {price}
+                          {total}
                         </p>
                       </td> 
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {Delivery_Fee}
+                          {deliveryFee}
                         </p>
                       </td>
                       </div>       
@@ -146,7 +173,7 @@ export default function CourierNewOrdersTab() {
                     
                     </>
                   )
-                })}
+                }): "Loading..."}
 
                 
           
@@ -155,19 +182,19 @@ export default function CourierNewOrdersTab() {
           </div>
 
           <div class="sm:hidden">
-          {data.map((values)=>{
-            const {orderReference,product,orderPlaced,quantity,courierId,photoName,price,status}=values;    //destructuring
+          {newOrders.map((values)=>{
+            const {orderReference,name,date,quantity,courierId,image,price,isCancelled}=values;    //destructuring
             return(
               <>
               <div className='bg-primary p-4  rounded-lg shadow mt-8 text-white '>
             
-                  <img src={photoName} alt={product} className='w-24 h-14 pl-8' />
+                  <img src={image} alt={name} className='w-24 h-14 pl-8' />
 
                   <div className='grid grid-cols-2 gap-7 mt-2'>
                     <div className='pl-5 '>
-                    <div className='text-base  font-medium'>{product} - {quantity}Kg</div>
+                    <div className='text-base  font-medium'>{name} - {quantity}Kg</div>
                     <div className='text-sm text-custom_gray'>Rs.{price}</div>
-                    <div className='text-sm text-gray-300'>{orderPlaced}</div>
+                    <div className='text-sm text-gray-300'>{date}</div>
                     </div >
                     <div className='text-primary bg-gray-200 p-3 rounded w-32 '>
                     <div className='text-sm '>courier Id: {courierId}</div>             
@@ -179,17 +206,9 @@ export default function CourierNewOrdersTab() {
               </>
             )  
           })}
-          </div>
-
-          
-        
-        </div>  
-
-        
+          </div>      
+        </div>        
     </div>
-        
-   
-
 
   )
 }

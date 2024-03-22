@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import curierlistdata from '../../../../../data/couriers-list-data';
 import { Button } from "@material-tailwind/react";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 import {
   List,
@@ -33,17 +34,55 @@ const handlePopup =()=>{
   });
 }
 
-export function CourierList() {
-  const [data, setData] = useState(curierlistdata);
+export function CourierList({ search }) {
+  const [data, setData] = useState([]);
 
   const handleButtonClick = (name) => {
     // Handle button click for the specific item (e.g., delete the item)
     console.log(`Delete ${name}`);
   };
 
-  return (
+  const filterData = (curierlistdata) => {
+    if (search) {
+      const filteredCouriers = curierlistdata.filter(data =>
+        data.name.toLowerCase().includes(search.toLowerCase()) || 
+        data.detail.toLowerCase().includes(search.toLowerCase())
+      );
+      setData(filteredCouriers);
+    } else {
+      setData(curierlistdata);
+    }
+  }
+
+  useEffect(() => {
+    filterData(courierList);
+  }, [search])
+
+  const [courierList,setcourierList]=useState([])
+
+  useEffect(() => {
+  
+
+    axios.get("https://localhost:7294/api/CourierList")
+        .then((response) => {
+
+          console.log("HEllo")
+          
+          setcourierList(response.data);
+          setData(response.data);
+           
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.error('Error fetching appointments:', error);
+        });
+  
+
+}, []);
+
+  return (  
     <div>
-      {data.map((values) => {
+      {data ? data.map((values) => {
         const { name, detail, image } = values;
         return (
           <Card className="w-100" key={values.id}>
@@ -73,7 +112,7 @@ export function CourierList() {
             </List>
           </Card>
         );
-      })}
+      }) : "Loading..."}
     </div>
   );
 }
