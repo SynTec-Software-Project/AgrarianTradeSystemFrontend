@@ -15,7 +15,7 @@ const Routing = () => {
     <>
       <Routes>
         <Route path='/my-orders' element={<MyOrders />} />
-        <Route path='my-reviews' element={<MyReviews />}>
+        <Route path='my-reviews' element={<MyReviews />}/>
         <Route index element={<AddReviewCard />} />
         <Route path='to-review' element={<AddReviewCard />} />
         <Route path='history' element={<History />} />

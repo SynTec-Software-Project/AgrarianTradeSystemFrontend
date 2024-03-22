@@ -1,8 +1,8 @@
 import React from 'react'
-
-export default function OrderOverview(props) {
+const OrderOverview = (props) => {
   return (
-    <div className='sm:mt-20 mt-8 text-custom_gray'>
+    <>
+     <div className='sm:mt-20 mt-8 text-custom_gray'>
         <div className='flex'>
         <div className='sm:mb-12 mb-7 sm:ml-60 ml-5 font-bold sm:text-2xl text-xl italic '>Order Details</div>
         </div>
@@ -18,7 +18,7 @@ export default function OrderOverview(props) {
         <div>
             <div className=' flex sm:flex-row flex-col justify-center sm:space-x-24 sm:space-y-0 space-y-4 sm:mt-16 mt-8  '>
                 
-            <div className='group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-md  rounded-lg  hover:bg-primary  transition duration-300 ease-out ease-in  '>
+            <div className='group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-md  rounded-lg  hover:bg-primary  transition duration-300 '>
                 <div className='mb-2 sm:text-2xl text-xl font-bold  text-primary  text-center group-hover:text-white'>Customer details</div>
                 <div className=' text-gray-600  sm:space-y-3 space-y-2 p-1 ml-3 text-center group-hover:text-gray-800'>
                 <div>AK Prasanna</div>
@@ -27,7 +27,7 @@ export default function OrderOverview(props) {
                 </div>
             </div>
 
-            <div className='group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-md  rounded-lg  hover:bg-primary  transition duration-300 ease-out ease-in  '>
+            <div className='group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-md  rounded-lg  hover:bg-primary  transition duration-300'>
                 <div className='mb-2 sm:text-2xl text-xl font-bold  text-primary  text-center group-hover:text-white'>{props.title}</div>
                 <div className=' text-gray-600  sm:space-y-3 space-y-2 p-1 ml-3 text-center group-hover:text-gray-800'>
                 <div>AK Prasanna</div>
@@ -38,5 +38,8 @@ export default function OrderOverview(props) {
             </div>
         </div>
     </div>
+    </>
   )
 }
+
+export default OrderOverview

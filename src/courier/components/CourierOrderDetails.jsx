@@ -1,5 +1,5 @@
-import React from 'react'
 import OrderOverview from '@/buyer/components/OrderOverview';
+import React from 'react'
 import { useParams ,useLocation } from 'react-router-dom'
 
 
@@ -12,6 +12,7 @@ export default function CourierOrderDetails(props) {
   return (
     <div>
       <div className='sm:-mt-12 -mt-4'>
+      {/* <OrderOverview title="Seller details" orderReference={orderReference}/> */}
       <OrderOverview title="Seller details" orderReference={orderReference}/>
       </div>
 

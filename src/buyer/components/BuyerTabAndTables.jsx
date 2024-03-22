@@ -59,7 +59,7 @@ export default function BuyerTabAndTables({defaultTab}) {
   return (
     <div>
        <div className='flex sm:justify-end justify-center sm:mr-16 mr-0 text-custom-gray  font-medium'>
-
+        
             <div className='flex  -mt-10 text-sm  border-b-2 '> 
                 <button onClick={()=>{
                 // setData(buyerTableData);
