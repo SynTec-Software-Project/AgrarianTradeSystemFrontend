@@ -4,8 +4,7 @@ import MainNav from './components/MainNav'
 const LandingPage = () => {
   return (
     <div className='bg-secondary'>
-      <MainNav/>
-      
+      <MainNav />
     </div>
   )
 }

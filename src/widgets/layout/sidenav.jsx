@@ -18,6 +18,7 @@ export function Sidenav({ routes }) {
     transparent: "bg-transparent",
   };
 
+  const sideColor = "from-green-400 to-green-600";
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${
@@ -68,7 +69,7 @@ export function Sidenav({ routes }) {
                       variant={isActive ? "gradient" : "text"}
                       color={
                         isActive
-                          ? sidenavColor
+                          ? "green"
                           : sidenavType === "dark"
                           ? "white"
                           : "blue-gray"

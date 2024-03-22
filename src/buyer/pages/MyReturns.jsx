@@ -1,9 +1,11 @@
 import React from 'react'
+import ReviewForm from '../components/Reviews/ReviewForm'
+import ReturnCard from '../components/Returns/ReturnCard'
 
 const MyReturns = () => {
   return (
     <div>
-        <h1>Buyers My returns</h1>
+        <ReturnCard/>
     </div>
   )
 }
