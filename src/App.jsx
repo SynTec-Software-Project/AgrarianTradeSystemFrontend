@@ -10,7 +10,9 @@ import FarmerCreateAccount from "./user/auth/FarmerCreateAccount";
 import CourierCreateAccount from "./user/auth/CourierCreateAccount";
 import ForgotPassword from "./user/auth/ForgotPassword";
 import Auth2 from "./user/auth/Auth";
-//import ProtectedRoute from "./user/auth/ProtectedRoute";
+import ProductDetails from "./user/pages/ProductDetails";
+import PageNotFound from "./user/pages/PageNotFound";
+import ShoppingCart from "./user/pages/ShoppingCart";
 
 function App() {
   
@@ -37,20 +39,26 @@ function App() {
   
   return (
     <>
-        <Routes>
-          <Route path="/dashboard/*" element={<Dashboard />} />
-          {/* <Route path="*" element={<Navigate to="/dashboard/home" replace />} /> */}
-          <Route path="/" element={<LandingPage />} />
-          {/* <Route path="/buyers/*" element={<BuyerDashboard/>}/> */}
-          {/* <Route path="/couriers/*" element={<CourierDashboard/>}/> */}
-          <Route path="/products" element={<ProductList/>}/>
-          <Route path="/login" element={<Login/>}></Route>
-          <Route path="/create" element={<CreateAccount/>}/>
-          <Route path="/farmercreate" element={<FarmerCreateAccount/>}/>
-          <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
-          <Route path="/forgotpassword" element={<ForgotPassword/>}/>
-          <Route path="/couriers/*" element={<CourierDashboard />} />
-        </Routes> 
+     <Routes>
+      <Route path="/dashboard/*" element={<Dashboard />} />
+      
+    </Routes> 
+
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="*" element={<PageNotFound/>} />
+      <Route path="/buyers/*" element={<BuyerDashboard/>}/>
+      <Route path="/couriers/*" element={<CourierDashboard/>}/>
+      <Route path="/products" element={<ProductList/>}/>
+      <Route path="/login" element={<Login/>}></Route>
+      <Route path="/create" element={<CreateAccount/>}/>
+      <Route path="/forgotpassword" element={<ForgotPassword/>}/>
+      <Route path="/farmercreate" element={<FarmerCreateAccount/>}/>
+      <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
+      <Route path='/product-details/:id' element={<ProductDetails/>}></Route>
+      <Route path="/cart" element={<ShoppingCart/>}/>
+    </Routes>
+
 
     
     </>
