@@ -1,4 +1,5 @@
-import React from 'react'
+
+import React, { useState } from 'react'
 import {
   Tabs,
   TabsHeader,
@@ -6,36 +7,40 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
+import CategoryCard from './CategoryCard';
  
-
 const Category = () => {
+  const [category,setCategory]=useState('');
+ 
+  const setTabvalue = (value) => {
+    setCategory(value);
+    console.log(value);
+  }
   const data = [
     {
-      label: "HTML",
-      value: "html",
-      desc: `It really matters and then like it really doesn't matter.
-      What matters is the people who are sparked by it. And the people 
-      who are like offended by it, it doesn't matter.`,
+      label: "Vegitables",
+      value: "vegitables",
+      desc: <CategoryCard category={category} />,
     },
     {
-      label: "React",
-      value: "react",
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
+      label: "Fruits",
+      value: "fruits",
+      desc: <CategoryCard category={category} />,
     },
+    
   ];
   return (
-    <div className='mt-12 mx-16 rounded-3xl'>
+    <div className='mt-12 mx-16 rounded-3xl bg-white border border-gray-300'>
       <div className=''>
-      <Tabs value="html" className="max-w-[40rem]">
+      <Tabs value="html" className="w-full">
       <TabsHeader
-        className=" bg-primary"
+        className=" bg-white text-white font-semibold rounded-t-3xl"
         indicatorProps={{
-          className: "bg-gray-900/10 shadow-none !text-gray-900",
+          className: "rounded-t-3xl bg-primary text-white py-4 m-0 ",
         }}
       >
         {data.map(({ label, value }) => (
-          <Tab key={value} value={value}>
+          <Tab key={value} value={value} defaultChecked={true} onClick={()=>setTabvalue(value)} activeClassName='text-white'>
             {label}
           </Tab>
         ))}
@@ -56,5 +61,6 @@ const Category = () => {
     </div>
   )
 }
+
 
 export default Category
