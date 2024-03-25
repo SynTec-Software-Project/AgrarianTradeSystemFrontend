@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import {
   Tabs,
@@ -8,7 +9,6 @@ import {
 } from "@material-tailwind/react";
 import CategoryCard from './CategoryCard';
  
-
 const Category = () => {
   const [category,setCategory]=useState('');
  
@@ -62,5 +62,5 @@ const Category = () => {
   )
 }
 
-export default Category
 
+export default Category

@@ -14,6 +14,7 @@ const CourierDashboard = () => {
             <Configurator/>
 
             <Routing/>
+            
         </div>
 
     </div>
