@@ -23,7 +23,7 @@ export default function TabAndTables({defaultTab}) {
   // }
 
   useEffect(() => {
-    getAllAssigns();
+    getAllAssigns ();
   }, []);
 
   useEffect(() => {
@@ -54,8 +54,6 @@ export default function TabAndTables({defaultTab}) {
     }
     setTab(statusItem);
   };
-
-    
 
   return (
     <div>
@@ -151,39 +149,39 @@ export default function TabAndTables({defaultTab}) {
               <tbody >
                 {filteredData.map((values)=>{
         
-                  const {orderId,product,street,deliveryDate,pickupDate,photoName,deliveryFee,status}=values;    //destructuring
+                  const {orderID,productTitle,customerAddL3,deliveryDate,pickupDate,productImageUrl,deliveryFee,orderStatus}=values;    //destructuring
                   return(
                     <>                  
-                    <tr key={orderId} className='hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out ease-in'>
+                    <tr key={orderID} className='hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out ease-in'>
                     <Link to={{
-                      pathname:`/couriers/my-orders/${orderId}`,
+                      pathname:`/couriers/my-orders/${orderID}`,
                       state: {status} 
                       }}
                       >
                       <div class=' pl-4 pr-4 grid grid-cols-7 gap-x-6 gap-4 border-b border-blue-gray-50'>
                       <td class="p-3 col-span-1 ">
                           <div class="flex space-x-5  ">
-                        <img src={photoName} alt={product} />
+                        <img src={productImageUrl} /*alt={productTitle}*/ />
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {product}
+                          {productTitle}
                         </p>
                         </div>
                       </td>
                       
                       <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {orderId}  
+                          {orderID}  
                         </p>
                       </td>
                       
                       <td class= "p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {deliveryDate}
+                        {formatDate(deliveryDate)}
                         </p>
                       </td>
                       <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                        {pickupDate} 
+                        {formatDate(pickupDate)} 
                         </p>
                       </td>
                       <td class="p-3 col-span-1">
@@ -193,21 +191,21 @@ export default function TabAndTables({defaultTab}) {
                       </td> 
                       <td class="p-3 col-span-1">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {street}
+                          {customerAddL3}
                         </p>
                       </td>
                       <td className="p-3 col-span-1  ">
-                          {status==='Ready to pickup' && (
+                          {orderStatus==='Ready to pickup' && (
                             <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               Ready to Pickup
                             </p>
                           )}
-                          {status==='Picked up' && (
+                          {orderStatus==='Picked up' && (
                             <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               Picked up
                             </p>
                           )}
-                          {status==='Delivered' && (
+                          {orderStatus==='Delivered' && (
                             <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               Delivered
                             </p>
@@ -230,50 +228,50 @@ export default function TabAndTables({defaultTab}) {
 
           <div class="sm:hidden">
           {filteredData.map((values)=>{
-                  const {orderId,product,location,deliveryDate,pickupDate,photoName,deliveryFee,status}=values;    //destructuring
+                  const {orderID,productTitle,customerAddL3,deliveryDate,pickupDate,productImageUrl,deliveryFee,orderStatus}=values;    //destructuring
                   return(
               <>
               <div className='group bg-gray-200 border hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out  p-4  rounded-lg shadow mt-8  '>
-              <Link to={`/couriers/my-orders/${orderId}`}>
+              <Link to={`/couriers/my-orders/${orderID}`}>
                 <div className='grid grid-cols-2 gap-x-10 mt-2'>
                 <div>
-                  <img src={photoName} alt={product} className='w-24 h-14 pl-8' />
+                  <img src={productImageUrl} /*alt={productTitle}*/ className='w-24 h-14 pl-8' />
                   <div className='pl-5 mt-8'>
-                  <div className='text-md pb-2 font-medium text-gray-700 '>{product}</div>
+                  <div className='text-md pb-2 font-medium text-gray-700 '>{productTitle}</div>
                   <div className='text-sm  text-primary '>Rs.{deliveryFee}</div>
-                  <div className='text-sm italic text-gray-400'>{orderId}</div>
+                  <div className='text-sm italic text-gray-400'>{orderID}</div>
                   </div >
                 </div>
                 <div>
                   <div className='text-gray-600  p-2  group-hover:text-custom_gray flex flex-col space-y-5'>
                     <div >
                     <div className='text-sm '> Location:</div>             
-                    <div className='text-md font-semibold'> {location}</div>
+                    <div className='text-md font-semibold'> {customerAddL3}</div>
                     </div>
                     <div>
-                    {status==='Ready to pickup' && (
+                          {orderStatus==='Ready to pickup' && (
                             <p class=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              {status}
+                              Ready to Pickup
                             </p>
                           )}
-                          {status==='Picked up' && (
+                          {orderStatus==='Picked up' && (
                             <p class=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              {status}
+                              Picked up
                             </p>
                           )}
-                          {status==='Delivered' && (
+                          {orderStatus==='Delivered' && (
                             <p class=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              {status}
+                              Delivered
                             </p>
                           )}  
                     </div>
                     <div>
                     <div className='text-sm '> Delivery Date:</div>             
-                    <div className='text-md font-semibold'> {deliveryDate}</div>
+                    <div className='text-md font-semibold'> {formatDate(deliveryDate)}</div>
                     </div>
                     <div>
                     <div className='text-sm '> Pickup Date:</div>             
-                    <div className='text-md font-semibold'> {pickupDate}</div>
+                    <div className='text-md font-semibold'> {formatDate(pickupDate)}</div>
                     </div>
                     
 
