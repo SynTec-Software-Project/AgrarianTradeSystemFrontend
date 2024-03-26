@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
   const navigate = useNavigate();
+  // seller id hardcoded
+  const SellerId = 'alicesmith@example.com';
   // get user inputs
   const productTitleRef = useRef(null);
   const productDescriptionRef = useRef(null);
@@ -49,6 +51,7 @@ const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
     setLoading(true);
     const formData = new FormData();
     formData.append('productTitle', productTitleRef.current.value);
+    formData.append('FarmerID', SellerId);
     formData.append('productDescription', productDescriptionRef.current.value);
     formData.append('unitPrice', unitPriceRef.current.value);
     formData.append('availableStock', availableStockRef.current.value);
@@ -150,6 +153,7 @@ const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
             <InputField
               title='Select Quantity'
               type='number'
+              step={0}
               reference={availableStockRef}
               placeholder="Available Stock"
               hint='Enter the amount of available stock you have in kg'
@@ -159,6 +163,7 @@ const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
             <InputField
               title='Minimum Order Quantity'
               type='number'
+              step={0}
               reference={minimumQuantityRef}
               placeholder="Minimum Order Quantity"
               hint='Enter the minimum quantity that customer can purchase'
@@ -168,6 +173,7 @@ const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
             <InputField
               title='Select Price'
               type='number'
+              step={0.01}
               reference={unitPriceRef}
               placeholder="Unit Price"
               hint='Price should be per 1kg'

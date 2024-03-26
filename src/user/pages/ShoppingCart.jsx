@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const ShoppingCart = () => {
   const[cartItems, setCartItems] = useState([]);
-  const BuyerId = 'example@gmail.com';
+  const BuyerId = 'rashmina@email.com';
   useEffect(() => {
     axios.get(`https://localhost:44376/api/ShoppingCart/items?customerId=${BuyerId}`)
     .then((response) => {

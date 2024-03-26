@@ -33,7 +33,7 @@ const ProductsCard = (props) => {
               <p className='flex items-center gap-2 text-sm'><FaWeight />{props.minimumQuantity}kg - {props.availableStock}kg</p>
             </div>
             <div className='flex justify-start mt-6'>
-              <h1 className='text-primary text-xl'>Rs.{props.unitPrice}</h1>
+              <h1 className='text-primary text-xl'>Rs.{props.unitPrice.toFixed(2)}</h1>
             </div>
           </div>
         

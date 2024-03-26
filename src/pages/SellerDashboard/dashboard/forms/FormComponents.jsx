@@ -50,14 +50,14 @@ export const Title = (prop) => {
   )
 }
 
-export const InputField = ({ title, type, reference, placeholder, hint }) => {
+export const InputField = ({ title, type, reference, placeholder, hint ,step}) => {
   return (
     <div>
       <div className=' flex'>
         <Title title={title} />
         <Hint title='Hint !' hint={hint} />
       </div>
-      <input type={type} aria-describedby="helper-text-explanation"
+      <input type={type}   step={step} aria-describedby="helper-text-explanation"
         className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent
          !border-t-blue-gray-200 bg-transparent px-3 py-3 font-sans text-sm font-normal
           text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border

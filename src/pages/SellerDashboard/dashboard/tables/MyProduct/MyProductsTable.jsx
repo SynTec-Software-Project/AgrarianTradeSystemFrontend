@@ -157,7 +157,7 @@ const MyProductsTable = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {p.unitPrice}
+                        {p.unitPrice.toFixed(2)}
                       </Typography>
                     </td>
 

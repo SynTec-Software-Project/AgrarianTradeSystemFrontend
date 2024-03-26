@@ -13,7 +13,7 @@ function DeliveryFee() {
   const [origin, setOrigin] = useState("Colombo, Sri Lanka");
   const [destination, setDestination] = useState("Kurunegala, Sri Lanka");
   const [distance, setDistance] = useState('');
-  const [deliveryFee, setDeliveryFee] = useState('');
+  const [deliveryFee, setDeliveryFee] = useState(0.00);
 
   const handleOpen = () => setOpen(!open);
 
@@ -43,9 +43,9 @@ function DeliveryFee() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Card className="mt-6 w-96">
+      <Card className="w-full">
         <CardBody>
-          <Typography variant="h5" color="blue-gray" className="mb-2">
+          <Typography variant="h5" color="blue-gray" className="mb-5">
             Delivery Location
           </Typography>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -66,7 +66,7 @@ function DeliveryFee() {
                 )}
               </div>
             </div>
-            <div style={{ cursor: 'pointer' }} onClick={handleOpen}>
+            <div className=' text-primary font-semibold' style={{ cursor: 'pointer' }} onClick={handleOpen}>
               Change
             </div>
           </div>

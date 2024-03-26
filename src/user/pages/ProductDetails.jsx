@@ -9,6 +9,8 @@ import {
 import ProductQuantity from '../components/ProductQuantity';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import DeliveryFee from '@/courier/components/DeliveryFee';
+import { set } from 'date-fns';
 function Icon() {
   return (
     <svg
@@ -25,11 +27,12 @@ function Icon() {
     </svg>
   );
 }
-const buyerID=1;
+const buyerID='rashmina@email.com';
 const ProductDetails = () => {
   const [product, setProduct] = useState([]);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [open, setOpen] = useState(false);
+  const[loading, setLoading] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -40,6 +43,7 @@ const ProductDetails = () => {
   }, []);
 
   const addToCart = (productId) => {
+    setLoading(true);
     var cart = {
       buyerId: buyerID,
       productId: productId,
@@ -48,6 +52,7 @@ const ProductDetails = () => {
     axios.post("https://localhost:44376/api/ShoppingCart/add-to-cart", cart)
       .then((respose) => {
         setOpen(true);
+        setLoading(false);
       })
   };
   const handleQuantityChange = (newQuantity) => {
@@ -71,8 +76,8 @@ const ProductDetails = () => {
       >
        Your item has been successfully added to the cart! <Link to="/cart" className="text-primary font-bold underline ml-2">View cart</Link>
       </Alert>
-      <div className=' grid grid-cols-4 px-12'>
-        <div className=' col-span-3 h-auto bg-white rounded-md'>
+      <div className=' grid grid-cols-4 px-8 gap-4'>
+        <div className=' col-span-3 h-auto bg-white rounded-md border-gray-100'>
         
           <div className=' grid grid-cols-3 px-8 '>
             {/* product image section */}
@@ -100,7 +105,7 @@ const ProductDetails = () => {
               </div>
               {/* product price */}
               <div>
-                <h1 className=' text-primary text-2xl font-semibold'>Rs.{product.unitPrice}</h1>
+                <h1 className=' text-primary text-2xl font-semibold'>Rs.{product.unitPrice.toFixed(2)}</h1>
               </div>
 
               {/* product quantity */}
@@ -117,12 +122,11 @@ const ProductDetails = () => {
 
                 <button className='bg-primary border-primary border rounded-full inline-flex items-center 
                                       justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
-                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'
+                                      disabled:bg-gray-300 disabled:border-gray-300 disabled:text-dark-500' disabled={loading}
 
                   onClick={() => {addToCart(id) }}
                 >
-
-                  Add to Cart
+                  {loading ? 'Adding to cart' : 'Add to Cart'}
                 </button>
               </div>
             </div>
@@ -131,7 +135,7 @@ const ProductDetails = () => {
         </div>
         {/* courier charges section */}
         <div>
-          courier charges
+          <DeliveryFee/>
         </div>
       </div>
     </div>

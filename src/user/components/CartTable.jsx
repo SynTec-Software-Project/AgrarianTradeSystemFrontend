@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 import { MdOutlineClose } from "react-icons/md";
 const TABLE_HEAD = ["Item", "Price", "Qty", "Sub Total", ""];   
-const BuyerId = 'example@gmail.com';// buyer id is harcoded
+const BuyerId = 'rashmina@email.com';// buyer id is harcoded
  
 export function CartTable({ cartItems ,handleDeleteItem}) {
   //const[cartItems, setCartItems] = useState([]);
@@ -93,7 +93,7 @@ export function CartTable({ cartItems ,handleDeleteItem}) {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.price.toLocaleString()+'.00'}
+                    {item.price.toFixed(2)}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -111,7 +111,7 @@ export function CartTable({ cartItems ,handleDeleteItem}) {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {(item.quantity * item.price).toLocaleString()+'.00'}
+                    {(item.quantity * item.price).toFixed(2)}
                   </Typography>
                 </td>
                 <td className={classes}>
