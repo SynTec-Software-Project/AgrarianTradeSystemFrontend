@@ -5,7 +5,6 @@ import Swal from 'sweetalert2'
 import { MdOutlineClose } from "react-icons/md";
 const TABLE_HEAD = ["Item", "Price", "Qty", "Sub Total", ""];   
 const BuyerId = 'rashmina@email.com';// buyer id is harcoded
- 
 export function CartTable({ cartItems ,handleDeleteItem}) {
   //const[cartItems, setCartItems] = useState([]);
   const  PopupHandler = (id) =>{
