@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { SpinnerColors } from '../components/Spinner.jsx';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
@@ -9,6 +10,7 @@ function Login(){
     const [visibility, setVisibility]=useState(false);
     const emailRef = useRef(null);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const passwordRef = useRef(null);
     const [logError, setLogError] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -20,18 +22,20 @@ function Login(){
             password: passwordRef.current.value
         };
         try{
+            setIsLoading(true);
             const response = await AuthService.login(data);
             console.log("Server response: ", response);
             sessionStorage.setItem('jwtToken', response.accessToken);
             setLogError(false);
-            // const token = sessionStorage.getItem('jwtToken');
-            // const decodedToken = jwtDecode(token);
-            // const user = decodedToken;
-            // const jobRole = decodedToken.role;
-            // console.log(jobRole);
-            // console.log(user);
+            const token = sessionStorage.getItem('jwtToken');
+            const decodedData = jwtDecode(token);
+            setIsLoading(false);
+            if(decodedData.role=="Courier"){
+                navigate('/couriers/new-orders');
+            }
         }
         catch (error){
+            setIsLoading(false);
             setLogError(true);
             setErrorMsg(error);
             console.error("Error: ", error);
@@ -40,6 +44,7 @@ function Login(){
     }
     return(
         <>
+            {isLoading && <SpinnerColors/>}
             <section className=" font-poppins">
                 <div className="max-w-6xl px-0 mx-auto lg:px-6">
                     <div className="flex flex-col items-center h-full md:flex-row">

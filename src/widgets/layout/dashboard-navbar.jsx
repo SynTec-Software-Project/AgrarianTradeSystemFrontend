@@ -1,4 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
+import logout from "@/user/auth/Logout.js";
 import {
   Navbar,
   Typography,
@@ -83,14 +84,14 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          <Link to="/auth/sign-in">
+          <div onClick={logout}>
             <Button
               variant="text"
-              color="blue-gray"
+              color="red"
               className="hidden items-center gap-1 px-4 xl:flex normal-case"
             >
-              <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign In
+              <UserCircleIcon className="h-5 w-5 text-red-500" />
+              Sign Out
             </Button>
             <IconButton
               variant="text"
@@ -99,7 +100,7 @@ export function DashboardNavbar() {
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
-          </Link>
+          </div>
           <Menu>
             <MenuHandler>
               <IconButton variant="text" color="blue-gray">

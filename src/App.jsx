@@ -8,8 +8,9 @@ import Login from "./user/auth/Login";
 import CreateAccount from "./user/auth/CreateAccount";
 import FarmerCreateAccount from "./user/auth/FarmerCreateAccount";
 import CourierCreateAccount from "./user/auth/CourierCreateAccount";
+import ProtectedRouteCourier from "./router/ProtectedRouteCourier";
+import ProtectedRouteFarmer from "./router/ProtectedRouteFarmer";
 import ForgotPassword from "./user/auth/ForgotPassword";
-import Auth2 from "./user/auth/Auth";
 import ProductDetails from "./user/pages/ProductDetails";
 import PageNotFound from "./user/pages/PageNotFound";
 import ShoppingCart from "./user/pages/ShoppingCart";
@@ -48,7 +49,7 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<PageNotFound/>} />
       <Route path="/buyers/*" element={<BuyerDashboard/>}/>
-      <Route path="/couriers/*" element={<CourierDashboard/>}/>
+      {/* <Route path="/couriers/*" element={<CourierDashboard/>}/> */}
       <Route path="/products" element={<ProductList/>}/>
       <Route path="/login" element={<Login/>}></Route>
       <Route path="/create" element={<CreateAccount/>}/>
@@ -57,6 +58,9 @@ function App() {
       <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
       <Route path='/product-details/:id' element={<ProductDetails/>}></Route>
       <Route path="/cart" element={<ShoppingCart/>}/>
+      <Route element={<ProtectedRouteCourier/>}>
+        <Route exact path="/couriers/*" element={<CourierDashboard/>}/>
+      </Route>
     </Routes>
 
 

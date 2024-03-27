@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { SpinnerColors } from '../components/Spinner.jsx';
 import { MdOutlineErrorOutline } from "react-icons/md";
 import AuthService from '@/services/apiService.js';
 import ResetPassword from '../components/ResetPasswordComponent.jsx';
@@ -9,25 +10,30 @@ export default function ForgotPassword() {
     const emailRef = useRef(null);
     const [error, setError] = useState(false);
     const [pwdResetState, setPwdResetState] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const handleReset = async (e) => {
         e.preventDefault();
 
         const email = { email: emailRef.current.value };
         try{
             setError(false);
+            setIsLoading(true);
             console.log(emailRef.current.value);
             const response = await AuthService.forgetPwd(email);
+            setIsLoading(false);
             console.log('Server Response:', response);
             setPwdResetState(true);
             
         }
         catch(error){
+            setIsLoading(false);
             setError(true);
             console.error('Error:', error);
         }
     }
     return (
         <>
+        {isLoading && <SpinnerColors/>}
         {!pwdResetState &&
             <section className=" font-poppins">
                 <div className="max-w-6xl px-0 mx-auto lg:px-6">
