@@ -12,8 +12,8 @@ const ReviewCard = (props) => {
         <p>{props.pDate}</p>
     </div>
     <div className=' flex w-full gap-4 items-center'>
-        <img src={props.img}
-        alt="" className=' w-[160px] h-[150px]'/>
+        <img src={"https://syntecblobstorage.blob.core.windows.net/products/" + props.img} alt={props.type}
+        className=' w-[160px] h-[150px]'/>
          
          <div className='w-full px-3'>
             <h1 className=' font-semibold text-gray-800 text-lg my-3'>{props.iType} - {props.stock}Kg</h1>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@material-tailwind/react";
 import { Rating } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
@@ -6,9 +6,21 @@ import { useNavigate } from 'react-router-dom';
 export function DefaultRating() {
   return <Rating value={4} />;
 }
-
 const History = () => {
   const navigate = useNavigate();
+  const [reviews, setReviews] = useState([]);
+  // useEffect(() => {
+  //   // Fetch reviews data from the API
+  //   axios.get('https://localhost:7144/api/Review')
+  //     .then(response => {
+  //       // Handle successful response
+  //       setReviews(response.data); // Assuming your API returns an array of reviews
+  //     })
+  //     .catch(error => {
+  //       // Handle error
+  //       console.error('Error fetching reviews:', error);
+  //     });
+  // }, []);
   return (
     <>
       <div className='bg-white px-8 py-5 rounded-lg my-2 pb-1'>
@@ -25,8 +37,6 @@ const History = () => {
             <p className='text-blue-gray-500'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem, libero optio voluptate accusantium temporibus quis aperiam soluta nihil est magnam omnis, 
               aliquam architecto necessitatibus quaerat delectus eveniet in totam quos.
             </p>
-
-            
           </div>
         </div>
         

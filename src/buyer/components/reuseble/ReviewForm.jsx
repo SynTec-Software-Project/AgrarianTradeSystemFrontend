@@ -57,8 +57,8 @@ export default function ReviewForm() {
             <p>Purchase date {product && product.dateCreated.split("T")[0]}</p>
           </div>
           <div className='flex w-full gap-4 items-end'>
-            <img src="https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220"
-              alt="" className='w-[160px] h-[120px]' />
+          
+            <img src={"https://syntecblobstorage.blob.core.windows.net/products/" + product.productImageUrl} alt={product.productTitle} className='w-[160px] h-[120px]' />
 
             <div className='w-full px-3'>
               <h1 className='font-semibold text-gray-800 text-lg my-3'>{product && product.productTitle} - {product && product.availableStock}Kg</h1>
