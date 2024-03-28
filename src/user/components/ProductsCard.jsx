@@ -29,7 +29,6 @@ const ProductsCard = (props) => {
               <h1 className='text-lg font-semibold text-gray-800'>{props.productTitle}</h1>
             </div>
             <div className='flex justify-between text-gray-800'>
-              <p className='flex items-center gap-2 text-sm'><FaLocationDot />Badulla</p>
               <p className='flex items-center gap-2 text-sm'><FaWeight />{props.minimumQuantity}kg - {props.availableStock}kg</p>
             </div>
             <div className='flex justify-start mt-6'>

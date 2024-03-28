@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const ProductForm = ({onSubmitData ,productData ,isUpdate}) => {
   const navigate = useNavigate();
   // seller id hardcoded
-  const SellerId = 'alicesmith@example.com';
+  const SellerId = 'sanath@mail.com';
   // get user inputs
   const productTitleRef = useRef(null);
   const productDescriptionRef = useRef(null);

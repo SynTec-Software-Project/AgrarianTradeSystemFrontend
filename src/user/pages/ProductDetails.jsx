@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DeliveryFee from '@/courier/components/DeliveryFee';
 import { set } from 'date-fns';
+import SellerDetails from '../components/SellerDetails';
 function Icon() {
   return (
     <svg
@@ -36,7 +37,7 @@ const ProductDetails = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    axios.get(`https://localhost:44376/api/Product/${id}`)
+    axios.get(`https://localhost:44376/api/Product/details/${id}`)
       .then(response => {
         setProduct(response.data);
       })
@@ -97,7 +98,7 @@ const ProductDetails = () => {
                     <p className=' text-sm text-gray-700'>Reviews (4)</p>
                   </div>
                 </div>
-                <p className=' flex items-center gap-3 font-semibold text-gray-600 text-lg'><span><FaLocationDot /></span>Badulla</p>
+                <p className=' flex items-center gap-3 font-semibold text-gray-600 text-lg'><span><FaLocationDot /></span>{product.farmerAddL3}</p>
               </div>
               {/* product description */}
               <div className=' my-3'>
@@ -135,7 +136,16 @@ const ProductDetails = () => {
         </div>
         {/* courier charges section */}
         <div>
-          <DeliveryFee/>
+          <DeliveryFee originData={product.farmerAddL3 + ', Sri Lanka'}/>
+          <SellerDetails
+           farmerFName={product.farmerFName}
+           farmerLName={product.farmerLName}
+           farmerAddL1={product.farmerAddL1}
+           farmerAddL2={product.farmerAddL2}
+           farmerAddL3={product.farmerAddL3}
+            farmerContact={product.farmerContact}
+            farmerProfileUrl={product.farmerProfileUrl}
+           />
         </div>
       </div>
     </div>

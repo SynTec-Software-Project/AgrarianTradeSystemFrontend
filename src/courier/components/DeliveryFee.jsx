@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -7,14 +7,18 @@ import {
 import ReactGoogleAutocomplete from 'react-google-autocomplete';
 import axios from 'axios';
 
-function DeliveryFee() {
+function DeliveryFee({ originData }) {
+ 
   const [inputValue, setInputValue] = useState('Set Location');
   const [open, setOpen] = useState(false);
   const [origin, setOrigin] = useState("Colombo, Sri Lanka");
   const [destination, setDestination] = useState("Kurunegala, Sri Lanka");
   const [distance, setDistance] = useState('');
   const [deliveryFee, setDeliveryFee] = useState(0.00);
-
+  useEffect(() => {
+    setOrigin(originData);
+    setDestination("Kurunegala, Sri Lanka");
+  }, [origin]);
   const handleOpen = () => setOpen(!open);
 
   const fetchDistance = async (destination) => {
@@ -43,12 +47,12 @@ function DeliveryFee() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Card className="w-full">
+      <Card className="w-full shadow-none">
         <CardBody>
           <Typography variant="h5" color="blue-gray" className="mb-5">
             Delivery Location
           </Typography>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div className=' flex flex-wrap justify-between'>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <i className="fas fa-location-dot" style={{ marginRight: '1em' }} />
               <div>
