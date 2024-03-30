@@ -1,2 +1,2 @@
-export * from "@/pages/SellerDashboard/auth/sign-in";
-export * from "@/pages/SellerDashboard/auth/sign-up";
+export * from "@/seller/SellerDashboard/auth/sign-in";
+export * from "@/seller/SellerDashboard/auth/sign-up";

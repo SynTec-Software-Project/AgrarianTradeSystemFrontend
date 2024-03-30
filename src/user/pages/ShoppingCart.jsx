@@ -22,8 +22,8 @@ const ShoppingCart = () => {
     <>
     <MainNav/>
     <div className='px-8 bg-secondary'>
-        <div className='grid grid-cols-3'>
-            <div className='col-span-2 mx-8 mt-4'>
+        <div className='md:grid grid-cols-3'>
+            <div className='md:col-span-2 mx-8 mt-4'>
                <CartTable cartItems={cartItems} handleDeleteItem={handleDeleteItem}/>
             </div> 
             <div className='mx-3 mt-5'>
