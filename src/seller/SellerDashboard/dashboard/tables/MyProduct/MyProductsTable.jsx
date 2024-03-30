@@ -8,7 +8,6 @@ import moment from 'moment';
 import Swal from 'sweetalert2'
 import { Card, CardHeader,Typography,Button,CardBody,CardFooter,Avatar,IconButton,Tooltip,} from "@material-tailwind/react";
 const TABLE_HEAD = ["Product", "Product Number", "Date Created", "Unit Price", "Stock", "Minimum Order", "", ""];
-
 const MyProductsTable = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -37,7 +36,6 @@ const MyProductsTable = () => {
       }
     });
   }
-  
   function deleteConfirmHandler(productId){
     axios.delete(`https://localhost:44376/api/Product/${productId}`)
     .then((response)=>{         
