@@ -61,6 +61,24 @@ const AuthService = {
     catch(error){
       throw error.response.data;
     }
+  },
+  verifyEmail: async(data) => {
+    try{
+      const response = await axios.post(`${BASE_URL}/Auth/verify`, data);
+      return response.data;
+    }
+    catch(error){
+      throw error.response.data;
+    }
+  },
+  verifyLink: async(data) => {
+    try{
+      const response = await axios.post(`${BASE_URL}/Auth/getVerifyLink`, data)
+      return response.data;
+    }
+    catch(error){
+      throw error.response.data;
+    }
   }
 };
 

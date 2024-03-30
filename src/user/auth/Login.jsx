@@ -5,15 +5,18 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import AuthService from '../../services/apiService.js';
 import { jwtDecode } from 'jwt-decode';
+import ConfirmEmailAlert from '@/user/components/ConfirmEmailAlert';
 
 function Login(){
     const [visibility, setVisibility]=useState(false);
     const emailRef = useRef(null);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const [verifyMsg, setVerifyMsg] = useState(false);
+    const [isSentLinkDisable, setIsSentLinkDisable] = useState(false);
     const passwordRef = useRef(null);
     const [logError, setLogError] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState("Email or password is incorrect");
     
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -23,6 +26,7 @@ function Login(){
         };
         try{
             setIsLoading(true);
+            setVerifyMsg(false);
             const response = await AuthService.login(data);
             console.log("Server response: ", response);
             sessionStorage.setItem('jwtToken', response.accessToken);
@@ -36,11 +40,45 @@ function Login(){
         }
         catch (error){
             setIsLoading(false);
+            if(error=="Not verified"){
+                setErrorMsg("Your email is not verified. Click the verification link sent to your email to veirfy. ");
+                setVerifyMsg(true);
+            }
+            if(error=="Not approved"){
+                setErrorMsg("Your account has not yet been approved. Thank you for your patience.");
+            }
+            if(error=="Email or password is incorrect"){
+                setErrorMsg("Email or password is incorrect");
+            }
             setLogError(true);
-            setErrorMsg(error);
+            //setErrorMsg(error);
             console.error("Error: ", error);
         }
         
+    }
+
+    const sendEmailLink = async(e) => {
+        e.preventDefault();
+        setIsSentLinkDisable(true);
+        setTimeout(() => {
+            setIsSentLinkDisable(false);
+        }, 60000);
+        const data ={
+            Email:emailRef.current.value
+        }
+        
+        try{
+            setIsLoading(true);
+            const response = await AuthService.verifyLink(data);
+            console.log(response);
+            setIsLoading(false);
+            ConfirmEmailAlert({message:"Verification email has sent your email. Please check the inbox" , iconType:"success"});
+        }
+        catch(error){
+            setIsLoading(false);
+            setIsSentLinkDisable(false);
+            console.error("Error: ", error);
+        }
     }
     return(
         <>
@@ -76,6 +114,10 @@ function Login(){
                                         <div className="mt-4 flex text-base font-semibold text-red-400 dark:text-gray-400">
                                             <MdOutlineErrorOutline size={20}/> &nbsp; {errorMsg}
                                         </div>
+                                    }
+                                    {verifyMsg && 
+                                        <input type='submit' className="mt-4 ml-3 underline flex text-base font-semibold text-red-400 dark:text-gray-400 hover:cursor-pointer disabled:cursor-not-allowed disabled:text-red-200" disabled={isSentLinkDisable} onClick={sendEmailLink}
+                                            value="Didn't get the mail? Click here to get the email."/>
                                     }
                                     <div className="mt-4 text-right">
                                         <Link className='text-sm font-semibold text-primary hover:underline' to={"/forgotpassword"}>forgot

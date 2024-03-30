@@ -14,6 +14,7 @@ import ForgotPassword from "./user/auth/ForgotPassword";
 import ProductDetails from "./user/pages/ProductDetails";
 import PageNotFound from "./user/pages/PageNotFound";
 import ShoppingCart from "./user/pages/ShoppingCart";
+import EmailVerify from "./user/auth/EmailVerify";
 
 function App() {
   
@@ -58,6 +59,7 @@ function App() {
       <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
       <Route path='/product-details/:id' element={<ProductDetails/>}></Route>
       <Route path="/cart" element={<ShoppingCart/>}/>
+      <Route path="/verify-email" element={<EmailVerify/>} />
       <Route element={<ProtectedRouteCourier/>}>
         <Route exact path="/couriers/*" element={<CourierDashboard/>}/>
       </Route>
