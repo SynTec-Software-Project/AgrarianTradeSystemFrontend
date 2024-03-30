@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Radio, Typography} from "@material-tailwind/react";
-import { Title } from '@/pages/SellerDashboard/dashboard/forms/FormComponents';
+import { Title } from '@/seller/SellerDashboard/dashboard/forms/FormComponents';
 import { fruits, productTypes, vegetables } from '@/data/product-type-data';
 
 const Filterbar = ({ items, applyFilters }) => {
