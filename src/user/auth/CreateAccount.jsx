@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import FormLabel from '../components/FormLabel';
+import { SpinnerColors } from '../components/Spinner.jsx';
 import AuthService from '../../services/apiService.js';
 import ConfirmAlert from '@/user/components/ConfirmAlert.jsx';
 import ErrorAlert from '@/user/components/ErrorAlert.jsx';
@@ -14,7 +15,7 @@ export default function CreateAccount() {
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
   const [NIC, setNIC] = useState("");
   const [isnicValid, setIsnicValid] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [profileImg, setprofileImg]=useState(null);
   const fnameRef=useRef(null);
@@ -93,49 +94,31 @@ export default function CreateAccount() {
         NICNumber: nicRef.current.value,
         AddressLine1: add1Ref.current.value,
         AddressLine2: add2Ref.current.value,
-        AddressLine3: add3Ref.current.value
+        AddressLine3: add3Ref.current.value,
+        profilepic: profileImg
     }
-    var emailData = {
-        To: emailRef.current.value,
-        Subject: "Agrarian Trading System User Registration",
-        Body: "<h1>Thank you for registering to Agrarian Trading System</h1>"
-    }
-    setLoading(true);
     console.log(formData);
+
     try {
-        const registerResponse = await AuthService.userRegister(formData)
+        setIsLoading(true);
+        const registerResponse = await AuthService.userRegister(formData);
+        setIsLoading(false);
         await ConfirmAlert({message:"User account has been created"});
         window.location.reload();
         console.log('Server Response:', registerResponse);
-        const emailResponse = AuthService.sendEmail(emailData);
-        console.log('Email Response:', emailResponse);
         
     } catch (error) {
+        setIsLoading(false);
         console.error('Error:', error);
         if (error === "Email exist") {
             ErrorAlert({ message: "Error: Email already exists and you cannot register with an existing email address" });
         }
     }
-    setLoading(false);
-    // try {
-    //     const response = await axios.post('https://localhost:7144/Auth/register', formData);
-    //     console.log('Server Response:', response.data);
-    //     if (response.status === 200) {
-    //         const emailResponse = await axios.post('https://localhost:7144/api/Email', emaildata);
-    //         console.log('Email Response:', emailResponse.data);
-    //     }
-    // } catch (error) {
-    //     console.error('Error:', error.response.data);
-    //     if(error.response.data === "Email exist"){
-    //         alert('Error: Email already exists and you can not register from existing email address');
-    //     }
-    // }
-
   };
 
   return (
-    <div>
-        {/* <div class="border-gray-300 h-20 w-20 animate-spin rounded-full border-8 border-t-blue-600" /> */}
+    <>
+        {isLoading && <SpinnerColors/>}
       <form className="py-16 bg-gray-100 dark:bg-gray-800" onSubmit={handleSubmit}>
         <div className="max-w-6xl px-4 mx-auto">
             <div className="p-6 bg-white border border-gray-100 rounded-lg shadow dark:bg-gray-900 dark:border-gray-900">
@@ -352,14 +335,14 @@ export default function CreateAccount() {
                         </input>
                     </div>
                     <div className="w-full md:w-auto p-1.5">
-                        <input type='submit' value={loading==false?"Sign In":"Signing..."}
-                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl disabled:cursor-not-allowed" disabled={loading}>
+                        <input type='submit' value={isLoading==false?"Sign In":"Signing..."}
+                            className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl disabled:cursor-not-allowed" disabled={isLoading}>
                         </input>
                     </div>
                 </div>
             </div>
         </div>
       </form>
-    </div>
+    </>
   )
 }

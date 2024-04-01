@@ -5,7 +5,11 @@ const BASE_URL = 'https://localhost:7144';
 const AuthService = {
   userRegister: async (formData) => {
     try {
-      const response = await axios.post(`${BASE_URL}/Auth/UserRegister`, formData);
+      const response = await axios.post(`${BASE_URL}/Auth/UserRegister`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return response.data;
     } catch (error) {
       throw error.response.data;
@@ -13,7 +17,11 @@ const AuthService = {
   },
   farmerRegister: async (formData) => {
     try {
-      const response = await axios.post(`${BASE_URL}/Auth/FarmerRegister`, formData);
+      const response = await axios.post(`${BASE_URL}/Auth/FarmerRegister`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return response.data;
     } catch (error) {
       throw error.response.data;
@@ -21,7 +29,11 @@ const AuthService = {
   },
   courierRegister: async (formData) => {
     try {
-      const response = await axios.post(`${BASE_URL}/Auth/CourierRegister`, formData);
+      const response = await axios.post(`${BASE_URL}/Auth/CourierRegister`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return response.data;
     } catch (error) {
       throw error.response.data;

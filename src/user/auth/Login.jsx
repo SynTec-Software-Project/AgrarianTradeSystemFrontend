@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { SpinnerColors } from '../components/Spinner.jsx';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import AuthService from '../../services/apiService.js';
@@ -51,7 +51,6 @@ function Login(){
                 setErrorMsg("Email or password is incorrect");
             }
             setLogError(true);
-            //setErrorMsg(error);
             console.error("Error: ", error);
         }
         

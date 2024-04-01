@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { SpinnerColors } from '../components/Spinner.jsx';
 import ConfirmEmailAlert from '@/user/components/ConfirmEmailAlert';
 import AuthService from '@/services/apiService';
 import verifyemailIMG from '/img/Verify-email.png'
 
 export default function EmailVerify() {
-    const [isVerifyed, setIsVerifyed] = useState(false);
-    const [isAlreadVerified, setIsAlreadyVerified] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -25,7 +23,6 @@ export default function EmailVerify() {
             ConfirmEmailAlert({ message: "Your email is successfully verified!" , iconType:"success"});
         }
         catch(error){
-            setIsVerifyed(false);
             setIsLoading(false);
             if (error === "Already verified") {
                 ConfirmEmailAlert({message:"Your email has already verified." , iconType:"info"})
