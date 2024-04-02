@@ -1,17 +1,17 @@
 "use client";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import React from 'react';
 import sellerTableData from '../../../../data/seller-table-data';
 import { Select, Option } from "@material-tailwind/react";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function NewOrdersTab() {
-  
+  const [newOrders,setnewOrders]=useState([])
   const [data, setData] = useState(sellerTableData);
   const [tab, setTab] = useState('');
   const navigate = useNavigate();
-
+  const sellerID ='alicesmith@example.com'
   const filterResult = (filterValue) => {
     let result;
 
@@ -31,11 +31,29 @@ export default function NewOrdersTab() {
     setTab(newTab);
   }
 
-  const handleRowClick = (values) => {
+  const handleRowClick = (id) => {
     // Handle row click, e.g., select-couriernavigate to details page
-    navigate('/dashboard/select-courier')
+    console.log(id)
+    navigate('/dashboard/select-courier/'+ id)
     
   }
+
+  useEffect(() => {
+    axios.get(`https://localhost:7144/api/Order/farmer/${sellerID}`)
+        .then((response) => {
+
+          
+            setnewOrders(response.data);
+            setData(response.data);
+           
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.error('Error fetching appointments:', error);
+        });
+  
+
+}, []); 
  
   return (
     <div>
@@ -81,11 +99,11 @@ export default function NewOrdersTab() {
                       Order Placed
                     </p>
                   </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
+                  {/* <th class="p-4  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                       Unit Price
                     </p>
-                  </th>
+                  </th> */}
                   <th class="p-4  pt-8 pb-6 font-bold">
                     <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
                     Quantity (Kg)
@@ -110,42 +128,43 @@ export default function NewOrdersTab() {
               <tbody >
                 {data.map((values)=>{
         
-                  const {orderReference,product,orderPlaced,unitPrice,quantity,photoName,price,Delivery}=values;    //destructuring
+                  const {orderID,productTitle,orderedDate,unitPrice,totalQuantity,productImageUrl,totalPrice,Delivery}=values;    //destructuring
                   return(
-                    <>
-                    <tr key={orderReference} onClick={() => handleRowClick(values)}>
+                    <> 
+                    <tr key={orderID}>
+                    <Link to={`/dashboard/select-courier/${orderID}`} >
                       <div class='flex  flex-row justify-between mr-8 border-b border-blue-gray-50'>
                       <td class="p-3 w-24 ">
                           <div class="flex space-x-5  ">
-                        <img src={photoName} alt={product} />
+                          <img src={'https://syntecblobstorage.blob.core.windows.net/products/' + productImageUrl} alt={productTitle} style={{borderRadius:"100%", height:"40px" ,width:"40px", marginRight:"8px"}}/>
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {product}
+                          {productTitle}
                         </p>
                         </div>
                       </td>
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {orderReference}
+                          {orderID}
                         </p>
                       </td>
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                            {orderPlaced}
+                            {orderedDate}
                         </p>
                       </td>
-                      <td class="p-3 ">
+                      {/* <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                         {unitPrice} 
                         </p>
-                      </td>
+                      </td> */}
                       <td class="p-3">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {quantity}
+                          {totalQuantity}
                         </p>
                       </td> 
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {price}
+                          {totalPrice}
                         </p>
                       </td> 
                       <td class="p-3 ">
@@ -153,9 +172,10 @@ export default function NewOrdersTab() {
                           {Delivery}
                         </p>
                       </td>
-                      </div>       
+                      </div> 
+                      </Link>      
                     </tr>
-                    
+                   
                     </>
                   )
                 })}
@@ -168,22 +188,22 @@ export default function NewOrdersTab() {
 
           <div class="sm:hidden">
           {data.map((values)=>{
-            const {orderReference,product,orderPlaced,quantity,courierId,photoName,price,status}=values;    //destructuring
+            const {orderID,productTitle,orderedDate,totalQuantity,courierId,totalPrice,status,productImageUrl}=values;    //destructuring
             return(
               <>
               <div className='bg-primary p-4  rounded-lg shadow mt-8 text-white '>
             
-                  <img src={photoName} alt={product} className='w-24 h-14 pl-8' />
+              <img src={'https://syntecblobstorage.blob.core.windows.net/products/' + productImageUrl} alt={productTitle} style={{borderRadius:"100%", height:"40px" ,width:"40px", marginRight:"8px"}}/>
 
                   <div className='grid grid-cols-2 gap-7 mt-2'>
                     <div className='pl-5 '>
-                    <div className='text-base  font-medium'>{product} - {quantity}Kg</div>
-                    <div className='text-sm text-custom_gray'>Rs.{price}</div>
-                    <div className='text-sm text-gray-300'>{orderPlaced}</div>
+                    <div className='text-base  font-medium'>{productTitle} - {totalQuantity}Kg</div>
+                    <div className='text-sm text-custom_gray'>Rs.{totalPrice}</div>
+                    <div className='text-sm text-gray-300'>{orderedDate}</div>
                     </div >
                     <div className='text-primary bg-gray-200 p-3 rounded w-32 '>
-                    <div className='text-sm '>courier Id: {courierId}</div>             
-                    <div className='text-md'> {orderReference}</div>
+                    {/* <div className='text-sm '>courier Id: {courierId}</div>              */}
+                    <div className='text-md'> {orderID}</div>
                     </div>
                   
                   </div>

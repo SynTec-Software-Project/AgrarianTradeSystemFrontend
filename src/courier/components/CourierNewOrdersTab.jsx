@@ -1,43 +1,40 @@
-"use client";
-import { useState,useEffect } from 'react';
+//"use client";
 import React from 'react';
-//import sellerTableData from '../../data/seller-table-data';
-import { Select, Option } from "@material-tailwind/react";
-import { useNavigate } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+import { Select, Option } from "@material-tailwind/react"; //dropdown select component
+import { Link, useNavigate } from 'react-router-dom'; //The useNavigate hook in React Router v6 is used to programmatically navigate to different routes.
 import axios from 'axios';
 
 
 export default function CourierNewOrdersTab() {
+
+  const courierID= 'lasith.malinga@example.com';
   const [newOrders,setnewOrders]=useState([])
   const [data, setData] = useState([]);
-
-  //const [data, setData] = useState(sellerTableData);
   const [tab, setTab] = useState('');
   const navigate = useNavigate();
 
-  const filterResult = (filterValue) => {
-    let result;
+  // const filterResult = (filterValue) => {
+  //   let result;
 
-    if (filterValue === 'all') {
-      // Show all results when "All" is selected
-      result = newOrders;
-    } else {
-      // Filter based on 'n' or 'y' for New Orders or Cancelled
-      result = newOrders.filter((curData) => curData.isCancelled === filterValue);
-    }
-    setData(result);
-  };
+  //   if (filterValue === 'all') {
+  //     // Show all results when "All" is selected
+  //     result = newOrders;
+  //   } else {
+  //     // Filter based on 'n' or 'y' for New Orders or Cancelled
+  //     result = newOrders.filter((curData) => curData.isCancelled === filterValue);
+  //   }
+  //   setData(result);
+  // };
 
   useEffect(() => {
-    axios.get("https://localhost:7294/api/CourierNewO")
+    axios.get(`https://localhost:7144/api/Order/courier/${courierID}`)
         .then((response) => {
 
-          console.log("HEllo")
-          
             setnewOrders(response.data);
             setData(response.data);
            
-            console.log(response.data);
+            //console.log(response.data);
         })
         .catch((error) => {
             console.error('Error fetching appointments:', error);
@@ -58,7 +55,7 @@ export default function CourierNewOrdersTab() {
   return (
     <div>
 
-<div className="float-right w-72 mb-3">
+   {/* <div className="float-right w-72 mb-3">
       <Select label="Order Details">
         <Option onClick={()=>{
                   filterResult('all');
@@ -76,7 +73,7 @@ export default function CourierNewOrdersTab() {
                 }}
                 >Cancelled</Option>
       </Select>
-    </div>
+    </div> */}
 
         <div>
           <div class="relative flex flex-col w-full h-full  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block ">
@@ -86,36 +83,30 @@ export default function CourierNewOrdersTab() {
                   <div class="flex flex-row justify-between border-b border-primary mr-6">
                     
                     <th class="p-4  ml-8  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Product
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Order reference 
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Order Placed
-                    </p>
-                  </th>
-                  
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                    Quantity (Kg)
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Total
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Delivery Fee
-                    </p>
-                  </th>
+                      <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                        Product
+                      </p>
+                    </th>
+                    <th class="p-4  pt-8 pb-6 font-bold">
+                      <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                        Order reference 
+                      </p>
+                    </th>
+                    <th class="p-4  pt-8 pb-6 font-bold">
+                      <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                        Order Placed
+                      </p>
+                    </th>
+                    <th class="p-4  pt-8 pb-6 font-bold">
+                      <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                        Quantity (Kg)
+                      </p>
+                    </th>
+                    <th class="p-4  pt-8 pb-6 font-bold">
+                      <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
+                        Delivery Fee
+                      </p>
+                    </th>
                   </div>
                 </tr>
               </thead>
@@ -125,50 +116,40 @@ export default function CourierNewOrdersTab() {
               <tbody >
                 {data ? data.map((values)=>{
         
-                  const {orderReference,name,date,unitPrice,quantity,image,total,deliveryFee}=values;    //destructuring
+                  const {orderID, productTitle,orderedDate,productImageUrl,totalQuantity,deliveryFee }=values;    //destructuring
                   return(
                     <>
-                    <tr key={orderReference} onClick={() => handleRowClick(values)}>
+                    <tr key={orderID}>
+                    <Link to={`/couriers/new-orders/${orderID}`} >
                       <div class='flex  flex-row justify-between mr-8 border-b border-blue-gray-50'>
                       <td class="p-3 w-12 flex items-center">
-                        <img src={image} alt={name} style={{borderRadius:"50%", height:"30px" ,width:"30px", marginRight:"8px"}}/>
+                        <img src={'https://syntecblobstorage.blob.core.windows.net/products/' + productImageUrl} alt={productTitle} style={{borderRadius:"100%", height:"40px" ,width:"40px", marginRight:"8px"}}/>
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {name}
-                        </p>
-                      {/* <div class="flex space-x-5  ">
-                        </div> */}
-                      </td>
-                      {/* <td class="p-3 w-24 ">
-                          <div class="flex space-x-5  ">
-                       
-                        </div>
-                      </td> */}
-                      <td class="p-3 ">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {orderReference}
+                          {productTitle}
                         </p>
                       </td>
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                            {date}
+                          {orderID}
+                        </p>
+                      </td>
+                      <td class="p-3 ">
+                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                            {orderedDate}
                         </p>
                       </td>
                       <td class="p-3">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {quantity}
+                          {totalQuantity}
                         </p>
-                      </td> 
-                      <td class="p-3 ">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {total}
-                        </p>
-                      </td> 
+                      </td>  
                       <td class="p-3 ">
                         <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                           {deliveryFee}
                         </p>
                       </td>
-                      </div>       
+                      </div>   
+                      </Link>    
                     </tr>
                     
                     </>
