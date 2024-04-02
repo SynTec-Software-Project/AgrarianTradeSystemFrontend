@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { MdPhotoCamera } from 'react-icons/md';
 
 
-const FileSelect = () => {
-    const [selectedFiles, setSelectedFiles] = useState([]);
+const FileSelect = ({selectedFiles, setSelectedFiles}) => {
 
   const handleFileChange = (event) => {
     const files = event.target.files;

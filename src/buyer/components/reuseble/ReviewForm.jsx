@@ -7,16 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export default function ReviewForm() {
-  const { id } = useParams();
+  const { id, orderId } = useParams();
   const navigate = useNavigate();
-
-  const client = axios.create({
-    baseURL: "https://localhost:7144/api/Product/" + id
-  });
-
-  const addClient = axios.create({
-    baseURL: "https://localhost:7144/api/Review"
-  })
 
   const DefaultRating = () => {
     return <Rating value={4} />;
@@ -25,26 +17,43 @@ export default function ReviewForm() {
   const [product, setProduct] = useState();
 
   const [reviewData, setReviewData] = useState({
-    SellerRating: "",
-    DeliverRating: "",
-    ProductRating: "",
+    SellerRating: 4,
+    DeliverRating: 4,
+    ProductRating: 4,
     Comment: "",
     ReviewImageUrl: "",
   })
 
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
   useEffect(() => {
+    const client = axios.create({
+      baseURL: "https://localhost:7144/api/Product/" + id
+    });
+
     client.get().then((response) => {
       console.log(response);
       setProduct(response.data)
     })
   }, [])
 
-  const handleAddReview = async () => {
-    addClient.post('', reviewData).then((res) => {
+  const addFormData = () => {
+    const formData = new FormData();
+    formData.append("OrderID", orderId)
+  }
+
+  const handleAddReview = async (formData) => {
+    const addClient = axios.create({
+      baseURL: "https://localhost:7144/api/Review/add-review"
+    })
+
+
+    console.log(reviewData);
+    addClient.post('', { ...reviewData, ReviewImageUrl: binary }).then((res) => {
       if (res.status === 200) {
         console.log("Success!", res);
         navigate('/buyers/my-reviews')
-      } 
+      }
     })
   }
 
@@ -57,7 +66,7 @@ export default function ReviewForm() {
             <p>Purchase date {product && product.dateCreated.split("T")[0]}</p>
           </div>
           <div className='flex w-full gap-4 items-end'>
-          
+
             <img src={"https://syntecblobstorage.blob.core.windows.net/products/" + product.productImageUrl} alt={product.productTitle} className='w-[160px] h-[120px]' />
 
             <div className='w-full px-3'>
@@ -96,7 +105,7 @@ export default function ReviewForm() {
       </div>
       <div className='bg-white rounded-lg my-2 py-5 '>
         <h1 className='px-8'>Add Photos</h1>
-        <FileSelect />
+        <FileSelect selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
       </div>
 
       <div className='bg-[#ffff] rounded-lg'>
@@ -110,7 +119,7 @@ export default function ReviewForm() {
         </div>
         <div className='text-center ' >
           <input type='text' placeholder='How’s the Quality of the product?' className='w-[600px] h-12 bg-[#F7FFF1] rounded-lg text-center' onChange={(e) => {
-            setReviewData((prev) => ({...prev, Comment: e.target.value}))
+            setReviewData((prev) => ({ ...prev, Comment: e.target.value }))
           }}></input>
         </div>
         <div className='pt-5'>

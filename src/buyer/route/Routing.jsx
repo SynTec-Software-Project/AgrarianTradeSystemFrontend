@@ -24,7 +24,7 @@ const Routing = () => {
        
         <Route path='/my-returns' element={<MyReturns />} />
         <Route path='/profile' element={<Profile />} />
-        <Route path='/review/:id' element={<ReviewForm />} />
+        <Route path='/review/:id/:orderId' element={<ReviewForm />} />
         {/* <Route path='/edit' element={<HistoryForm/>} /> */}
         <Route path='/return' element={<ReturnForm/>} />
       </Routes>
