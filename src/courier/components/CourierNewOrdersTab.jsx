@@ -55,7 +55,11 @@ export default function CourierNewOrdersTab() {
   return (
     <div>
 
+<<<<<<< Updated upstream
    {/* <div className="float-right w-72 mb-3">
+=======
+   <div className="float-right w-72 mb-3">
+>>>>>>> Stashed changes
       <Select label="Order Details">
         <Option onClick={()=>{
                   filterResult('all');

@@ -50,7 +50,11 @@ export default function NewOrdersTab() {
         })
         .catch((error) => {
             console.error('Error fetching appointments:', error);
+<<<<<<< Updated upstream
         });
+=======
+        },[]);
+>>>>>>> Stashed changes
   
 
 }, []); 
