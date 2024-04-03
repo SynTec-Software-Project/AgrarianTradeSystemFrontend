@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 
-const USER_ID = "rashmina@email.com";
+const USER_ID = "michael.williams@example.com";
 
 export default function BuyerTabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
@@ -24,13 +24,9 @@ export default function BuyerTabAndTables({ defaultTab }) {
 
   const getAllBuyerOrders = async () => {
     try {
-      // Make an HTTP GET request to fetch courier orders for the user with USER_ID
       const response = await axios.get(
         `https://localhost:7144/api/Order/buyer/${USER_ID}`
       );
-      console.log("Buyer Orders Response:", response.data); // Log the response data to check
-
-      // Update the state with the retrieved courier orders
       setData(response.data);
       setFilteredData(response.data);
     } catch (error) {
@@ -39,14 +35,20 @@ export default function BuyerTabAndTables({ defaultTab }) {
   };
 
   const filterResult = (statusItem) => {
+    let result = [];
     if (statusItem === "All") {
-      setFilteredData(data);
+      result = data.filter(
+        (item) =>
+          item.orderStatus.toLowerCase() === "ready to pickup" ||
+          item.orderStatus.toLowerCase() === "picked up" ||
+          item.orderStatus.toLowerCase() === "delivered"
+      );
     } else {
-      const result = data.filter(
+      result = data.filter(
         (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
       );
-      setFilteredData(result);
     }
+    setFilteredData(result);
     setTab(statusItem);
   };
 
@@ -74,10 +76,10 @@ export default function BuyerTabAndTables({ defaultTab }) {
 
           <button
             onClick={() => {
-              filterResult("new");
+              filterResult("ready to pickup");
             }}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out  ${
-              tab === "new"
+              tab === "ready to pickup"
                 ? "text-primary border-b-2 border-primary "
                 : "text-custom_gray "
             }`}
@@ -87,10 +89,10 @@ export default function BuyerTabAndTables({ defaultTab }) {
 
           <button
             onClick={() => {
-              filterResult("Picked up");
+              filterResult("picked up");
             }}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
-              tab === "Picked up"
+              tab === "picked up"
                 ? "text-primary border-b-2 border-primary "
                 : "text-custom_gray"
             }`}
@@ -100,10 +102,10 @@ export default function BuyerTabAndTables({ defaultTab }) {
 
           <button
             onClick={() => {
-              filterResult("Delivered");
+              filterResult("delivered");
             }}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
-              tab === "Delivered"
+              tab === "delivered"
                 ? "text-primary border-b-2 border-primary "
                 : "text-custom_gray "
             }`}
@@ -211,17 +213,18 @@ export default function BuyerTabAndTables({ defaultTab }) {
                           </td>
 
                           <td className="p-3 col-span-1  ">
-                            {orderStatus === "new" && (
+                            {orderStatus.toLowerCase() ===
+                              "ready to pickup" && (
                               <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 Ready to Pickup
                               </p>
                             )}
-                            {orderStatus === "Picked up" && (
+                            {orderStatus.toLowerCase() === "picked up" && (
                               <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 Picked up
                               </p>
                             )}
-                            {orderStatus === "Delivered" && (
+                            {orderStatus.toLowerCase() === "delivered" && (
                               <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 Delivered
                               </p>

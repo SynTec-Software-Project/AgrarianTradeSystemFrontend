@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 
-const USER_ID = "lasith.malinga@example.com";
+const USER_ID = "dimuth.karu@example.com	";
 
 export default function TabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
@@ -39,14 +39,20 @@ export default function TabAndTables({ defaultTab }) {
   };
 
   const filterResult = (statusItem) => {
+    let result = [];
     if (statusItem === "All") {
-      setFilteredData(data);
+      result = data.filter(
+        (item) =>
+          item.orderStatus.toLowerCase() === "ready to pickup" ||
+          item.orderStatus.toLowerCase() === "picked up" ||
+          item.orderStatus.toLowerCase() === "delivered"
+      );
     } else {
-      const result = data.filter(
+      result = data.filter(
         (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
       );
-      setFilteredData(result);
     }
+    setFilteredData(result);
     setTab(statusItem);
   };
 
@@ -74,10 +80,10 @@ export default function TabAndTables({ defaultTab }) {
 
           <button
             onClick={() => {
-              filterResult("new");
+              filterResult("Ready to pickup");
             }}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out  ${
-              tab === "new"
+              tab === "Ready to pickup"
                 ? "text-primary border-b-2 border-primary "
                 : "text-custom_gray "
             }`}
@@ -179,7 +185,6 @@ export default function TabAndTables({ defaultTab }) {
                       <Link
                         to={{
                           pathname: `/couriers/my-orders/${orderID}`,
-                          state: { status },
                         }}
                       >
                         <div class=" pl-4 pr-4 grid grid-cols-7 gap-x-6 gap-4 border-b border-blue-gray-50">
@@ -225,17 +230,18 @@ export default function TabAndTables({ defaultTab }) {
                             </p>
                           </td>
                           <td className="p-3 col-span-1  ">
-                            {orderStatus === "new" && (
+                            {orderStatus.toLowerCase() ===
+                              "ready to pickup" && (
                               <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 Ready to Pickup
                               </p>
                             )}
-                            {orderStatus === "Picked up" && (
+                            {orderStatus.toLowerCase() === "picked up" && (
                               <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 Picked up
                               </p>
                             )}
-                            {orderStatus === "Delivered" && (
+                            {orderStatus.toLowerCase() === "delivered" && (
                               <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 Delivered
                               </p>
@@ -298,7 +304,7 @@ export default function TabAndTables({ defaultTab }) {
                             </div>
                           </div>
                           <div>
-                            {orderStatus === "new" && (
+                            {orderStatus === "Ready to pickup" && (
                               <p class=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 Ready to Pickup
                               </p>
