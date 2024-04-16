@@ -156,7 +156,7 @@ export function SideBar() {
                 </Typography>
               </li>
             <li>
-               <NavLink to='profile'>
+               <NavLink to='edit'>
                {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
