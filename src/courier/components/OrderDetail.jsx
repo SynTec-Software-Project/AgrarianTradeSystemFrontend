@@ -23,18 +23,17 @@ const OrderDetail = () => {
   };
   const {id}=useParams();
   const [data, setData] = useState([]);
+
   useEffect(() => {
     axios.get(`https://localhost:7144/api/Order/courier/details/${id}`)
-        .then((response) => {
-            setData(response.data[0]);
-            console.log(response.data[0])
-        })
-        .catch((error) => {
-            console.error('Error fetching appointments:', error);
-        });
-  
-  
-  }, []);
+      .then((response) => {
+        setData(response.data[0]);
+        console.log(response.data[0])
+      })
+      .catch((error) => {
+        console.error('Error fetching appointments:', error);
+      });
+  }, [id]);
   return (
     <>
     <div className="flex justify-center ">

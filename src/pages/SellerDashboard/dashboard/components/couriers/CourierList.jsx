@@ -1,26 +1,14 @@
 import React, { useEffect, useState } from "react";
-import curierlistdata from '../../../../../data/couriers-list-data';
-import { Button } from "@material-tailwind/react";
 import Swal from "sweetalert2";
 import axios from "axios";
-
-import {
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Avatar,
-  Card,
-  Typography,
-} from "@material-tailwind/react";
-
+import { Button, List, ListItem, ListItemPrefix, ListItemSuffix, Avatar, Card, Typography } from "@material-tailwind/react";
 
 export function CourierList({ search ,orderId }) {
   const [data, setData] = useState([]);
-  const [selected,setSelected] = useState(false);
+  const [selected, setSelected] = useState(false);
+  const [courierList, setCourierList] = useState([]);
 
-  const handlePopup =(id)=>{
-    console.log(id)
+  const handlePopup = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "Do you need this courier service?",
@@ -32,8 +20,7 @@ export function CourierList({ search ,orderId }) {
     }).then((result) => {
       if (result.isConfirmed) {
         setSelected(true);
-        handleUpdate(id)
-        console.log('courier'+id)
+        handleUpdate(id);
         Swal.fire({
           title: "Selected!",
           text: "You have selected this courier.",
@@ -41,58 +28,51 @@ export function CourierList({ search ,orderId }) {
         });
       }
     });
-  }
+  };
   
-  const handleButtonClick = (name) => {
-    // Handle button click for the specific item (e.g., delete the item)
-    console.log(`Delete ${name}`);
+  const handleUpdate = (courierID) => {
+    axios.put(`https://localhost:7144/api/NewOrder/update-courier/${orderId}?courierID=${courierID}`)
+      .then(() => {
+        console.log('updated');
+      })
+      .catch((error) => {
+        console.error('Error updating courier:', error);
+      });
   };
 
-  const filterData = (curierlistdata) => {
+  const filterData = (courierListData) => {
     if (search) {
-      const filteredCouriers = curierlistdata.filter(data =>
+      const filteredCouriers = courierListData.filter(data =>
         data.addressLine1.toLowerCase().includes(search.toLowerCase()) || 
-        data.addressLine2.toLowerCase().includes(search.toLowerCase())||
+        data.addressLine2.toLowerCase().includes(search.toLowerCase()) ||
         data.addressLine3.toLowerCase().includes(search.toLowerCase()) ||
-        data.courierFName.toLowerCase().includes(search.toLowerCase()) 
+        data.courierFName.toLowerCase().includes(search.toLowerCase())
       );
       setData(filteredCouriers);
     } else {
-      setData(curierlistdata);
+      setData(courierListData);
     }
-  }
-  function handleUpdate(courierID){
-    axios.put(`https://localhost:7144/api/NewOrder/update-courier/${orderId}?courierID=${courierID}`)
-    .then(()=>{
-      console.log('updated');
-    })
-  }
+  };
 
   useEffect(() => {
     filterData(courierList);
-  }, [search])
-
-  const [courierList,setcourierList]=useState([])
+  }, [search, courierList]);
 
   useEffect(() => {
     axios.get("https://localhost:7144/api/NewOrder/getcouriers")
-        .then((response) => { 
-          setcourierList(response.data);
-          setData(response.data);
-           
-            console.log(response.data);
-        })
-        .catch((error) => {
-            console.error('Error fetching appointments:', error);
-        });
-  
-
-}, []);
+      .then((response) => {
+        setCourierList(response.data);
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching couriers:', error);
+      });
+  }, []);
 
   return (  
     <div>
       {data ? data.map((values) => {
-        const { courierFName,courierLName, addressLine1,addressLine2,addressLine3,courierImageUrl ,courierID } = values;
+        const { courierFName, courierLName, addressLine1, addressLine2, addressLine3, courierImageUrl, courierID } = values;
         return (
           <Card className="w-100" key={values.id}>
             <List>
@@ -113,7 +93,7 @@ export function CourierList({ search ,orderId }) {
                     disabled={selected}
                     variant="gradient"
                     className="ml-auto"
-                    onClick={()=>handlePopup(courierID)}
+                    onClick={() => handlePopup(courierID)}
                   >
                     Select
                   </Button>
