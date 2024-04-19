@@ -141,6 +141,18 @@ const AuthService = {
       throw error.response.data;
     }
   },
+  changeProfileImg: async (Data) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/Auth/changeProfileImg`, Data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
   changePwd: async(data) => {
     try{
       const response = await axios.post(`${BASE_URL}/Auth/changePassword`, data);

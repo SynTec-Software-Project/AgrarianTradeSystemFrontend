@@ -18,6 +18,8 @@ function Login(){
     const [logError, setLogError] = useState(false);
     const [errorMsg, setErrorMsg] = useState("Email or password is incorrect");
     
+    // Function for handle login -----------------------
+
     const handleLogin = async (e) => {
         e.preventDefault();
         const data = {
@@ -56,12 +58,14 @@ function Login(){
         
     }
 
+    // Email function for verify account ---------------------
+
     const sendEmailLink = async(e) => {
         e.preventDefault();
         setIsSentLinkDisable(true);
         setTimeout(() => {
             setIsSentLinkDisable(false);
-        }, 60000);
+        }, 60000); //Waiting 1 minute ------------
         const data ={
             Email:emailRef.current.value
         }

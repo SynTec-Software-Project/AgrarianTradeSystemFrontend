@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { SpinnerColors } from '../components/Spinner.jsx';
@@ -11,6 +10,9 @@ export default function ForgotPassword() {
     const [error, setError] = useState(false);
     const [pwdResetState, setPwdResetState] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    // Function for send reset token for email -------------------------
+
     const handleReset = async (e) => {
         e.preventDefault();
 
@@ -72,6 +74,9 @@ export default function ForgotPassword() {
                 </div>
             </section>
         }
+
+        {/* Render ResetPassword when user click Reset */}
+
         {pwdResetState &&
             <ResetPassword/>
         }   

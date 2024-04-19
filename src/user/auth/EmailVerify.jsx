@@ -8,12 +8,15 @@ import verifyemailIMG from '/img/Verify-email.png'
 export default function EmailVerify() {
     const [isLoading, setIsLoading] = useState(false);
     const location = useLocation();
+    // Get token from URL --------------------------------
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('token');
     const data={
         token:token
     }
     console.log(token);
+
+    // Function to verify email -----------------------
     const onrender = async (e) => {
         try{
             setIsLoading(true);

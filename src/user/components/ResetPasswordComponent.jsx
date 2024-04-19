@@ -14,6 +14,9 @@ export default function ResetPasswordComponent() {
     const [confirmPwd, setConfirmPwd] = useState();
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(false);
+
+    // Function for handle password reset ----------------
+    
     const handleReset = async (e) => {
         e.preventDefault();
         if (pwd.length<8) {

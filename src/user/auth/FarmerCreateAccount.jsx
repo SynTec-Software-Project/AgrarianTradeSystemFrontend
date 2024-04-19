@@ -37,6 +37,8 @@ export default function CreateAccount() {
   const add3Ref=useRef(null);
   const cropRef=useRef(null);
 
+  // Handling Images ----------------------------
+
   const handleProfileImage=(e)=>{
     const file=e.target.files[0];
     console.log(file);
@@ -93,16 +95,23 @@ export default function CreateAccount() {
         console.log(file);
     } 
   }
+
+  // Validating Phone number ------------------------
+
   const validatePhoneNumber = (number) => {
     const phoneNumberRegex = /^[0-9]{10}$/;
     return phoneNumberRegex.test(number);
   };
 
+  // Validating NIC -------------------------
+  
   const validateNIC = (number) => {
     const nicRegex = /^[0-9]{12}$/;
     return nicRegex.test(number);
   };
   
+  // Function for handle form submission ------------------------
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 

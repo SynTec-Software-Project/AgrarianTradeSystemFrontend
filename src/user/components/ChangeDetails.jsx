@@ -6,6 +6,7 @@ import { MdOutlineErrorOutline } from "react-icons/md";
 import ConfirmAlert from '@/user/components/ConfirmAlert.jsx';
 import ErrorAlert from '@/user/components/ErrorAlert.jsx';
 import { SpinnerColors } from '../components/Spinner.jsx';
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 export default function ChangeDetails() {
     const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +18,7 @@ export default function ChangeDetails() {
     const [addl2, setAddl2] = useState("");
     const [addl3, setAddl3] = useState("");
     const [profilepic, setProfilepic] = useState("");
+    const [profileImg, setprofileImg]=useState(null);
     const [pwd, setPwd]=useState("");
     const [confmpwd, setConfmpwd]=useState("");
     const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
@@ -29,15 +31,34 @@ export default function ChangeDetails() {
     const add2Ref=useRef(null);
     const add3Ref=useRef(null);
     const pwdRef = useRef(null);
+    const profileInputRef=useRef(null);
 
+    const token = sessionStorage.getItem('jwtToken');
+    const decodedData = jwtDecode(token);
+    const userEMail = (decodedData.email);
+
+    const handleDrag=(e)=>{
+        e.preventDefault();
+    }
+    const handleDropProfile=(e)=>{
+        e.preventDefault();
+        const file=e.dataTransfer.files[0];
+        if (file.type.startsWith('image/')) {
+            setprofileImg(e.dataTransfer.files[0]);
+            console.log(file);
+        } 
+    }
+    const handleProfileImage=(e)=>{
+        const file=e.target.files[0];
+        console.log(file);
+        setprofileImg(e.target.files[0]);
+    }
     const validatePhoneNumber = (number) => {
         const phoneNumberRegex = /^[0-9]{10}$/;
         return phoneNumberRegex.test(number);
     };
 
-    const token = sessionStorage.getItem('jwtToken');
-    const decodedData = jwtDecode(token);
-    const userEMail = (decodedData.email);
+    //Getting user details from database -----------------------
 
     try{
         
@@ -64,6 +85,9 @@ export default function ChangeDetails() {
     catch(error){
         console.error(error);
     }
+
+    //Changing the details --------------------------------------
+
     const handleChangeDetails = async (e) => {
         e.preventDefault();
         if (!isPhoneNumberValid) {
@@ -93,6 +117,34 @@ export default function ChangeDetails() {
             console.error('Error:', error);
         }
     }
+
+    //Change profile image ------------------------------
+
+    const changeProfileImg = async (e) => {
+        e.preventDefault();
+        if (profileImg==null) {
+            ErrorAlert({ message: "Please upload the new profile picture" });
+            return;
+        }
+        var data = {
+            Email: userEMail,
+            Profilepic: profileImg
+        }
+        try{
+            setIsLoading(true);
+            console.log(data);
+            await AuthService.changeProfileImg(data);
+            setIsLoading(false);
+            await ConfirmAlert({message:"Profile image has been changed successfully"});
+            window.location.reload();
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    //Changing the password --------------------------------
+
     const handleChangePwd = async (e) => {
         e.preventDefault();
         if (pwd.length<8) {
@@ -132,7 +184,48 @@ export default function ChangeDetails() {
                             Edit Profile
                         </h2>
                 </div>
-                <img src={`https://syntecblobstorage.blob.core.windows.net/profilepic/${profilepic}`} width={200} height={200} className='rounded-xl'/>
+                {isEdit &&
+                    <img src={`https://syntecblobstorage.blob.core.windows.net/profilepic/${profilepic}`} width={200} height={200} className='rounded-xl'/>
+                }
+                {!isEdit &&
+                    <div className='flex'>
+                        <div className="w-80 p-3 md:flex-initial">
+                            <div className="flex items-center justify-center w-full">
+                                <label for="dropzone-file"  onDragOver={handleDrag} onDrop={handleDropProfile} 
+                                    className="flex flex-col items-center justify-center w-full h-64 bg-white border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ">
+                                    {!profileImg && 
+                                        <div onClick={() => profileInputRef.current.click()} className="flex flex-col items-center justify-center px-4 pt-5 pb-6 cursor-pointer">
+                                            <span className="text-primary dark:text-gray-400">
+                                                <IoCloudUploadOutline size={28} />
+                                            </span>
+                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                <span className="font-semibold text-primary" role='button'>Click to upload</span> or drag
+                                                        and drop
+                                            </p>
+                                            <input type='file' accept='image/*' hidden onChange={handleProfileImage} ref={profileInputRef}/>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                        any type of image
+                                            </p>
+                                        </div>
+                                    }
+                                    {
+                                        profileImg &&
+                                        <div className='w-32 absolute'>
+                                            <span role='button' onClick={()=>setprofileImg(null)} className='absolute top-0 right-0 text-5xl text-red-500 -mt-6 -mr-3 drop-shadow-lg'>&times;</span>
+                                            <img className='w-auto h-auto' src={(URL.createObjectURL(profileImg))}/>
+                                        
+                                        </div>
+                                    }
+                                </label>
+                            </div>
+                        </div>
+                        <div className="w-full md:w-auto pl-6 pt-28">
+                              <input type='submit' value="Change profile photo" onClick={changeProfileImg}
+                                  className=" w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl disabled:cursor-not-allowed" >
+                              </input>
+                        </div>
+                    </div>
+                }
                     <div className="py-6 border-b border-gray-100 dark:border-gray-800">
                         <div className="w-full md:w-9/12">
                             <div className="flex flex-wrap -m-3">
