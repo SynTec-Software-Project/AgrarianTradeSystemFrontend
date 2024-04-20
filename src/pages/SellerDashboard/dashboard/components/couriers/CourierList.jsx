@@ -21,13 +21,34 @@ export function CourierList({ search ,orderId }) {
       if (result.isConfirmed) {
         setSelected(true);
         handleUpdate(id);
+        console.log("Hiii");
         Swal.fire({
           title: "Selected!",
           text: "You have selected this courier.",
           icon: "success"
         });
+        sendPredefinedEmail();
       }
     });
+  };
+
+  const sendPredefinedEmail = async () => {
+    try {
+      const htmlContent = `
+        <h2>Hello,</h2>
+        <p>This is a predefined email message with <strong>HTML content</strong>.</p>
+        <p>Sincerely,<br/>Your Name</p>
+      `;
+
+      const response = await axios.post("https://localhost:7144/api/Email", {
+        To: "bhmmpmgunathilake1999@gmail.com",
+        Subject: "Agrarian Trade System",
+        Body: htmlContent,
+      });
+      alert(response.data);
+    } catch (error) {
+      alert("Error sending email: " + error.response.data);
+    }
   };
   
   const handleUpdate = (courierID) => {
