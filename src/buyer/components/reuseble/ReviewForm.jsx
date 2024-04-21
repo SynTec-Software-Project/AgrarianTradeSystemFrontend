@@ -39,7 +39,13 @@ export default function ReviewForm() {
 
   const addFormData = () => {
     const formData = new FormData();
-    formData.append("OrderID", orderId)
+    formData.append("OrderID", orderId);
+    formData.append("SellerRating", reviewData.SellerRating);
+    formData.append("DeliverRating", reviewData.DeliverRating);
+    formData.append("ProductRating", reviewData.ProductRating);
+    formData.append("Comment", reviewData.Comment);
+    formData.append("file", selectedFiles.length > 0 ? selectedFiles[0] : "");
+    handleAddReview(formData);
   }
 
   const handleAddReview = async (formData) => {
@@ -49,7 +55,11 @@ export default function ReviewForm() {
 
 
     console.log(reviewData);
-    addClient.post('', { ...reviewData, ReviewImageUrl: binary }).then((res) => {
+    addClient.post('', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then((res) => {
       if (res.status === 200) {
         console.log("Success!", res);
         navigate('/buyers/my-reviews')
@@ -131,7 +141,7 @@ export default function ReviewForm() {
         <div>
           <button type='submit' className='bg-[#44BD32] px-28 rounded-lg h-9 text-white' onClick={(e) => {
             e.preventDefault();
-            handleAddReview()
+            addFormData();
           }}>Submit</button>
         </div>
       </div>
