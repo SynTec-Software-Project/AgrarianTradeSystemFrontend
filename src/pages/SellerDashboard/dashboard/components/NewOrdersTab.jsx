@@ -1,4 +1,3 @@
-"use client";
 import { useState,useEffect } from 'react';
 import React from 'react';
 import sellerTableData from '../../../../data/seller-table-data';
@@ -12,6 +11,8 @@ export default function NewOrdersTab() {
   const [tab, setTab] = useState('');
   const navigate = useNavigate();
   const sellerID ='alicesmith@example.com'
+ 
+ 
   const filterResult = (filterValue) => {
     let result;
 
@@ -79,7 +80,7 @@ export default function NewOrdersTab() {
     </div>
 
         <div>
-          <div class="relative flex flex-col w-full h-full  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block ">
+          <div class="relative flex flex-col w-full h-full  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20  sm:block ">
             <table class="w-full text-left table-auto min-w-max ">
               <thead>
                 <tr>
@@ -180,8 +181,7 @@ export default function NewOrdersTab() {
                   )
                 })}
 
-                
-          
+        
               </tbody>
             </table>
           </div>
