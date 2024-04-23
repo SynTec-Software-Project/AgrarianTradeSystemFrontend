@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import moment from 'moment';
 export default function CourierNewOrdersTab() {
   const courierID = 'lasith.malinga@example.com';
   const [data, setData] = useState([]);
@@ -18,8 +18,8 @@ export default function CourierNewOrdersTab() {
       });
   }, []);
 
-  const handleRowClick = (orderID) => {  
-    navigate('orderlist-details');
+  const handleRowClick = (id) => {  
+    navigate(`orderlist-details/${id}`);
   };
 
   return (
@@ -39,6 +39,8 @@ export default function CourierNewOrdersTab() {
             <tbody>
               {data.map((values) => {
                 const { orderID, productTitle, orderedDate, totalQuantity, productImageUrl, deliveryFee } = values;
+                const dateTimeString = orderedDate;
+                const date = moment(dateTimeString).format("YYYY-MM-DD")
                 return (
                   <tr
                     key={orderID}
@@ -62,7 +64,7 @@ export default function CourierNewOrdersTab() {
                     </td>
                     <td className="p-3 w-24 text-center align-middle">
                       <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
-                        {orderedDate}
+                        {date}
                       </p>
                     </td>
                     <td className="p-3 w-24 text-center align-middle">
@@ -72,7 +74,7 @@ export default function CourierNewOrdersTab() {
                     </td>
                     <td className="p-3 w-24 text-center align-middle">
                       <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
-                        {deliveryFee}
+                        {deliveryFee.toFixed(2)}
                       </p>
                     </td>
                   </tr>

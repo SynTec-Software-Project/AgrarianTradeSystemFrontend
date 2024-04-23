@@ -15,7 +15,9 @@ const Routing = () => {
          <Route path='/order-history' element={<OrderHistory/>} />
          <Route path='/profile' element={<Profile/>} />
          <Route path='my-orders/:orderReference' element={<CourierOrderDetails/>}></Route>
-         <Route path='new-orders/:id' element={<OrderDetail/>}></Route>
+         {/* <Route path='new-orders/:id' element={<OrderDetail/>}></Route>
+         <Route path="/couriers/new-orders" element={<CourierNewOrdersTab />} /> */}
+        <Route path="new-orders/orderlist-details/:id" element={<OrderDetail />} />
      </Routes>
     </>
   )

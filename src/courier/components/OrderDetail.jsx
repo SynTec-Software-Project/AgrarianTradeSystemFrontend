@@ -2,21 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardBody, Typography, Button } from '@material-tailwind/react';
 import Swal from "sweetalert2";
 import { Pickup_Drop_Detail } from './Pickup_Drop_Detail';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const OrderDetail = () => {
   const { id } = useParams();
+  const navigate=useNavigate();
   const [data, setData] = useState([]);
+
 
   useEffect(() => {
     axios.get(`https://localhost:7144/api/Order/courier/details/${id}`)
       .then((response) => {
         setData(response.data[0]);
-        console.log(response.data[0]);
       })
       .catch((error) => {
-        console.error('Error fetching appointments:', error);
+        console.error('Error fetching order details:', error);
       });
   }, [id]);
 
@@ -31,12 +32,14 @@ const OrderDetail = () => {
       confirmButtonText: "Yes, Accept it!"
     }).then((result) => {
       if (result.isConfirmed) {
+        handleUpdateStatus(id ,'ready to pickup');
         Swal.fire({
           title: "Accepted!",
           text: "You have accepted this order.",
           icon: "success"
         });
         handleAccept();
+        navigate(-1);
       }
     });
   };
@@ -52,15 +55,33 @@ const OrderDetail = () => {
       confirmButtonText: "Yes, reject it!"
     }).then((result) => {
       if (result.isConfirmed) {
+        handleUpdateStatus(id ,'new');
         Swal.fire({
           title: "Rejected!",
           text: "You have rejected this courier.",
           icon: "success"
         });
         handleReject();
+        navigate(-1);
       }
     });
   };
+
+  const handleUpdateStatus = (orderID, newStatus) => {
+    console.log(newStatus);
+    axios
+      .put(
+        `https://localhost:7144/api/Order/${orderID}?orderStatus=${newStatus}`,
+        { orderStatus: newStatus }
+      )
+      .then((response) => {
+        console.log("Order status updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating order status:", error);
+        // Handle errors appropriately
+      });
+  };
 
   const handleAccept = async () => {
     try {
@@ -102,6 +123,10 @@ const OrderDetail = () => {
     console.log("Rejected");
   };
 
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="flex justify-center">
       <table className="w-full max-w-[50em] flex-row">
@@ -109,7 +134,7 @@ const OrderDetail = () => {
           <th className='p-2'>
             <Card className="w-full max-w-[50rem] flex-row">
               <div style={{ display: 'flex', alignItems: 'center', marginLeft: '40px' }}>
-                <img src={'https://syntecblobstorage.blob.core.windows.net/products/' + data.productImageUrl} alt={data.productTitle} style={{ borderRadius: "100%", height: "100px", width: "100px", marginRight: "8px" }} />
+                <img src={`https://syntecblobstorage.blob.core.windows.net/products/${data.productImageUrl}`} alt={data.productTitle} style={{ borderRadius: "100%", height: "100px", width: "100px", marginRight: "8px" }} />
               </div>
               <CardBody style={{ marginLeft: '90px', marginTop: '15px' }}>
                 <Typography variant="h4" color="blue-gray" className="mb-2">
