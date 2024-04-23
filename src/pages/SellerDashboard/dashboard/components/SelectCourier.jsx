@@ -5,23 +5,25 @@ import {
   CardBody,
   Typography,
 } from "@material-tailwind/react";
+import { useParams } from 'react-router-dom';
 import { CourierList } from './couriers/CourierList';
 import { SearchBar } from './SearchBar';
-import { useParams } from 'react-router-dom';
+
 
 function SelectCourier() {
   const [search, setSearch] = useState('');
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
     axios.get(`https://localhost:7144/api/Order/farmer/details/${id}`)
       .then((response) => {
         setData(response.data[0]);
-        console.log(response.data[0]);
+        console.log(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching appointments:', error);
+        console.error('Error fetching order:', error);
+        // Handle error, e.g., set state to display an error message
       });
   }, [id]);
 
@@ -87,7 +89,9 @@ function SelectCourier() {
       <div className='mt-10'>
         <SearchBar setSearch={setSearch} />
       </div>
+    
 
+      {/* Render CourierList component with orderId prop */}
       <div className="mt-10 overflow-y-auto max-h-screen">
         <CourierList search={search} orderId={data.orderID} />
       </div>

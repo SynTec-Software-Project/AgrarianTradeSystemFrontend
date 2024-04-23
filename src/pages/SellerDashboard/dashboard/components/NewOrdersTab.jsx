@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import moment from 'moment';
 export default function NewOrdersTab() {
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -13,7 +13,7 @@ export default function NewOrdersTab() {
   };
 
   useEffect(() => {
-    axios.get(`https://localhost:7144/api/Order/farmer/${sellerID}`)
+    axios.get(`https://localhost:7144/api/Order/farmer/${sellerID}`) 
       .then((response) => {
         setData(response.data);
       })
@@ -39,7 +39,9 @@ export default function NewOrdersTab() {
             </thead>
             <tbody>
               {data.map((values) => {
-                const { orderID, productTitle, orderedDate, totalQuantity, productImageUrl, totalPrice, Delivery } = values;
+                const { orderID, productTitle, orderedDate, totalQuantity, productImageUrl, totalPrice ,orderStatus } = values;
+                const dateTimeString = orderedDate;
+                const date = moment(dateTimeString).format("YYYY-MM-DD")
                 return (
                   <tr
                     key={orderID}
@@ -63,7 +65,7 @@ export default function NewOrdersTab() {
                     </td>
                     <td className="p-3 w-24 text-center align-middle">
                       <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
-                        {orderedDate}
+                        {date}
                       </p>
                     </td>
                     <td className="p-3 w-24 text-center align-middle">
@@ -73,12 +75,12 @@ export default function NewOrdersTab() {
                     </td>
                     <td className="p-3 w-24 text-center align-middle">
                       <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
-                        {totalPrice}
+                        {totalPrice.toFixed(2)}
                       </p>
                     </td>
                     <td className="p-3 w-24 text-center align-middle">
                       <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
-                        {Delivery}
+                        {orderStatus}
                       </p>
                     </td>
                   </tr>
@@ -91,3 +93,5 @@ export default function NewOrdersTab() {
     </div>
   );
 }
+
+

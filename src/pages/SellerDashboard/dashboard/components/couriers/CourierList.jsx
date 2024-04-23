@@ -3,12 +3,11 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { Button, List, ListItem, ListItemPrefix, ListItemSuffix, Avatar, Card, Typography } from "@material-tailwind/react";
 
-export function CourierList({ search ,orderId }) {
+export function CourierList({ search, orderId }) {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState(false);
   const [courierList, setCourierList] = useState([]);
-
-  const handlePopup = (id) => {
+  const handlePopup = (courierId) => {
     Swal.fire({
       title: "Are you sure?",
       text: "Do you need this courier service?",
@@ -20,17 +19,55 @@ export function CourierList({ search ,orderId }) {
     }).then((result) => {
       if (result.isConfirmed) {
         setSelected(true);
-        handleUpdate(id);
+        handleUpdateCourier(courierId);
+        console.log(orderId);
+        handleUpdateStatus(orderId ,'pending');
         Swal.fire({
           title: "Selected!",
           text: "You have selected this courier.",
           icon: "success"
         });
+        sendPredefinedEmail();
       }
     });
   };
+
+  const handleUpdateStatus = (orderID, newStatus) => {
+    console.log(newStatus);
+    axios
+      .put(
+        `https://localhost:7144/api/Order/${orderID}?orderStatus=${newStatus}`,
+        { orderStatus: newStatus }
+      )
+      .then((response) => {
+        console.log("Order status updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating order status:", error);
+        // Handle errors appropriately
+      });
+  };
+
+  const sendPredefinedEmail = async () => {
+    try {
+      const htmlContent = `
+        <h2>Hello,</h2>
+        <p>This is a predefined email message with <strong>HTML content</strong>.</p>
+        <p>Sincerely,<br/>Your Name</p>
+      `;
+
+      const response = await axios.post("https://localhost:7144/api/Email", {
+        To: "bhmmpmgunathilake1999@gmail.com",
+        Subject: "Agrarian Trade System",
+        Body: htmlContent,
+      });
+      alert(response.data);
+    } catch (error) {
+      alert("Error sending email: " + error.response.data);
+    }
+  };
   
-  const handleUpdate = (courierID) => {
+  const handleUpdateCourier = (courierID) => {
     axios.put(`https://localhost:7144/api/NewOrder/update-courier/${orderId}?courierID=${courierID}`)
       .then(() => {
         console.log('updated');
@@ -74,18 +111,18 @@ export function CourierList({ search ,orderId }) {
       {data ? data.map((values) => {
         const { courierFName, courierLName, addressLine1, addressLine2, addressLine3, courierImageUrl, courierID } = values;
         return (
-          <Card className="w-100" key={values.id}>
+          <Card className="w-100" key={courierID}>
             <List>
               <ListItem ripple={false} className="flex items-center">
                 <ListItemPrefix>
-                  <Avatar variant="circular" alt="candice" src={courierImageUrl} />
+                  <Avatar variant="circular" alt="courier" src={courierImageUrl} />
                 </ListItemPrefix>
                 <div className="flex flex-col ml-4">
                   <Typography variant="h6" color="blue-gray">
                     {courierFName +' '+courierLName}
                   </Typography>
                   <Typography variant="small" color="gray" className="font-normal">
-                    {'No:' +addressLine1+', '+addressLine2 +', '+addressLine3}
+                  {'No:' +addressLine1+', '+addressLine2 +', '+addressLine3}
                   </Typography>
                 </div>
                 <ListItemSuffix>
