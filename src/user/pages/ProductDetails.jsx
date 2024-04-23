@@ -41,7 +41,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const [modelOpen, setModelOpen] = useState(false);
   useEffect(() => {
-    axios.get(`https://localhost:44376/api/Product/details/${id}`)
+    axios.get(`https://localhost:7144/api/Product/details/${id}`)
       .then(response => {
         setProduct(response.data);
       })
@@ -76,7 +76,7 @@ const ProductDetails = () => {
       productId: productId,
       quantity: selectedQuantity
     }
-    axios.post("https://localhost:44376/api/ShoppingCart/add-to-cart", cart)
+    axios.post("https://localhost:7144/api/ShoppingCart/add-to-cart", cart)
       .then((respose) => {
         setOpen(true);
         setLoading(false);

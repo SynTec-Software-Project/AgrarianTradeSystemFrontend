@@ -13,7 +13,7 @@ const ProductList = () => {
   //sort product list
   if(sortedProducts=='asc' || sortedProducts=='desc'){
     useEffect(() => {
-      axios.get(`https://localhost:44376/api/product/sorted?sortOrder=${sortedProducts}`)
+      axios.get(`https://localhost:7144/api/product/sorted?sortOrder=${sortedProducts}`)
       .then((response) => {
         setProducts(response.data);
         setFilteredProducts(response.data);
@@ -21,7 +21,7 @@ const ProductList = () => {
     }, [sortedProducts]);
   }else {
     useEffect(() => {
-      axios.get('https://localhost:44376/api/product')
+      axios.get('https://localhost:7144/api/product')
       .then((response) => {
         setProducts(response.data);
         setFilteredProducts(response.data); 
