@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
-import DeliveryFee from '@/courier/components/DeliveryFee';
+//import DeliveryFee from '@/courier/components/DeliveryFee';
 export default function NewOrdersTab() {
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -92,7 +92,7 @@ export default function NewOrdersTab() {
         </div>
       </div>
 
-    <DeliveryFee/>
+    {/* <DeliveryFee/> */}
 
     </div>
   );
