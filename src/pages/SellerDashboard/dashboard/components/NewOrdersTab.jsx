@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import { Select, Option } from "@material-tailwind/react";
-//import DeliveryFee from '@/courier/components/DeliveryFee';
 export default function NewOrdersTab() {
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -34,6 +33,7 @@ export default function NewOrdersTab() {
             return item;
           }
         })
+        console.log(response.data);
         // console.log(filteredData)
         setData(filteredData);
       })
@@ -117,8 +117,6 @@ export default function NewOrdersTab() {
           </table>
         </div>
       </div>
-
-    {/* <DeliveryFee/> */}
 
     </div>
   );

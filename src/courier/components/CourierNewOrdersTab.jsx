@@ -8,10 +8,17 @@ export default function CourierNewOrdersTab() {
   const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     axios.get(`https://localhost:7144/api/Order/courier/${courierID}`)
       .then((response) => {
-        setData(response.data);
+        const filteredData = response.data.filter((item) => {
+          if (item.orderStatus === "pending") {
+            return item;
+          }
+        })
+        setData(filteredData);
       })
       .catch((error) => {
         console.error('Error fetching orders:', error);
