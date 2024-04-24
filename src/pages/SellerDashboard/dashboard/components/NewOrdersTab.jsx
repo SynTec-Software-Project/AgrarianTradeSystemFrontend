@@ -2,12 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
+import { Select, Option } from "@material-tailwind/react";
 //import DeliveryFee from '@/courier/components/DeliveryFee';
 export default function NewOrdersTab() {
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
   const sellerID = 'alicesmith@example.com';
+
+  const [filterOptions, setFilterOptions] = useState(["new", "pending"]);
+
+  const filterResult = (filterValue) => {
+    if (filterValue === "new") {
+      setFilterOptions(["new"]);
+    } else if (filterValue === "pending") {
+      setFilterOptions(["pending"]);
+    } else {
+      setFilterOptions(["new", "pending"]);
+    }
+  };
 
   const handleRowClick = (id) => {
     navigate(`/dashboard/select-courier/${id}`);
@@ -16,15 +29,28 @@ export default function NewOrdersTab() {
   useEffect(() => {
     axios.get(`https://localhost:7144/api/Order/farmer/${sellerID}`) 
       .then((response) => {
-        setData(response.data);
+        const filteredData = response.data.filter((item) => {
+          if (filterOptions.includes(item.orderStatus)) {
+            return item;
+          }
+        })
+        // console.log(filteredData)
+        setData(filteredData);
       })
       .catch((error) => {
         console.error('Error fetching orders:', error);
       });
-  }, [sellerID]);
+  }, [sellerID, filterOptions]);
 
   return (
     <div>
+      <div className="float-right w-72 mb-3">
+      <Select label="Order Details" onChange={filterResult}>
+        <Option value='all'>All</Option>
+        <Option value='new'>New</Option>
+        <Option value='pending'>Pending</Option>
+      </Select>
+    </div>
       <div>
         <div className="relative flex flex-col w-full h-full text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block">
           <table className="w-full text-left table-auto min-w-max">
