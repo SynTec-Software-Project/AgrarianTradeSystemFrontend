@@ -7,20 +7,24 @@ import {
 import ReactGoogleAutocomplete from 'react-google-autocomplete';
 import axios from 'axios';
 
-function DeliveryFee({ originData ,handleDeliveryFee ,handleSelectDestination ,}) {
- 
+function DeliveryFee({ originData, handleDeliveryFee, handleSelectDestination }) {
   const [inputValue, setInputValue] = useState('Set Location');
   const [open, setOpen] = useState(false);
   const [origin, setOrigin] = useState("Colombo, Sri Lanka");
   const [destination, setDestination] = useState("Kurunegala, Sri Lanka");
   const [distance, setDistance] = useState('');
   const [deliveryFee, setDeliveryFee] = useState(0);
+
+  // Update origin when originData changes
   useEffect(() => {
     setOrigin(originData);
     setDestination("Kurunegala, Sri Lanka");
-  }, [origin]);
+  }, [originData]);
+
+  // Toggle dropdown to select destination
   const handleOpen = () => setOpen(!open);
 
+  // Fetch distance and calculate delivery fee
   const fetchDistance = async (destination) => {
     try {
       const matrix = new google.maps.DistanceMatrixService();
@@ -54,7 +58,7 @@ function DeliveryFee({ originData ,handleDeliveryFee ,handleSelectDestination ,}
           <Typography variant="h5" color="blue-gray" className="mb-5">
             Delivery Location
           </Typography>
-          <div className=' flex flex-wrap justify-between'>
+          <div className='flex flex-wrap justify-between'>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <i className="fas fa-location-dot" style={{ marginRight: '1em' }} />
               <div>
@@ -72,22 +76,25 @@ function DeliveryFee({ originData ,handleDeliveryFee ,handleSelectDestination ,}
                 )}
               </div>
             </div>
-            <div className=' text-primary font-semibold' style={{ cursor: 'pointer' }} onClick={handleOpen}>
+            <div className='text-primary font-semibold' style={{ cursor: 'pointer' }} onClick={handleOpen}>
               Change
             </div>
           </div>
 
+          {/* Display delivery charge */}
           <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
             <i className="fa-solid fa-comment-dollar" style={{ marginRight: '1em' }} />
             <label htmlFor="">Delivery Charge:</label>
           </div>
           <div style={{ marginLeft: '33px' }}>LKR: {deliveryFee} </div>
 
+          {/* Display cash on delivery availability */}
           <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
             <i className="fa-solid fa-handshake-simple" style={{ marginRight: '1em' }} />
             <label htmlFor="">Cash on delivery available</label>
           </div>
 
+          {/* Display return policy */}
           <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
             <i className="fa-solid fa-rotate-left" style={{ marginRight: '1em' }} />
             <label htmlFor="">7 days return</label>
