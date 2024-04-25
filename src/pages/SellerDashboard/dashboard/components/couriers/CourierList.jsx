@@ -7,6 +7,8 @@ export function CourierList({ search, orderId }) {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState(false);
   const [courierList, setCourierList] = useState([]);
+
+  // Function to handle popup confirmation for selecting a courier
   const handlePopup = (courierId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -20,20 +22,19 @@ export function CourierList({ search, orderId }) {
       if (result.isConfirmed) {
         setSelected(true);
         handleUpdateCourier(courierId);
-        console.log(orderId);
-        handleUpdateStatus(orderId ,'pending');
+        handleUpdateStatus(orderId ,'pending'); // Update order status to pending
         Swal.fire({
           title: "Selected!",
           text: "You have selected this courier.",
           icon: "success"
         });
-        sendPredefinedEmail();
+        sendPredefinedEmail(); // Send predefined email
       }
     });
   };
 
+  // Function to update order status
   const handleUpdateStatus = (orderID, newStatus) => {
-    console.log(newStatus);
     axios
       .put(
         `https://localhost:7144/api/Order/${orderID}?orderStatus=${newStatus}`,
@@ -48,6 +49,7 @@ export function CourierList({ search, orderId }) {
       });
   };
 
+  // Function to send predefined email
   const sendPredefinedEmail = async () => {
     try {
       const htmlContent = `
@@ -57,16 +59,17 @@ export function CourierList({ search, orderId }) {
       `;
 
       const response = await axios.post("https://localhost:7144/api/Email", {
-        To: "bhmmpmgunathilake1999@gmail.com",
+        To: "bhmmpmgunathilake1999@gmail.com", //buyers email
         Subject: "Agrarian Trade System",
         Body: htmlContent,
       });
-      alert(response.data);
+      //alert(response.data);
     } catch (error) {
       alert("Error sending email: " + error.response.data);
     }
   };
   
+  // Function to handle updating the selected courier
   const handleUpdateCourier = (courierID) => {
     axios.put(`https://localhost:7144/api/NewOrder/update-courier/${orderId}?courierID=${courierID}`)
       .then(() => {
@@ -77,6 +80,7 @@ export function CourierList({ search, orderId }) {
       });
   };
 
+  // Function to filter courier data based on search query
   const filterData = (courierListData) => {
     if (search) {
       const filteredCouriers = courierListData.filter(data =>
@@ -91,10 +95,12 @@ export function CourierList({ search, orderId }) {
     }
   };
 
+  // useEffect to filter data based on search and courier list
   useEffect(() => {
     filterData(courierList);
   }, [search, courierList]);
 
+  // useEffect to fetch courier list from API
   useEffect(() => {
     axios.get("https://localhost:7144/api/NewOrder/getcouriers")
       .then((response) => {
@@ -122,7 +128,7 @@ export function CourierList({ search, orderId }) {
                     {courierFName +' '+courierLName}
                   </Typography>
                   <Typography variant="small" color="gray" className="font-normal">
-                  {'No:' +addressLine1+', '+addressLine2 +', '+addressLine3}
+                    {'No:' +addressLine1+', '+addressLine2 +', '+addressLine3}
                   </Typography>
                 </div>
                 <ListItemSuffix>
