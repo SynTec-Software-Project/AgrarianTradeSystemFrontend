@@ -6,10 +6,10 @@ import { fruits, productTypes, productTypesSelect, vegetables } from '@/data/pro
 import FileUpload from './FileUpload';
 import { useNavigate } from 'react-router-dom';
 
-const ProductForm = ({ onSubmitData, productData, isUpdate }) => {
+const ProductForm = ({ onSubmitData, productData, isUpdate ,handleupdateImage }) => {
   const navigate = useNavigate();
   // seller id hardcoded
-  const SellerId = 'sanath@mail.com';
+  const SellerId = 'alicesmith@example.com';
   // get user inputs
   const productTitleRef = useRef(null);
   const productDescriptionRef = useRef(null);
@@ -20,6 +20,7 @@ const ProductForm = ({ onSubmitData, productData, isUpdate }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const[change, setChange] = useState(true);
 
   // category selection functions
   const handleProductTypeChange = (event) => {
@@ -35,6 +36,8 @@ const ProductForm = ({ onSubmitData, productData, isUpdate }) => {
       console.log(event.target.value);
     }
   };
+
+  
   //validate the form
   const [errors, setErrors] = useState({});
 
@@ -55,15 +58,15 @@ const ProductForm = ({ onSubmitData, productData, isUpdate }) => {
 
     if (!availableStockRef.current.value) {
       errors.availableStock = 'Available stock is required!';
-    }else if(availableStockRef.current.value < 0 ){
+    } else if (availableStockRef.current.value < 0) {
       errors.availableStock = 'Available stock should be greater than 0!';
     }
 
     if (!minimumQuantityRef.current.value) {
       errors.minimumQuantity = 'Minimum quantity is required!';
-    }else if(minimumQuantityRef.current.value < 0 ){
+    } else if (minimumQuantityRef.current.value < 0) {
       errors.minimumQuantity = 'Minimum quantity should be greater than 0!';
-    }else if(minimumQuantityRef.current.value > availableStockRef.current.value){
+    } else if (minimumQuantityRef.current.value > availableStockRef.current.value) {
       errors.minimumQuantity = 'Minimum order quantity should be less than available stock!';
     }
 
@@ -74,7 +77,7 @@ const ProductForm = ({ onSubmitData, productData, isUpdate }) => {
     if (!selectedCategory) {
       errors.selectedCategory = 'Category is required!';
     }
-    if (!selectedFile) {
+    if (!isUpdate && !selectedFile) {
       errors.selectedFile = 'Product Image is required!';
     }
     setErrors(errors);
@@ -93,8 +96,10 @@ const ProductForm = ({ onSubmitData, productData, isUpdate }) => {
     selectedFile && setSelectedFile(productData.file);
 
   }, [productData]);
+
   //upload product function
   function addFormData() {
+    console.log('addFormData');
     if (!validateForm()) {
       return;
     }
@@ -108,12 +113,20 @@ const ProductForm = ({ onSubmitData, productData, isUpdate }) => {
     formData.append('minimumQuantity', minimumQuantityRef.current.value);
     formData.append('productType', selectedProductType);
     formData.append('category', selectedCategory);
-    formData.append('file', selectedFile);
+    if (!isUpdate) {
+      formData.append('file', selectedFile);
+    }
     onSubmitData(formData);
   }
   //file upload function from FileUpload.jsx
   const handleFileSelect = (file) => {
     setSelectedFile(file);
+    setChange(false);
+  }
+  //edit file function
+  const handleFileChange = () => {
+    handleupdateImage(selectedFile);
+    setChange(true);
   }
 
   return (
@@ -203,21 +216,23 @@ const ProductForm = ({ onSubmitData, productData, isUpdate }) => {
 
             {/* upload product image */}
             <Title title='Upload Product Image' />
-            {!isUpdate && 
+            {isUpdate &&
+              <div className=' flex items-start gap-8'>
+                <div className='flex'>
+                  <img
+                    src={"https://syntecblobstorage.blob.core.windows.net/products/" + productData.productImageUrl} alt={productData.productTitle}
+                    className="object-cover w-[190px]  h-[150px]"
+                  />
+                </div>
+                < Button color="green" variant='gradient' onClick={handleFileChange} disabled={change
+                
+                }>Change</ Button>
+              </div>
+            }
             <div>
-             
               <FileUpload onFileSelect={handleFileSelect} />
               {errors && <span className="text-red-500 text-sm">{errors.selectedFile}</span>}
-            </div>}
-            {isUpdate &&
-            <div>
-               <img
-              src={"https://syntecblobstorage.blob.core.windows.net/products/" + productData.productImageUrl } alt={productData.productTitle} 
-              className="object-cover w-[190px]  h-[150px]"
-            />
             </div>
-              }
-
             {/* select quantity */}
             <InputField
               title='Select Available Stock'

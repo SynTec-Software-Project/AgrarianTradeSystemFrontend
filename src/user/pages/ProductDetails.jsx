@@ -48,13 +48,15 @@ const ProductDetails = () => {
   }, []);
 
   const handleModalOPen = () => {
-    if (deliveryFee === 0) {
-      alert('Please set the delivery location');
-    }
-    else {
-      modelOpen ? setModelOpen(false) :
-        setModelOpen(true);
-    }
+    // if (deliveryFee === 0) {
+    //   alert('Please set the delivery location');
+    // }
+    // else {
+    //   modelOpen ? setModelOpen(false) :
+    //     setModelOpen(true);
+    // }
+    modelOpen ? setModelOpen(false) :
+      setModelOpen(true);
   };
 
   const handleSelectDestination = (destination) => {
