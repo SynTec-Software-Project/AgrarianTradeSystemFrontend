@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 import ReviewCard from '@/reuseble seller/ReviewCard';
 import axios from 'axios';
@@ -13,11 +12,15 @@ export const AddReviewCard = () => {
       baseURL: "https://localhost:7144/api/Review/to-review"
     });
 
-    client.get().then((response) => {
-      setProductData(response.data)
-      console.log(response)
-    })
-    console.log(data);
+    try {
+      client.get().then((response) => {
+        setProductData(response.data)
+        // console.log(response)
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    // console.log(data);
   }
 
   useEffect(() => {

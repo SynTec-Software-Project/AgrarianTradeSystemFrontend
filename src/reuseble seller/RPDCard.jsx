@@ -138,8 +138,6 @@ const RPDCard = () => {
         </div>
       </div>
 
- <ImageModal images={returnImgs} open={open} setOpen={setOpen}/>
- <ImageGallery returnImgs={returnImgs} handleOpen={handleOpen}/>
 
     </div>
   )
