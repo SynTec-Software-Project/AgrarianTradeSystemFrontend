@@ -5,6 +5,7 @@ import ProductsCard from '../components/ProductsCard'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import SortBar from '../components/SortBar'
+import LoadingProducts from '@/courier/components/LoadingProducts'
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -66,12 +67,12 @@ const ProductList = () => {
               );
             },
             ):
-            <div className='w-screen h-screen flex justify-center'>
-              <p className='text-xl'>Not available !</p>
-            </div>
+            <LoadingProducts/>
             }
         </div>
+       
       </div>
+
     </div>
 
   )

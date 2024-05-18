@@ -7,14 +7,14 @@ import {
 import ReactGoogleAutocomplete from 'react-google-autocomplete';
 import axios from 'axios';
 
-function DeliveryFee({ originData }) {
+function DeliveryFee({ originData ,handleDeliveryFee ,handleSelectDestination ,}) {
  
   const [inputValue, setInputValue] = useState('Set Location');
   const [open, setOpen] = useState(false);
   const [origin, setOrigin] = useState("Colombo, Sri Lanka");
   const [destination, setDestination] = useState("Kurunegala, Sri Lanka");
   const [distance, setDistance] = useState('');
-  const [deliveryFee, setDeliveryFee] = useState(0.00);
+  const [deliveryFee, setDeliveryFee] = useState(0);
   useEffect(() => {
     setOrigin(originData);
     setDestination("Kurunegala, Sri Lanka");
@@ -36,6 +36,8 @@ function DeliveryFee({ originData }) {
           setDistance(distanceInKilometers);
           const fee = (distanceInKilometers * 50).toFixed(2); // 50 LKR per kilometer
           setDeliveryFee(fee);
+          handleDeliveryFee(fee);
+          handleSelectDestination(destination);
         } else {
           console.error('Error fetching distance:', status);
         }

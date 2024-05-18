@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import DeliveryFee from '@/courier/components/DeliveryFee';
 import { set } from 'date-fns';
 import SellerDetails from '../components/SellerDetails';
+import PlaceOrderModal from '../components/PlaceOrderModal';
 function Icon() {
   return (
     <svg
@@ -28,20 +29,47 @@ function Icon() {
     </svg>
   );
 }
-const buyerID='rashmina@email.com';
+const buyerID = 'rashmina@email.com';
 const ProductDetails = () => {
   const [product, setProduct] = useState([]);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const [destination , setDestination] = useState('');
   const [open, setOpen] = useState(false);
-  const[loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [successOrder, setSuccessOrder] = useState(false);
   const { id } = useParams();
-
+  const [modelOpen, setModelOpen] = useState(false);
   useEffect(() => {
     axios.get(`https://localhost:44376/api/Product/details/${id}`)
       .then(response => {
         setProduct(response.data);
       })
   }, []);
+
+  const handleModalOPen = () => {
+    // if (deliveryFee === 0) {
+    //   alert('Please set the delivery location');
+    // }
+    // else {
+    //   modelOpen ? setModelOpen(false) :
+    //     setModelOpen(true);
+    // }
+    modelOpen ? setModelOpen(false) :
+      setModelOpen(true);
+  };
+
+  const handleSelectDestination = (destination) => {
+    setDestination(destination);
+  }
+
+  const handleDeliveryFee = (fee) => {
+    setDeliveryFee(fee);
+  }
+
+  const handleSuccessOrder = (success) => {
+    setSuccessOrder(success);
+  }
 
   const addToCart = (productId) => {
     setLoading(true);
@@ -56,9 +84,10 @@ const ProductDetails = () => {
         setLoading(false);
       })
   };
+
   const handleQuantityChange = (newQuantity) => {
     setSelectedQuantity(newQuantity);
-};
+  };
   if (product.length === 0) {
     return <div>Loading...</div>
   }
@@ -66,7 +95,7 @@ const ProductDetails = () => {
     <div className=' bg-secondary'>
       <MainNav />
       <Alert
-       icon={<Icon />}
+        icon={<Icon />}
         open={open}
         onClose={() => setOpen(false)}
         animate={{
@@ -75,11 +104,33 @@ const ProductDetails = () => {
         }}
         className="rounded-none border-l-4 border-[#2ec946] bg-[#2ec946]/10 font-medium text-[#2ec946] max-w-2xl mx-12"
       >
-       Your item has been successfully added to the cart! <Link to="/cart" className="text-primary font-bold underline ml-2">View cart</Link>
+        Your item has been successfully added to the cart! <Link to="/cart" className="text-primary font-bold underline ml-2">View cart</Link>
       </Alert>
+      <Alert
+        icon={<Icon />}
+        open={successOrder}
+        onClose={() => setSuccessOrder(false)}
+        animate={{
+          mount: { y: 0 },
+          unmount: { y: 100 },
+        }}
+        className="rounded-none border-l-4 border-[#ee7f25] bg-[#c9812e]/10 font-medium text-[#ee7f25] max-w-2xl mx-12"
+      >
+        Your order has been successfully placed! <Link to="/buyers/my-orders" className="text-[#ff9f50] font-bold underline ml-2">View My Orders</Link>
+      </Alert>
+      <PlaceOrderModal
+        open={modelOpen}
+        setOpen={setModelOpen}
+        product={product}
+        selectedQuantity={selectedQuantity}
+        deliveryFee={deliveryFee}
+        destination={destination}
+        setSuccessOrder={handleSuccessOrder}
+        
+      />
       <div className=' grid grid-cols-4 px-8 gap-4'>
         <div className=' col-span-3 h-auto bg-white rounded-md border-gray-100'>
-        
+
           <div className=' grid grid-cols-3 px-8 '>
             {/* product image section */}
             <div className=' py-8'>
@@ -94,7 +145,7 @@ const ProductDetails = () => {
                 <div>
                   <h1 className=' text-3xl font-semibold text-gray-800'>{product.productTitle}</h1>
                   <div className="mb-3 flex gap-5 items-center justify-between">
-                    <Rating value={4} />
+                    <Rating value={4} readonly />
                     <p className=' text-sm text-gray-700'>Reviews (4)</p>
                   </div>
                 </div>
@@ -115,17 +166,19 @@ const ProductDetails = () => {
                 <ProductQuantity minimumQuantity={product.minimumQuantity} availableStock={product.availableStock} onQuantityChange={handleQuantityChange} />
               </div>
               <div className='flex gap-3 justify-end mt-8'>
-                <Link to={"/login"} className='bg-transparent border-primary border rounded-full inline-flex items-center 
+                <button className='bg-transparent border-primary border rounded-full inline-flex items-center 
                                       justify-center py-2 px-8 text-center text-sm font-medium  text-primary
-                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
+                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'
+                  onClick={() => { handleModalOPen() }}
+                >
                   Buy Now
-                </Link>
+                </button>
 
                 <button className='bg-primary border-primary border rounded-full inline-flex items-center 
                                       justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
                                       disabled:bg-gray-300 disabled:border-gray-300 disabled:text-dark-500' disabled={loading}
 
-                  onClick={() => {addToCart(id) }}
+                  onClick={() => { addToCart(id) }}
                 >
                   {loading ? 'Adding to cart' : 'Add to Cart'}
                 </button>
@@ -136,16 +189,16 @@ const ProductDetails = () => {
         </div>
         {/* courier charges section */}
         <div>
-          <DeliveryFee originData={product.farmerAddL3 + ', Sri Lanka'}/>
+          <DeliveryFee originData={product.farmerAddL3 + ', Sri Lanka'} handleDeliveryFee={handleDeliveryFee}  handleSelectDestination={handleSelectDestination}/>
           <SellerDetails
-           farmerFName={product.farmerFName}
-           farmerLName={product.farmerLName}
-           farmerAddL1={product.farmerAddL1}
-           farmerAddL2={product.farmerAddL2}
-           farmerAddL3={product.farmerAddL3}
+            farmerFName={product.farmerFName}
+            farmerLName={product.farmerLName}
+            farmerAddL1={product.farmerAddL1}
+            farmerAddL2={product.farmerAddL2}
+            farmerAddL3={product.farmerAddL3}
             farmerContact={product.farmerContact}
             farmerProfileUrl={product.farmerProfileUrl}
-           />
+          />
         </div>
       </div>
     </div>
