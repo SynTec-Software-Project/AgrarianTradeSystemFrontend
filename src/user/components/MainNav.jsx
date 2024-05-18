@@ -7,13 +7,12 @@ import SearchBar from "./SearchBar";
 import { Link, useNavigate } from "react-router-dom";
 import MainNavSide from "./MainNavSide";
 import axios from "axios";
-const BuyerId = 1;
+const buyerID = 'rashmina@email.com';
 const MainNav = () => {
     const navigate = useNavigate();
     const [cartCount, setCartCount] = useState(0);
-
     useEffect(() => {
-      axios.get(`https://localhost:44376/api/ShoppingCart/items?customerId=${BuyerId}`)
+      axios.get(`https://localhost:44376/api/ShoppingCart/items?customerId=${buyerID}`)
       .then((response) => {
          setCartCount(response.data.length);
       });

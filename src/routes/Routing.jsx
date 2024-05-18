@@ -7,11 +7,11 @@ import {
   MyReviews,
   MyReturns,
   Profile,
-} from "@/pages/SellerDashboard/dashboard";
-import SelectCourier from "@/pages/SellerDashboard/dashboard/components/SelectCourier";
-import OrderDetails from "@/pages/SellerDashboard/dashboard/components/OrderDetails";
-import AddProducts from "@/pages/SellerDashboard/dashboard/AddProducts";
-import UpdateProduct from "@/pages/SellerDashboard/dashboard/UpdateProduct";
+} from "@/seller/SellerDashboard/dashboard";
+import SelectCourier from "@/seller/SellerDashboard/dashboard/components/SelectCourier";
+import OrderDetails from "@/seller/SellerDashboard/dashboard/components/OrderDetails";
+import AddProducts from "@/seller/SellerDashboard/dashboard/AddProducts";
+import UpdateProduct from "@/seller/SellerDashboard/dashboard/UpdateProduct";
 const Routing = () => {
   return (
     <>

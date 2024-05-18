@@ -50,7 +50,7 @@ export const Title = (prop) => {
   )
 }
 
-export const InputField = ({ title, type, reference, placeholder, hint ,step}) => {
+export const InputField = ({ title, type, reference, placeholder, hint ,step ,error}) => {
   return (
     <div>
       <div className=' flex'>
@@ -64,10 +64,11 @@ export const InputField = ({ title, type, reference, placeholder, hint ,step}) =
            placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 
            focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:!border-t-gray-900 
            focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-        placeholder={placeholder} required
+        placeholder={placeholder} 
         ref={reference}
       >
       </input>
+      {error && <span className="text-red-500 text-sm">{error}</span>}
     </div>
   )
 }

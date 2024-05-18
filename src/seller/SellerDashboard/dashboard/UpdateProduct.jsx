@@ -15,14 +15,31 @@ const UpdateProduct = () => {
     })
 },[] );
   const handleUpdateproduct = (formData) => {
-    axios.put(`https://localhost:44376/api/Product/${id}`, formData)
+    try {
+    axios.put(`https://localhost:44376/api/Product/update/${id}`, formData)
         .then((respose) => {
             navigate(-1);
         })
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
+  const handleupdateImage = (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      axios.put(`https://localhost:44376/api/Product/update-image/${id}`, formData)
+          .then((respose) => {
+              console.log('Image Updated')
+          })
+        } catch (error) {
+          console.log(error);
+        }
   }
   return (
     <div>
-      <ProductForm onSubmitData={handleUpdateproduct} productData={product} isUpdate={true}/>
+      <ProductForm onSubmitData={handleUpdateproduct} productData={product} isUpdate={true} handleupdateImage={handleupdateImage}/>
     </div>
   )
 }
