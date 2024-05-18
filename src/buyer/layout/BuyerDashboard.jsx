@@ -10,7 +10,6 @@ const BuyerDashboard = () => {
     return (
     <div className='min-h-screen bg-blue-gray-50/50'>
         <SideBar/>
-
         <div className='p-4 xl:ml-80'>
              <DashboardNavbar/>
              <Configurator/>
