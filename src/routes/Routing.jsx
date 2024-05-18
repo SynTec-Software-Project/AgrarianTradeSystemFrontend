@@ -19,7 +19,7 @@ const Routing = () => {
 
         <Route path='/my-returns' element={<MyReturns />}>  </Route>
           
-        <Route path='/select-courier' element={<SelectCourier/>}>  </Route>
+        <Route path='/select-courier/:id' element={<SelectCourier/>}>  </Route>
         
         <Route path='/add-products' element={<AddProducts/>}>  </Route>
 
