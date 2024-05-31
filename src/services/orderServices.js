@@ -90,10 +90,20 @@ export const getFarmerOrderDetails = async (orderID) => {
 // Function to fetch courier list
 export const getCourierList = async () => {
     try {
-      const response = await axiosInstance.get('/CourierList');
+      const response = await axiosInstance.get('/NewOrder/getcouriers');
       return response.data;
     } catch (error) {
       console.error('Error fetching courier list:', error);
       throw error;
     }
   };
+
+// Function to update the courier for an order
+export const updateCourier = async (orderId, courierID) => {
+  try {
+    await axiosInstance.put(`/NewOrder/update-courier/${orderId}?courierID=${courierID}`);
+  } catch (error) {
+    console.error('Error updating courier:', error);
+    throw error;
+  }
+};

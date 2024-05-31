@@ -34,7 +34,7 @@ const Routing = () => {
           {" "}
         </Route>
 
-        <Route path="/select-courier" element={<SelectCourier />}>
+        <Route path="/select-courier/:id" element={<SelectCourier />}>
           {" "}
         </Route>
 
