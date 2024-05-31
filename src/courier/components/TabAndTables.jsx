@@ -3,7 +3,9 @@ import { React, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
-const USER_ID = "dimuth.karu@example.com	";
+
+import { getAllCourierOrders } from "@/services/orderServices";
+const Courier_ID = "adam.jayasinghe@example.com";
 export default function TabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState(defaultTab);
@@ -11,27 +13,23 @@ export default function TabAndTables({ defaultTab }) {
   const location = useLocation();
 
   useEffect(() => {
-    getAllCourierOrders();
-  }, []);
-
-  useEffect(() => {
     if (location.pathname === "/my-orders") {
       setTab(defaultTab);
     }
   }, [location.pathname, defaultTab]);
 
-  const getAllCourierOrders = async () => {
-    try {
-      const response = await axios.get(
-        `https://localhost:7144/api/Order/courier/${USER_ID}`
-      );
-      console.log("Courier Orders Response:", response.data); 
-      setData(response.data);
-      setFilteredData(response.data);
-    } catch (error) {
-      console.error("Error while fetching courier orders:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchBuyerOrders = async () => {
+      try {
+        const orders = await getAllCourierOrders(Courier_ID);
+        setData(orders);
+        setFilteredData(orders);
+      } catch (error) {
+        console.error('Error while fetching buyer orders:', error);
+      }
+    };
+    fetchBuyerOrders();
+  }, [Courier_ID]);
 
   const filterResult = (statusItem) => {
     let result = [];

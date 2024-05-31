@@ -2,23 +2,11 @@ import OrderOverview from "@/buyer/components/OrderOverview";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { fetchCourierDetails } from "@/services/orderServices";
-
+import { fetchCourierDetails, updateOrderStatus } from "@/services/orderServices";
 export default function CourierOrderDetails() {
   const { orderID } = useParams();
   const [orderDetails, setOrderDetails] = useState([]);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`https://localhost:7144/api/Order/courier/details/${orderID}`)
-  //     .then((response) => {
-  //       setOrderDetails(response.data[0]);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching order details:", error);
-  //       // Handle errors appropriately
-  //     });
-  // }, [orderDetails]); // Only run the effect when orderID changes
+  
   useEffect(() => {
     fetchCourierDetails(orderID)
       .then((data) => {
@@ -26,38 +14,27 @@ export default function CourierOrderDetails() {
       })
       .catch((error) => {
         console.error('Error fetching courier details:', error);
-        // Handle errors appropriately
       });
   }, [orderID]);
 
-  const handleUpdateStatus = (orderID, newStatus) => {
-    console.log(newStatus);
-    axios
-      .put(
-        `https://localhost:7144/api/Order/${orderID}?orderStatus=${newStatus}`,
-        { orderStatus: newStatus }
-      )
-      .then((response) => {
-        console.log("Order status updated successfully:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error updating order status:", error);
-        // Handle errors appropriately
-      });
+  const handleUpdateStatus = async (orderID, newStatus) => {
+    try {
+      const response = await updateOrderStatus(orderID, newStatus);
+      console.log('Order status updated successfully:', response);
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
   };
-
   return (
     <div>
       <div className="sm:-mt-12 -mt-4">
         {/* <OrderOverview title="Seller details" orderReference={orderReference}/> */}
-
         <OrderOverview orderDetails={orderDetails} type="Courier" />
       </div>
 
       <p className="text-sm text-red-300 flex justify-center sm:pt-10 pt-6 overline uppercase font-sans  ">
         The order has been {orderDetails.orderStatus}
       </p>
-
       {orderDetails.orderStatus &&
         (orderDetails.orderStatus.toLowerCase() === "ready to pickup" ||
           orderDetails.orderStatus.toLowerCase() === "picked up") && ( // Conditionally render button

@@ -7,16 +7,24 @@ import SearchBar from "./SearchBar";
 import { Link, useNavigate } from "react-router-dom";
 import MainNavSide from "./MainNavSide";
 import axios from "axios";
-const buyerID = 'rashmina@email.com';
+import { getCartItems } from "@/services/productServices";
+const buyerID = 'anna.ratnayake@example.com';
 const MainNav = () => {
     const navigate = useNavigate();
     const [cartCount, setCartCount] = useState(0);
+    
     useEffect(() => {
-      axios.get(`https://localhost:44376/api/ShoppingCart/items?customerId=${buyerID}`)
-      .then((response) => {
-         setCartCount(response.data.length);
-      });
-    }, [cartCount]);
+      const fetchCartItems = async () => {
+        try {
+          const cartItems = await getCartItems(buyerID);
+          setCartCount(cartItems.length);
+        } catch (error) {
+          console.error('Error fetching shopping cart items:', error);
+  
+        }
+      };
+      fetchCartItems();
+    }, [buyerID]); 
   return (
     <>
       <MainNavSide/>   

@@ -109,6 +109,28 @@ export const addToCartProducts = async (cart) => {
     }
   };
 
+  // Function to get shopping cart items count
+  export const getCartItemsCount = async (buyerId) => {
+    try {
+      const response = await axiosInstance.get(`/ShoppingCart/items?customerId=${buyerId}`);
+      return response.data.length;
+    } catch (error) {
+      console.error('Error fetching shopping cart items:', error);
+      throw error;
+    }
+  };
+
+  // Function to delete a cart item
+export const deleteCartItem = async (buyerId, cartItemId) => {
+    try {
+      const response = await axiosInstance.delete(`/ShoppingCart/delete-cart-item?buyerId=${buyerId}&cartItemId=${cartItemId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting cart item:', error);
+      throw error;
+    }
+  };
+
   //function to get product list by seller ID
 export const getProductsBySellerID = async (id) => {
     try {

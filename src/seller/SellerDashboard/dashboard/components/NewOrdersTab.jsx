@@ -1,17 +1,17 @@
-"use client";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import React from 'react';
 import sellerTableData from '../../../../data/seller-table-data';
 import { Select, Option } from "@material-tailwind/react";
-import { useNavigate } from 'react-router-dom';
-
-
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import moment from 'moment';
+import { getAllFarmerOrders } from '@/services/orderServices';
+import { FARMER_ID } from '@/usersID';
 export default function NewOrdersTab() {
-  
-  const [data, setData] = useState(sellerTableData);
-  const [tab, setTab] = useState('');
+  const [data, setData] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
-
+  const sellerID =FARMER_ID;
   const filterResult = (filterValue) => {
     let result;
 
@@ -25,183 +25,94 @@ export default function NewOrdersTab() {
 
     setData(result);
   };
-
-  
   const clickTab = (newTab) =>{
     setTab(newTab);
   }
+  const handleRowClick = (id) => {
+    navigate(`/dashboard/select-courier/${id}`);
+  };
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const orders = await getAllFarmerOrders(sellerID);
+        setData(orders);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        // Handle errors appropriately, e.g., show a notification to the user
+      }
+    };
 
-  const handleRowClick = (values) => {
-    // Handle row click, e.g., select-couriernavigate to details page
-    navigate('/dashboard/select-courier')
-    
-  }
- 
+    fetchOrders();
+  }, [sellerID]);
+
   return (
     <div>
-
-<div className="float-right w-72 mb-3">
-      <Select label="Order Details">
-        <Option onClick={()=>{
-                  filterResult('all');
-                  clickTab("New Orders")
-                }}  
-                >All</Option>
-        <Option onClick={()=>{
-                  filterResult('n');
-                  clickTab("New Orders")
-                }}  
-                  >New Orders</Option>
-        <Option onClick={()=>{
-                  filterResult('y');
-                  clickTab("cancelled")
-                }}
-                >Cancelled</Option>
-      </Select>
+      <div>
+        <div className="relative flex flex-col w-full h-full text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block">
+          <table className="w-full text-left table-auto min-w-max">
+            <thead>
+              <tr class="border-b border-primary mr-6">
+                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Product</th>
+                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Order reference</th>
+                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Order Placed</th>
+                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Quantity (Kg)</th>
+                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Total</th>
+                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Delivery</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((values) => {
+                const { orderID, productTitle, orderedDate, totalQuantity, productImageUrl, totalPrice ,orderStatus } = values;
+                const dateTimeString = orderedDate;
+                const date = moment(dateTimeString).format("YYYY-MM-DD")
+                return (
+                  <tr
+                    key={orderID}
+                    onClick={() => handleRowClick(orderID)}
+                    onMouseEnter={() => setSelectedRow(orderID)}
+                    onMouseLeave={() => setSelectedRow(null)}
+                    className={selectedRow === orderID ? 'bg-gray-200 cursor-pointer' : 'cursor-pointer'}
+                  >
+                    <td className="p-3 w-24 text-center align-middle">
+                      <div className="flex flex-row items-center justify-center">
+                        <img src={'https://syntecblobstorage.blob.core.windows.net/products/' + productImageUrl} alt={productTitle} style={{ borderRadius: "100%", height: "40px", width: "40px", marginRight: "8px" }} />
+                        <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
+                          {productTitle}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
+                        {orderID}
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
+                        {date}
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
+                        {totalQuantity}
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
+                        {totalPrice.toFixed(2)}
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900">
+                        {orderStatus}
+                      </p>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-
-        <div>
-          <div class="relative flex flex-col w-full h-full  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block ">
-            <table class="w-full text-left table-auto min-w-max ">
-              <thead>
-                <tr>
-                  <div class="flex flex-row justify-between border-b border-primary mr-6">
-                    <th class="p-4  ml-8  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Product
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Order reference 
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Order Placed
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Unit Price
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                    Quantity (Kg)
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Total
-                    </p>
-                  </th>
-                  <th class="p-4  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      Delivery
-                    </p>
-                  </th>
-                  </div>
-                </tr>
-              </thead>
-              
-              {/* display items in objects of array */}
-
-              <tbody >
-                {data.map((values)=>{
-        
-                  const {orderReference,product,orderPlaced,unitPrice,quantity,photoName,price,Delivery}=values;    //destructuring
-                  return(
-                    <>
-                    <tr key={orderReference} onClick={() => handleRowClick(values)}>
-                      <div class='flex  flex-row justify-between mr-8 border-b border-blue-gray-50'>
-                      <td class="p-3 w-24 ">
-                          <div class="flex space-x-5  ">
-                        <img src={photoName} alt={product} />
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {product}
-                        </p>
-                        </div>
-                      </td>
-                      <td class="p-3 ">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {orderReference}
-                        </p>
-                      </td>
-                      <td class="p-3 ">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                            {orderPlaced}
-                        </p>
-                      </td>
-                      <td class="p-3 ">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                        {unitPrice} 
-                        </p>
-                      </td>
-                      <td class="p-3">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {quantity}
-                        </p>
-                      </td> 
-                      <td class="p-3 ">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {price}
-                        </p>
-                      </td> 
-                      <td class="p-3 ">
-                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                          {Delivery}
-                        </p>
-                      </td>
-                      </div>       
-                    </tr>
-                    
-                    </>
-                  )
-                })}
-
-                
-          
-              </tbody>
-            </table>
-          </div>
-
-          <div class="sm:hidden">
-          {data.map((values)=>{
-            const {orderReference,product,orderPlaced,quantity,courierId,photoName,price,status}=values;    //destructuring
-            return(
-              <>
-              <div className='bg-primary p-4  rounded-lg shadow mt-8 text-white '>
-            
-                  <img src={photoName} alt={product} className='w-24 h-14 pl-8' />
-
-                  <div className='grid grid-cols-2 gap-7 mt-2'>
-                    <div className='pl-5 '>
-                    <div className='text-base  font-medium'>{product} - {quantity}Kg</div>
-                    <div className='text-sm text-custom_gray'>Rs.{price}</div>
-                    <div className='text-sm text-gray-300'>{orderPlaced}</div>
-                    </div >
-                    <div className='text-primary bg-gray-200 p-3 rounded w-32 '>
-                    <div className='text-sm '>courier Id: {courierId}</div>             
-                    <div className='text-md'> {orderReference}</div>
-                    </div>
-                  
-                  </div>
-              </div>
-              </>
-            )  
-          })}
-          </div>
-
-          
-        
-        </div>  
-
-        
-    </div>
-        
-   
-
-
-  )
+  );
 }

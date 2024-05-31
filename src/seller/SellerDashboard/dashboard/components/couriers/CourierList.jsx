@@ -61,24 +61,18 @@ export function CourierList({ search }) {
   const [courierList,setcourierList]=useState([])
 
   useEffect(() => {
-  
-
-    axios.get("https://localhost:7294/api/CourierList")
-        .then((response) => {
-
-          console.log("HEllo")
-          
-          setcourierList(response.data);
-          setData(response.data);
-           
-            console.log(response.data);
-        })
-        .catch((error) => {
-            console.error('Error fetching appointments:', error);
-        });
-  
-
-}, []);
+    const fetchCourierList = async () => {
+      try {
+        const courierData = await getCourierList();
+        setCourierList(courierData);
+        setData(courierData);
+        console.log('Courier List:', courierData);
+      } catch (error) {
+        console.error('Error fetching courier list:', error);
+      }
+    };
+    fetchCourierList();
+  }, []);
 
   return (  
     <div>

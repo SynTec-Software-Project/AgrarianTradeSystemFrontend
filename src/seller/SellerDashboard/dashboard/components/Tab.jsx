@@ -4,9 +4,9 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
+import { getAllFarmerOrders } from "@/services/orderServices";
 
-const USER_ID = "	alicesmith@example.com";
-
+const Farmer_ID = "john.perera@example.com";
 export default function Tab({ defaultTab }) {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState(defaultTab);
@@ -14,30 +14,23 @@ export default function Tab({ defaultTab }) {
   const location = useLocation();
 
   useEffect(() => {
-    getAllFarmerOrders();
-  }, []);
-
-  useEffect(() => {
     if (location.pathname === "/my-orders") {
       setTab(defaultTab);
     }
   }, [location.pathname, defaultTab]);
 
-  const getAllFarmerOrders = async () => {
-    try {
-      // Make an HTTP GET request to fetch courier orders for the user with USER_ID
-      const response = await axios.get(
-        `https://localhost:7144/api/Order/farmer/${USER_ID}`
-      );
-      console.log("Farmer Orders Response:", response.data); // Log the response data to check
-
-      // Update the state with the retrieved courier orders
-      setData(response.data);
-      setFilteredData(response.data);
-    } catch (error) {
-      console.error("Error while fetching courier orders:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const details = await getAllFarmerOrders(Farmer_ID);
+        setData(details);
+      setFilteredData(details);
+      } catch (error) {
+        console.error('Error fetching order details:', error);
+      }
+    };
+    fetchOrderDetails();
+  }, [Farmer_ID]);
 
   const filterResult = (statusItem) => {
     let result = [];
@@ -119,7 +112,6 @@ export default function Tab({ defaultTab }) {
           </button>
         </div>
       </div>
-
       <div>
         <div className="relative w-11/12   h-full ml-12 content-center  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block ">
           <table className="w-full text-left table-auto  ">
