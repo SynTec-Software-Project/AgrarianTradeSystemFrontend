@@ -9,11 +9,9 @@ import {
     Card,
     CardBody,
 } from "@material-tailwind/react";
-import { set } from 'date-fns';
-import axios from 'axios';
-import { Input } from "@material-tailwind/react";
+import { createNewOrder } from '@/services/orderServices';
 const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee, destination ,setSuccessOrder }) => {
-    const buyerID = 'rashmina@email.com';
+    const buyerID = 'anna.ratnayake@example.com';
     const addL1Ref = useRef(null);
     const addL2Ref = useRef(null);
     const [loading, setLoading] = useState(false);
@@ -27,22 +25,19 @@ const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee
     delivery = deliveryFee * 1.0;
     var total = (subTotal + delivery);
 
-    const handlePost = (formData) => {
-        axios.post('https://localhost:44376/api/NewOrder', formData, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-        })
-        .then(response => {
-            setLoading(false);
-            handleModalOPen();
-            setSuccessOrder(true);
-        })
-        .catch(error => {
-            console.error('Error adding product:', error);
-        });
-    }
-
+    //create a new order
+    const handlePost = async (formData) => {
+        setLoading(true);
+        try {
+          await createNewOrder(formData);
+          setLoading(false);
+          handleModalOPen();
+          setSuccessOrder(true);
+        } catch (error) {
+          console.error('Error creating new order:', error);
+          setLoading(false);
+        }
+      };
 
     const handleSubmit = () => {
         setLoading(true);
@@ -62,7 +57,6 @@ const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee
             deliveryDate: null, // Adjust as needed
         };
         handlePost(formData);
-        // console.log(formData);
     }
     return (
         <div>

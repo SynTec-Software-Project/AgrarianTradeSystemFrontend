@@ -13,6 +13,7 @@ import DeliveryFee from '@/courier/components/DeliveryFee';
 import { set } from 'date-fns';
 import SellerDetails from '../components/SellerDetails';
 import PlaceOrderModal from '../components/PlaceOrderModal';
+import { addToCartProducts, getProductDetails } from '@/services/productServices';
 function Icon() {
   return (
     <svg
@@ -29,7 +30,7 @@ function Icon() {
     </svg>
   );
 }
-const buyerID = 'rashmina@email.com';
+const buyerID = 'anna.ratnayake@example.com';
 const ProductDetails = () => {
   const [product, setProduct] = useState([]);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -40,13 +41,20 @@ const ProductDetails = () => {
   const [successOrder, setSuccessOrder] = useState(false);
   const { id } = useParams();
   const [modelOpen, setModelOpen] = useState(false);
+  
   useEffect(() => {
-    axios.get(`https://localhost:44376/api/Product/details/${id}`)
-      .then(response => {
-        setProduct(response.data);
-      })
-  }, []);
+    const fetchProductDetails = async () => {
+      try {
+        const productData = await getProductDetails(id);
+        setProduct(productData);
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+      }
+    };
 
+    fetchProductDetails();
+  }, [id]);
+  
   const handleModalOPen = () => {
     // if (deliveryFee === 0) {
     //   alert('Please set the delivery location');
@@ -71,18 +79,21 @@ const ProductDetails = () => {
     setSuccessOrder(success);
   }
 
-  const addToCart = (productId) => {
+  const addToCart = async (productId) => {
     setLoading(true);
     var cart = {
       buyerId: buyerID,
       productId: productId,
       quantity: selectedQuantity
     }
-    axios.post("https://localhost:44376/api/ShoppingCart/add-to-cart", cart)
-      .then((respose) => {
-        setOpen(true);
-        setLoading(false);
-      })
+    try {
+      await addToCartProducts(cart);
+      setOpen(true);
+    } catch (error) {
+      console.error('Error adding items to the cart:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleQuantityChange = (newQuantity) => {

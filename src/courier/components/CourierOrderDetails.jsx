@@ -2,22 +2,33 @@ import OrderOverview from "@/buyer/components/OrderOverview";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { fetchCourierDetails } from "@/services/orderServices";
 
 export default function CourierOrderDetails() {
   const { orderID } = useParams();
   const [orderDetails, setOrderDetails] = useState([]);
 
+  // useEffect(() => {
+  //   axios
+  //     .get(`https://localhost:7144/api/Order/courier/details/${orderID}`)
+  //     .then((response) => {
+  //       setOrderDetails(response.data[0]);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching order details:", error);
+  //       // Handle errors appropriately
+  //     });
+  // }, [orderDetails]); // Only run the effect when orderID changes
   useEffect(() => {
-    axios
-      .get(`https://localhost:7144/api/Order/courier/details/${orderID}`)
-      .then((response) => {
-        setOrderDetails(response.data[0]);
+    fetchCourierDetails(orderID)
+      .then((data) => {
+        setOrderDetails(data);
       })
       .catch((error) => {
-        console.error("Error fetching order details:", error);
+        console.error('Error fetching courier details:', error);
         // Handle errors appropriately
       });
-  }, [orderDetails]); // Only run the effect when orderID changes
+  }, [orderID]);
 
   const handleUpdateStatus = (orderID, newStatus) => {
     console.log(newStatus);
@@ -48,8 +59,8 @@ export default function CourierOrderDetails() {
       </p>
 
       {orderDetails.orderStatus &&
-      (orderDetails.orderStatus.toLowerCase() === "ready to pickup" ||
-        orderDetails.orderStatus.toLowerCase() === "picked up") && ( // Conditionally render button
+        (orderDetails.orderStatus.toLowerCase() === "ready to pickup" ||
+          orderDetails.orderStatus.toLowerCase() === "picked up") && ( // Conditionally render button
           <div className="flex flex-row sm:space-x-16 space-x-4 justify-center sm:pt-8 pt-6">
             <div className="bg-gray-200 shadow-md h-10 w-32 rounded-lg flex items-center justify-center font-medium text-gray-800">
               {orderDetails.orderStatus.toLowerCase() === "ready to pickup"

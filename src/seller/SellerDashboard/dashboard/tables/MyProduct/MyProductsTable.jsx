@@ -7,10 +7,14 @@ import { HiTrash } from "react-icons/hi2";
 import moment from 'moment';
 import Swal from 'sweetalert2'
 import { Card, CardHeader,Typography,Button,CardBody,CardFooter,Avatar,IconButton,Tooltip,} from "@material-tailwind/react";
+import { deleteProduct, getProductsBySellerID } from '@/services/productServices';
 const TABLE_HEAD = ["Product", "Product Number", "Date Created", "Unit Price", "Stock", "Minimum Order", "", ""];
+
 const MyProductsTable = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  //hard code seller id
+  const sellerID ='john.perera@example.com'
   const  PopupHandler = (id) =>{
     Swal.fire({
       title: "Are you sure?",
@@ -36,21 +40,23 @@ const MyProductsTable = () => {
       }
     });
   }
-  function deleteConfirmHandler(productId){
-    axios.delete(`https://localhost:44376/api/Product/${productId}`)
-    .then((response)=>{         
-        setProducts(response.data);
-    })
+  //get product list by seller ID
+  const fetchProducts = async () => {
+    try {
+      const productData = await getProductsBySellerID(sellerID);
+      setProducts(productData);
+    } catch (error) {
+      console.error('Error fetching cart details:', error);
+    }
+  };
+  //delete product
+  const deleteConfirmHandler = async (productId) =>{
+    const result = await deleteProduct(productId);
+    fetchProducts();
   }
   useEffect(() => {
-    axios.get("https://localhost:44376/api/product")
-      .then((response) => {
-        setProducts((data) => {
-          return response.data;
-        });
-      });
+    fetchProducts();
   }, []);
-
   return (
     <div>
 

@@ -3,15 +3,23 @@ import MainNav from '../components/MainNav'
 import CheckoutCard from '../components/CheckoutCard'
 import { CartTable } from '../components/CartTable'
 import axios from 'axios'
+import { getCartItems } from '@/services/productServices'
 
 const ShoppingCart = () => {
   const[cartItems, setCartItems] = useState([]);
-  const BuyerId = 'rashmina@email.com';
+  const BuyerId = 'anna.ratnayake@example.com';
+
   useEffect(() => {
-    axios.get(`https://localhost:44376/api/ShoppingCart/items?customerId=${BuyerId}`)
-    .then((response) => {
-      setCartItems(response.data);
-    });
+    const fetchCartItems = async () => {
+      try {
+        const cartData = await getCartItems(BuyerId);
+        setCartItems(cartData);
+      } catch (error) {
+        console.error('Error fetching cart details:', error);
+      }
+    };
+
+    fetchCartItems();
   }, [cartItems]);
 
  const handleDeleteItem = (item) => {
