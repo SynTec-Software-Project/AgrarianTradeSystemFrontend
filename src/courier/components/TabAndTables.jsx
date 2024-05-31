@@ -3,9 +3,7 @@ import { React, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
-
 const USER_ID = "dimuth.karu@example.com	";
-
 export default function TabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState(defaultTab);
@@ -24,13 +22,10 @@ export default function TabAndTables({ defaultTab }) {
 
   const getAllCourierOrders = async () => {
     try {
-      // Make an HTTP GET request to fetch courier orders for the user with USER_ID
       const response = await axios.get(
         `https://localhost:7144/api/Order/courier/${USER_ID}`
       );
-      console.log("Courier Orders Response:", response.data); // Log the response data to check
-
-      // Update the state with the retrieved courier orders
+      console.log("Courier Orders Response:", response.data); 
       setData(response.data);
       setFilteredData(response.data);
     } catch (error) {
