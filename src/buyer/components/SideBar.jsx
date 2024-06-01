@@ -70,7 +70,7 @@ export function SideBar() {
                   variant={isActive ? "gradient" : "text"}
                   color={
                     isActive
-                      ? sidenavColor
+                      ?  "green"
                       : sidenavType === "dark"
                         ? "white"
                         : "blue-gray"
@@ -98,7 +98,7 @@ export function SideBar() {
                   variant={isActive ? "gradient" : "text"}
                   color={
                     isActive
-                      ? sidenavColor
+                      ?  "green"
                       : sidenavType === "dark"
                         ? "white"
                         : "blue-gray"
@@ -125,7 +125,7 @@ export function SideBar() {
                   variant={isActive ? "gradient" : "text"}
                   color={
                     isActive
-                      ? sidenavColor
+                      ?  "green"
                       : sidenavType === "dark"
                         ? "white"
                         : "blue-gray"
@@ -161,7 +161,7 @@ export function SideBar() {
                   variant={isActive ? "gradient" : "text"}
                   color={
                     isActive
-                      ? sidenavColor
+                      ?  "green"
                       : sidenavType === "dark"
                         ? "white"
                         : "blue-gray"
@@ -181,14 +181,7 @@ export function SideBar() {
               )}
             </NavLink>
           </li>
-
-
-
-
-
-
         </ul>
-
       </div>
     </aside>
   );

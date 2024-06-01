@@ -36,7 +36,7 @@ const MainNav = () => {
           <div className="w-50 max-w-full px-8 ">
             <a href="/#" className="block w-full">
               <img
-                src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-primary.svg"
+                src="https://syntecblobstorage.blob.core.windows.net/bussinescard/large-removebg-preview 1.png"
                 alt="logo"
                 className="dark:hidden"
               />

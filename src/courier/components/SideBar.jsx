@@ -14,13 +14,14 @@ import { useMaterialTailwindController, setOpenSidenav } from "@/context";
 import { HomeModernIcon } from "@heroicons/react/24/solid";
 export function SideBar() {
   const [controller, dispatch] = useMaterialTailwindController();
-  const { sidenavColor, sidenavType, openSidenav } = controller;
+  const { sidenavType, openSidenav } = controller;
   const sidenavTypes = {
     dark: "bg-gradient-to-br from-gray-800 to-gray-900",
     white: "bg-white shadow-sm",
     transparent: "bg-transparent",
   };
 
+  const sidenavColor = "green";
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${openSidenav ? "translate-x-0" : "-translate-x-80"
