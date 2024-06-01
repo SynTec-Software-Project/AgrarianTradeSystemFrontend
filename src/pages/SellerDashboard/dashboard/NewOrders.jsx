@@ -8,8 +8,8 @@ const paragraStyles = {
 };
 import ImageModal from './components/ImageModal';
 import ImageGallery from './components/ImageGallery';
-import RPDCard from '../../../reuseble seller/RPDCard';
-import ReturnFormCard from '@/reuseble seller/ReturnFormCard';
+import RPDCard from './components/reviews/reuseble seller/RPDCard';
+import ReturnFormCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/ReturnFormCard';
 
 
 export function NewOrders() {

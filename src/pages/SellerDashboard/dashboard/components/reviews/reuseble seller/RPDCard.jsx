@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import ImageModal from '../pages/SellerDashboard/dashboard/components/ImageModal';
-import ImageGallery from '../pages/SellerDashboard/dashboard/components/ImageGallery';
+import ImageModal from '../../ImageModal';
+import ImageGallery from '../../ImageGallery';
 
 const paragraStyles = {
     WebkitLineClamp: 3,

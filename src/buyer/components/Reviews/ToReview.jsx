@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import ReviewCard from '@/reuseble seller/ReviewCard';
+import ReviewCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/ReviewCard';
 import axios from 'axios';
 
 export const AddReviewCard = () => {

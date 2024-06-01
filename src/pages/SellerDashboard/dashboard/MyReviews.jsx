@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useNavigate } from 'react-router-dom';
-import ReviewCard from '../../../reuseble seller/ReviewCard';
-import SellerReviewCard from '@/reuseble seller/SellerReviewCard';
+import ReviewCard from './components/reviews/reuseble seller/ReviewCard';
+import SellerReviewCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/SellerReviewCard';
 
 
 const data=[

@@ -1,4 +1,4 @@
-import ReturnFormCard from '@/reuseble seller/ReturnFormCard'
+import ReturnFormCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/ReturnFormCard'
 import React from 'react'
 
 

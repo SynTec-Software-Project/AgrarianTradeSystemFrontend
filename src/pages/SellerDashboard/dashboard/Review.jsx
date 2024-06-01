@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import NormalReviewCard from '@/reuseble seller/NormalReviewCard';
+import NormalReviewCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/NormalReviewCard';
 import { Rating } from "@material-tailwind/react";
 import ImageModal from './components/ImageModal';
 import ImageGallery from './components/ImageGallery';
 import {
   Button,
 } from "@material-tailwind/react";
-import PopupBox from '@/reuseble seller/PopupBox';
+import PopupBox from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/PopupBox';
 
 const paragraStyles = {
   WebkitLineClamp: 3,

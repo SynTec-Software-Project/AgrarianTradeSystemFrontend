@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import ReturnCard from '@/reuseble seller/ReturnCard';
+import ReturnCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/ReturnCard';
 
 
 const data = [
