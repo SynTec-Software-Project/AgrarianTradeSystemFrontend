@@ -30,15 +30,15 @@ export default function CourierNewOrdersTab() {
   return (
     <div>
       <div>
-        <div className="relative flex-col w-full h-full text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block">
+        <div className="relative flex-col w-full h-full text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-8 hidden sm:block">
           <table className="w-full text-left table-auto min-w-max">
             <thead>
               <tr className="border-b border-primary mr-6">
-                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Product</th>
-                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Order reference</th>
-                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Order Placed</th>
-                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Quantity (Kg)</th>
-                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Delivery Fee</th>
+                <th className="p-4 py-5 font-bold w-24 text-center align-middle">Product</th>
+                <th className="p-4 py-5 font-bold w-24 text-center align-middle">Order reference</th>
+                <th className="p-4 py-5 font-bold w-24 text-center align-middle">Order Placed</th>
+                <th className="p-4 py-5 font-bold w-24 text-center align-middle">Quantity (Kg)</th>
+                <th className="p-4 py-5 font-bold w-24 text-center align-middle">Delivery Fee</th>
               </tr>
             </thead>
             <tbody>

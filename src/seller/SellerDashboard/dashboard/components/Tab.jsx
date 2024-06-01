@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 import { getAllFarmerOrders } from "@/services/orderServices";
@@ -13,7 +13,8 @@ export default function Tab({ defaultTab }) {
   const [tab, setTab] = useState(defaultTab);
   const [filteredData, setFilteredData] = useState([]);
   const location = useLocation();
-
+  const [selectedRow, setSelectedRow] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     if (location.pathname === "/my-orders") {
       setTab(defaultTab);
@@ -50,7 +51,9 @@ export default function Tab({ defaultTab }) {
     setFilteredData(result);
     setTab(statusItem);
   };
-
+  const handleRowClick = (id) => {
+    navigate(`/dashboard/my-orders/${id}`);
+  };
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -59,7 +62,7 @@ export default function Tab({ defaultTab }) {
   return (
     <div>
       <div className="flex sm:justify-end justify-center sm:mr-16 mr-0 text-custom-gray  font-medium">
-        <div className="flex  -mt-10 sm:text-sm text-xs border-b-2 ">
+        <div className="flex sm:text-sm text-xs border-b-2 ">
           <button
             onClick={() => {
               filterResult("All");
@@ -114,48 +117,17 @@ export default function Tab({ defaultTab }) {
         </div>
       </div>
       <div>
-        <div className="relative w-11/12   h-full ml-12 content-center  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block ">
-          <table className="w-full text-left table-auto  ">
-            <thead>
-              <tr>
-                <div className="pl-7 pr-4 grid grid-cols-6 gap-6 border-b border-primary bg-green-500 text-gray-100 text-md">
-                  <th className="col-span-1  ml-6  pt-8 pb-6 font-bold">
-                    <p className="block font-sans  antialiased font-medium leading-none  ">
-                      Product
-                    </p>
-                  </th>
-                  <th
-                    className="col-span-1 
-                   pt-8 pb-6 font-bold"
-                  >
-                    <p className="block font-sans  antialiased font-medium leading-none  ">
-                      Order reference
-                    </p>
-                  </th>
-                  <th className="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans  antialiased font-medium leading-none  ">
-                      Order Placed
-                    </p>
-                  </th>
-                  <th className="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans  antialiased font-medium leading-none  ">
-                      Quantity
-                    </p>
-                  </th>
-                  <th className="col-span-1  pt-8 pb-6 font-bold">
-                    <p className="block font-sans  antialiased font-medium leading-none  ">
-                      price
-                    </p>
-                  </th>
-                  {/* <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans  antialiased font-medium leading-none  ">
-                      Status 
-                    </p>
-                  </th> */}
-                </div>
+        <div className=" flex-col justify-center text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-8">
+          <table  className="w-full text-left table-auto min-w-max">
+          <thead>
+              <tr class="border-b border-primary">
+                <th className=" py-5 font-bold w-24 text-center align-middle">Product</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">Order reference</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">Order Placed</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">Quantity (Kg)</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">Price</th>
               </tr>
             </thead>
-
             <tbody>
               {filteredData.map((values) => {
                 const {
@@ -170,12 +142,13 @@ export default function Tab({ defaultTab }) {
                 return (
                   <tr
                     key={orderID}
-                    className="hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out"
+                    onClick={() => handleRowClick(orderID)}
+                    onMouseEnter={() => setSelectedRow(orderID)}
+                    onMouseLeave={() => setSelectedRow(null)}
+                    className={selectedRow === orderID ? 'bg-gray-200 cursor-pointer' : 'cursor-pointer'}
                   >
-                    <Link to={`/dashboard/my-orders/${orderID}`}>
-                      <div className="pl-7 pr-4 grid grid-cols-6 gap-4 border-b border-blue-gray-50">
-                        <td class="p-3 col-span-1 ">
-                          <div className="flex space-x-5  ">
+                        <td class="p-3 w-24 text-center align-middle">
+                          <div className="flex space-x-5 ">
                             <Avatar
                               src={
                                 "https://syntecblobstorage.blob.core.windows.net/products/" +
@@ -189,28 +162,28 @@ export default function Tab({ defaultTab }) {
                           </div>
                         </td>
 
-                        <td className="p-3 col-span-1">
+                        <td className="p-3 w-24 text-center align-middle">
                           <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                             {orderID}
                           </p>
                         </td>
 
-                        <td className="p-3 col-span-1">
+                        <td className="p-3 w-24 text-center align-middle">
                           <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                             {formatDate(orderedDate)}
                           </p>
                         </td>
-                        <td className="p-3 col-span-1">
+                        <td className="p-3 w-24 text-center align-middle">
                           <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                             {totalQuantity}Kg
                           </p>
                         </td>
-                        <td className="p-3 col-span-1">
+                        <td className="p-3 w-24 text-center align-middle">
                           <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                             Rs.{totalPrice}
                           </p>
                         </td>
-                        <td className="p-3 col-span-1  ">
+                        <td className="p-3 w-24 text-center align-middle">
                           {orderStatus.toLowerCase() === "ready to pickup" && (
                             <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                               Ready to Pickup
@@ -227,8 +200,6 @@ export default function Tab({ defaultTab }) {
                             </p>
                           )}
                         </td>
-                      </div>
-                    </Link>
                   </tr>
                 );
               })}
