@@ -3,9 +3,7 @@ import { Button } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 
 const ReviewCard = (props) => {
-
   const navigate = useNavigate();
-
   return (
     <div>    <div className=' bg-white px-8 py-5 rounded-lg my-2'>
       <div className=' mb-5'>

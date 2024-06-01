@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import ReviewCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/ReviewCard';
 import axios from 'axios';
+import ReviewCard from '@/seller/SellerDashboard/dashboard/components/reviews/components/ReviewCard';
 
 export const AddReviewCard = () => {
   const navigate = useNavigate();

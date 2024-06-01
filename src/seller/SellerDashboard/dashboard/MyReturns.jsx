@@ -1,8 +1,8 @@
 import React from 'react'
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
-import ReturnCard from './components/reviews/reuseble seller/SellerReturnCard';
-import SellerReturnCard from './components/reviews/reuseble seller/SellerReturnCard';
+import ReturnCard from './components/reviews/components/SellerReturnCard';
+import SellerReturnCard from './components/reviews/components/SellerReturnCard';
 
 
 const data=[

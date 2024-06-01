@@ -1,32 +1,30 @@
 import React,{useState,useEffect} from 'react'
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
+ import axios from 'axios';
 
 const SellerReviewCard = (props) => {
   const navigate = useNavigate();
+  const [productData, setProductData] = useState([]);
+  const fetchProducts = async () => {
+    const client = axios.create({
+      baseURL: "https://localhost:7144/api/Review/get-history"
+    });
 
-  // const [productData, setProductData] = useState([]);
+    try {
+      client.get().then((response) => {
+        setProductData(response.data)
+        // console.log(response)
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    // console.log(data);
+  }
 
-  // const fetchProducts = async () => {
-  //   const client = axios.create({
-  //     baseURL: "https://localhost:7144/api/Review/get-history"
-  //   });
-
-  //   try {
-  //     client.get().then((response) => {
-  //       setProductData(response.data)
-  //       // console.log(response)
-  //     })
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   // console.log(data);
-  // }
-
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
 
   return (

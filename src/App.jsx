@@ -8,18 +8,12 @@ import Login from "./user/auth/Login";
 import CreateAccount from "./user/auth/CreateAccount";
 import FarmerCreateAccount from "./user/auth/FarmerCreateAccount";
 import CourierCreateAccount from "./user/auth/CourierCreateAccount";
-import RPDCard from "./pages/SellerDashboard/dashboard/components/reviews/reuseble seller/RPDCard";
-import ReturnOrder from "./pages/SellerDashboard/dashboard/ReturnOrder";
 import ForgotPassword from "./user/auth/ForgotPassword";
-import Auth2 from "./user/auth/Auth";
 import ProductDetails from "./user/pages/ProductDetails";
 import PageNotFound from "./user/pages/PageNotFound";
 import ShoppingCart from "./user/pages/ShoppingCart";
 
 function App() {
-  
-  
-  
   
   // const routes = {
   //   admin: [
@@ -42,11 +36,7 @@ function App() {
   return (
     <>
      <Routes>
-      <Route path="/dashboard/*" element={<Dashboard />} />
-      
-    </Routes> 
-
-    <Routes>
+      <Route path="/dashboard/*" element={<Dashboard />} />    
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<PageNotFound/>} />
       <Route path="/buyers/*" element={<BuyerDashboard/>}/>
@@ -60,9 +50,6 @@ function App() {
       <Route path='/product-details/:id' element={<ProductDetails/>}></Route>
       <Route path="/cart" element={<ShoppingCart/>}/>
     </Routes>
-
-
-    
     </>
   );
 }

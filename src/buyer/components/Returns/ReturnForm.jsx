@@ -1,11 +1,12 @@
-import ReturnFormCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/ReturnFormCard'
+
+import ReturnFormCard from '@/seller/SellerDashboard/dashboard/components/reviews/components/ReturnFormCard'
 import React from 'react'
 
 
 const ReturnForm = () => {
   return (
     <>
-      <ReturnFormCard />
+      <ReturnFormCard/>
     </>
   )
 }
