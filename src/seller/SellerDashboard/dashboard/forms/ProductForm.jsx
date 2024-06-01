@@ -5,11 +5,12 @@ import { Button } from "@material-tailwind/react";
 import { fruits, productTypes, productTypesSelect, vegetables } from '@/data/product-type-data';
 import FileUpload from './FileUpload';
 import { useNavigate } from 'react-router-dom';
+import { FARMER_ID } from '@/usersID';
 
 const ProductForm = ({ onSubmitData, productData, isUpdate ,handleupdateImage }) => {
   const navigate = useNavigate();
   // seller id hardcoded
-  const SellerId = 'alicesmith@example.com';
+  const SellerId = FARMER_ID;
   // get user inputs
   const productTitleRef = useRef(null);
   const productDescriptionRef = useRef(null);

@@ -1,42 +1,37 @@
 "use client";
 import { React, useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 
-const USER_ID = "dimuth.karu@example.com	";
-
+import { getAllCourierOrders } from "@/services/orderServices";
+import { COURIER_ID } from "@/usersID";
+const Courier_ID = COURIER_ID; //COURIER ID HARDCODED
 export default function TabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState(defaultTab);
   const [filteredData, setFilteredData] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
   const location = useLocation();
-
-  useEffect(() => {
-    getAllCourierOrders();
-  }, []);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (location.pathname === "/my-orders") {
       setTab(defaultTab);
     }
   }, [location.pathname, defaultTab]);
 
-  const getAllCourierOrders = async () => {
-    try {
-      // Make an HTTP GET request to fetch courier orders for the user with USER_ID
-      const response = await axios.get(
-        `https://localhost:7144/api/Order/courier/${USER_ID}`
-      );
-      console.log("Courier Orders Response:", response.data); // Log the response data to check
-
-      // Update the state with the retrieved courier orders
-      setData(response.data);
-      setFilteredData(response.data);
-    } catch (error) {
-      console.error("Error while fetching courier orders:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchBuyerOrders = async () => {
+      try {
+        const orders = await getAllCourierOrders(Courier_ID);
+        setData(orders);
+        setFilteredData(orders);
+      } catch (error) {
+        console.error('Error while fetching buyer orders:', error);
+      }
+    };
+    fetchBuyerOrders();
+  }, [Courier_ID]);
 
   const filterResult = (statusItem) => {
     let result = [];
@@ -60,7 +55,9 @@ export default function TabAndTables({ defaultTab }) {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
-
+  const handleRowClick = (id) => {
+    navigate(`/couriers/my-orders/${id}`);
+  };
   return (
     <div>
       <div className="flex sm:justify-end justify-center sm:mr-16 mr-0 text-custom-gray  font-medium">
@@ -120,50 +117,17 @@ export default function TabAndTables({ defaultTab }) {
       </div>
 
       <div>
-        <div class="relative w-11/12   h-full ml-12 content-center  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block  ">
+        <div class="relative w-11/12   h-full ml-12 content-center  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-8 hidden sm:block  ">
           <table class="w-full text-left table-auto  ">
-            <thead>
-              <tr>
-                <div class="pl-4 pr-4 grid grid-cols-7 gap-x-6 gap-4 border-b border-primary bg-green-500 text-gray-100 text-md">
-                  <th class="col-span-1  ml-6  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
-                      Product
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
-                      Order reference
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
-                      Delivery Date
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
-                      Pickup Date
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
-                      Courier charge
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none  ">
-                      Location
-                    </p>
-                  </th>
-                  {/* <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans text-sm antialiased font-medium leading-none text-blue-gray-900 ">
-                      status
-                    </p>
-                  </th> */}
-                </div>
+          <thead>
+              <tr class="border-b border-primary ">
+                <th className=" py-5 font-bold w-24 text-center align-middle">Product</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">Order reference</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">Delivery Date</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">Pickup Date</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">Delivery Fee</th>
               </tr>
             </thead>
-
             <tbody>
               {filteredData.map((values) => {
                 const {
@@ -180,15 +144,13 @@ export default function TabAndTables({ defaultTab }) {
                   <>
                     <tr
                       key={orderID}
-                      className="hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out ease-in"
+                      onClick={() => handleRowClick(orderID)}
+                      onMouseEnter={() => setSelectedRow(orderID)}
+                      onMouseLeave={() => setSelectedRow(null)}
+                      className={selectedRow === orderID ? 'bg-gray-200 cursor-pointer' : 'cursor-pointer'}
                     >
-                      <Link
-                        to={{
-                          pathname: `/couriers/my-orders/${orderID}`,
-                        }}
-                      >
-                        <div class=" pl-4 pr-4 grid grid-cols-7 gap-x-6 gap-4 border-b border-blue-gray-50">
-                          <td class="p-3 col-span-1 ">
+  
+                          <td class="p-3 w-24 text-center align-middle ">
                             <div class="flex space-x-5  ">
                               <Avatar
                                 src={
@@ -203,33 +165,33 @@ export default function TabAndTables({ defaultTab }) {
                             </div>
                           </td>
 
-                          <td class="p-3 pl-7 col-span-1">
+                          <td class="p-3 w-24 text-center align-middle">
                             <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                               {orderID}
                             </p>
                           </td>
 
-                          <td class="p-3 pl-1 col-span-1">
+                          <td class="p-3 w-24 text-center align-middle">
                             <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                               {formatDate(deliveryDate)}
                             </p>
                           </td>
-                          <td class="p-3 col-span-1">
+                          <td class="p-3 w-24 text-center align-middle">
                             <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                               {formatDate(pickupDate)}
                             </p>
                           </td>
-                          <td class="p-3 col-span-1">
+                          <td class="p-3 w-24 text-center align-middle">
                             <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                               Rs.{deliveryFee}
                             </p>
                           </td>
-                          <td class="p-3 col-span-1">
+                          {/* <td class="p-3 w-24 text-center align-middle">
                             <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                               {customerAddL3}
                             </p>
-                          </td>
-                          <td className="p-3 col-span-1  ">
+                          </td> */}
+                          <td className="p-3 w-24 text-center align-middle ">
                             {orderStatus.toLowerCase() ===
                               "ready to pickup" && (
                               <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
@@ -246,9 +208,7 @@ export default function TabAndTables({ defaultTab }) {
                                 Delivered
                               </p>
                             )}
-                          </td>
-                        </div>
-                      </Link>
+                          </td>      
                     </tr>
                   </>
                 );

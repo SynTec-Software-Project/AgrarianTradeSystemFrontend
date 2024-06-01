@@ -14,7 +14,6 @@ const OrderOverview = ({ orderDetails, type }) => {
             Order Details
           </div>
         </div>
-
         <div className="flex justify-center  sm:space-x-8 space-x-2 items-center">
           <Avatar
             src={

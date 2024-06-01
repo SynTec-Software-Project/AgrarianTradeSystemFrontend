@@ -117,19 +117,6 @@ export default function CreateAccount() {
         }
     }
     setLoading(false);
-    // try {
-    //     const response = await axios.post('https://localhost:7144/Auth/register', formData);
-    //     console.log('Server Response:', response.data);
-    //     if (response.status === 200) {
-    //         const emailResponse = await axios.post('https://localhost:7144/api/Email', emaildata);
-    //         console.log('Email Response:', emailResponse.data);
-    //     }
-    // } catch (error) {
-    //     console.error('Error:', error.response.data);
-    //     if(error.response.data === "Email exist"){
-    //         alert('Error: Email already exists and you can not register from existing email address');
-    //     }
-    // }
 
   };
 

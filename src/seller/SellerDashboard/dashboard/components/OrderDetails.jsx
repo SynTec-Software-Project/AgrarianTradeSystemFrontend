@@ -2,6 +2,7 @@ import OrderOverview from "@/buyer/components/OrderOverview";
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+import { getFarmerOrderDetails } from "@/services/orderServices";
 
 export default function OrderDetails() {
   const { orderID } = useParams();
@@ -9,16 +10,17 @@ export default function OrderDetails() {
   const [orderDetails, setOrderDetails] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`https://localhost:7144/api/Order/farmer/details/${orderID}`)
-      .then((response) => {
-        setOrderDetails(response.data[0]);
-      })
-      .catch((error) => {
-        console.error("Error fetching order details:", error);
+    const fetchOrderDetails = async () => {
+      try {
+        const details = await getFarmerOrderDetails(orderID);
+        setOrderDetails(details);
+      } catch (error) {
+        console.error('Error fetching order details:', error);
         // Handle errors appropriately
-      });
-  }, [orderDetails]); // Only run the effect when orderID changes
+      }
+    };
+    fetchOrderDetails();
+  }, [orderID]); // Only run the effect when orderID changes
 
   return (
     <div>

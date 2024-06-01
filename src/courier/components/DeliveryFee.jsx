@@ -6,9 +6,7 @@ import {
 } from '@material-tailwind/react';
 import ReactGoogleAutocomplete from 'react-google-autocomplete';
 import axios from 'axios';
-
-function DeliveryFee({ originData ,handleDeliveryFee ,handleSelectDestination ,}) {
- 
+function DeliveryFee({ originData, handleDeliveryFee, handleSelectDestination, }) {
   const [inputValue, setInputValue] = useState('Set Location');
   const [open, setOpen] = useState(false);
   const [origin, setOrigin] = useState("Colombo, Sri Lanka");
@@ -29,7 +27,7 @@ function DeliveryFee({ originData ,handleDeliveryFee ,handleSelectDestination ,}
         origins: [origin],
         destinations: [destination],
         travelMode: google.maps.TravelMode.DRIVING,
-      }, function(response, status) {
+      }, function (response, status) {
         if (status === 'OK') {
           const distanceValue = response.rows[0].elements[0].distance.value; // Distance in meters
           const distanceInKilometers = distanceValue / 1000; // Convert to kilometers
@@ -97,5 +95,4 @@ function DeliveryFee({ originData ,handleDeliveryFee ,handleSelectDestination ,}
     </div>
   );
 }
-
 export default DeliveryFee;

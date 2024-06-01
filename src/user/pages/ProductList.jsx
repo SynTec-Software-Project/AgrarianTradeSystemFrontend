@@ -6,30 +6,29 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import SortBar from '../components/SortBar'
 import LoadingProducts from '@/courier/components/LoadingProducts'
+import { getSortedProducts, getUnsortedProducts } from '@/services/productServices'
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortedProducts, setSortedProducts] = useState("");
   
-  //sort product list
-  if(sortedProducts=='asc' || sortedProducts=='desc'){
-    useEffect(() => {
-      axios.get(`https://localhost:44376/api/product/sorted?sortOrder=${sortedProducts}`)
-      .then((response) => {
-        setProducts(response.data);
-        setFilteredProducts(response.data);
-      });
-    }, [sortedProducts]);
-  }else {
-    useEffect(() => {
-      axios.get('https://localhost:44376/api/product')
-      .then((response) => {
-        setProducts(response.data);
-        setFilteredProducts(response.data); 
-      });
-    }, [sortedProducts]);
-  }
-
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        let data;
+        if (sortedProducts === 'asc' || sortedProducts === 'desc') {
+          data = await getSortedProducts(sortedProducts);
+        } else {
+          data = await getUnsortedProducts();
+        }
+        setProducts(data);
+        setFilteredProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    fetchProducts();
+  }, [sortedProducts]);
    // filter products based on selected filters
    const applyFilters = (filteredData) => {
     setFilteredProducts(filteredData);

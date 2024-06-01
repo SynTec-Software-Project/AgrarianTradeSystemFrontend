@@ -3,8 +3,10 @@ import { React, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
+import { getAllBuyerOrders } from "@/services/orderServices";
+import { BUYER_ID } from "@/usersID";
 
-const USER_ID = "michael.williams@example.com";
+const Buyer_ID = BUYER_ID;
 
 export default function BuyerTabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
@@ -13,26 +15,23 @@ export default function BuyerTabAndTables({ defaultTab }) {
   const location = useLocation();
 
   useEffect(() => {
-    getAllBuyerOrders();
-  }, []);
-
-  useEffect(() => {
     if (location.pathname === "/my-orders") {
       setTab(defaultTab);
     }
   }, [location.pathname, defaultTab]);
 
-  const getAllBuyerOrders = async () => {
-    try {
-      const response = await axios.get(
-        `https://localhost:7144/api/Order/buyer/${USER_ID}`
-      );
-      setData(response.data);
-      setFilteredData(response.data);
-    } catch (error) {
-      console.error("Error while fetching buyer orders:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchBuyerOrders = async () => {
+      try {
+        const orders = await getAllBuyerOrders(Buyer_ID);
+        setData(orders);
+        setFilteredData(orders);
+      } catch (error) {
+        console.error('Error while fetching buyer orders:', error);
+      }
+    };
+    fetchBuyerOrders();
+  }, [Buyer_ID]);
 
   const filterResult = (statusItem) => {
     let result = [];

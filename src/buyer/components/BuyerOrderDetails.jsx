@@ -8,22 +8,21 @@ import {
   TruckIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
-
 export default function BuyerOrderDetails() {
   const { orderID } = useParams();
   const [orderDetails, setOrderDetails] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
-    axios
-      .get(`https://localhost:7144/api/Order/buyer/details/${orderID}`)
-      .then((response) => {
-        setOrderDetails(response.data[0]);
-      })
-      .catch((error) => {
-        console.error("Error fetching order details:", error);
-        // Handle errors appropriately
-      });
+    const fetchOrders = async () => {
+      try {
+        const orderData = await getBuyerOrderByID(orderID);
+        setOrderDetails(orderData);
+      } catch (error) {
+        console.error('Error fetching order details:', error);
+      }
+    };
+    fetchOrders();
   }, [orderDetails]); // Only run the effect when orderID changes
 
   const formatDate = (dateString) => {

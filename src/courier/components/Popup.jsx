@@ -3,7 +3,7 @@ import React from 'react';
 import Swal from "sweetalert2";
 import { Button } from "@material-tailwind/react";
 
-export function Popup({ title, text, icon, confirmButtonText, handleConfirm,buttoncolor}) {
+export function Popup({ title, text, icon, confirmButtonText, handleConfirm, buttoncolor }) {
   const handlePopup = () => {
     Swal.fire({
       title,

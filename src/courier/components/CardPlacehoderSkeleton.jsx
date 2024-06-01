@@ -1,12 +1,11 @@
 import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Typography,
-    Button,
-  } from "@material-tailwind/react";
- 
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  Button,
+} from "@material-tailwind/react";
 export function CardPlacehoderSkeleton() {
   return (
     <Card className=" w-[220px] animate-pulse">
