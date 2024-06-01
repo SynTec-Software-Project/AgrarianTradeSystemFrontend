@@ -10,8 +10,9 @@ import {
     CardBody,
 } from "@material-tailwind/react";
 import { createNewOrder } from '@/services/orderServices';
+import { BUYER_ID } from '@/usersID';
 const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee, destination ,setSuccessOrder }) => {
-    const buyerID = 'anna.ratnayake@example.com';
+    const buyerID = BUYER_ID;
     const addL1Ref = useRef(null);
     const addL2Ref = useRef(null);
     const [loading, setLoading] = useState(false);

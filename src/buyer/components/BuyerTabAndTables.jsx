@@ -4,8 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 import { getAllBuyerOrders } from "@/services/orderServices";
+import { BUYER_ID } from "@/usersID";
 
-const Buyer_ID = "anna.ratnayake@example.com";
+const Buyer_ID = BUYER_ID;
 
 export default function BuyerTabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);

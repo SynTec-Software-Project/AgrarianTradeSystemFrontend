@@ -8,7 +8,9 @@ import { Link, useNavigate } from "react-router-dom";
 import MainNavSide from "./MainNavSide";
 import axios from "axios";
 import { getCartItems } from "@/services/productServices";
-const buyerID = 'anna.ratnayake@example.com';
+import { BUYER_ID } from "@/usersID";
+//BUYER ID HARD CODED
+const buyerID = BUYER_ID;
 const MainNav = () => {
     const navigate = useNavigate();
     const [cartCount, setCartCount] = useState(0);

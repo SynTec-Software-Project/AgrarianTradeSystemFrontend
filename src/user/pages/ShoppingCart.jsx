@@ -4,10 +4,11 @@ import CheckoutCard from '../components/CheckoutCard'
 import { CartTable } from '../components/CartTable'
 import axios from 'axios'
 import { getCartItems } from '@/services/productServices'
+import { BUYER_ID } from '@/usersID'
 
 const ShoppingCart = () => {
   const[cartItems, setCartItems] = useState([]);
-  const BuyerId = 'anna.ratnayake@example.com';
+  const BuyerId = BUYER_ID;
 
   useEffect(() => {
     const fetchCartItems = async () => {

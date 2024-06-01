@@ -8,13 +8,14 @@ import moment from 'moment';
 import Swal from 'sweetalert2'
 import { Card, CardHeader,Typography,Button,CardBody,CardFooter,Avatar,IconButton,Tooltip,} from "@material-tailwind/react";
 import { deleteProduct, getProductsBySellerID } from '@/services/productServices';
+import { FARMER_ID } from '@/usersID';
 const TABLE_HEAD = ["Product", "Product Number", "Date Created", "Unit Price", "Stock", "Minimum Order", "", ""];
 
 const MyProductsTable = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   //hard code seller id
-  const sellerID ='john.perera@example.com'
+  const sellerID =FARMER_ID;
   const  PopupHandler = (id) =>{
     Swal.fire({
       title: "Are you sure?",

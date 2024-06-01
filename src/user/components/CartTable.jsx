@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 import { MdOutlineClose } from "react-icons/md";
 import { deleteCartItem } from "@/services/productServices";
+import { BUYER_ID } from "@/usersID";
 const TABLE_HEAD = ["Item", "Price", "Qty", "Sub Total", ""];   
-const BuyerId = 'anna.ratnayake@example.com';// buyer id is harcoded
+const BuyerId = BUYER_ID;
 export function CartTable({ cartItems ,handleDeleteItem}) {
   //const[cartItems, setCartItems] = useState([]);
   const  PopupHandler = (id) =>{

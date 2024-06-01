@@ -5,7 +5,8 @@ import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 
 import { getAllCourierOrders } from "@/services/orderServices";
-const Courier_ID = "adam.jayasinghe@example.com";
+import { COURIER_ID } from "@/usersID";
+const Courier_ID = COURIER_ID; //COURIER ID HARDCODED
 export default function TabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState(defaultTab);

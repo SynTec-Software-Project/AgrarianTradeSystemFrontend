@@ -14,6 +14,7 @@ import { set } from 'date-fns';
 import SellerDetails from '../components/SellerDetails';
 import PlaceOrderModal from '../components/PlaceOrderModal';
 import { addToCartProducts, getProductDetails } from '@/services/productServices';
+import { BUYER_ID } from '@/usersID';
 function Icon() {
   return (
     <svg
@@ -30,7 +31,7 @@ function Icon() {
     </svg>
   );
 }
-const buyerID = 'anna.ratnayake@example.com';
+const buyerID = BUYER_ID;
 const ProductDetails = () => {
   const [product, setProduct] = useState([]);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
