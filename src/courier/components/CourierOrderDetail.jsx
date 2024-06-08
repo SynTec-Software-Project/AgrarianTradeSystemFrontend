@@ -100,7 +100,6 @@ export function CourierOrderDetail() {
         </table>
       </div>
       <div>
-        <DeliveryFee />
       </div>
     </>
   );

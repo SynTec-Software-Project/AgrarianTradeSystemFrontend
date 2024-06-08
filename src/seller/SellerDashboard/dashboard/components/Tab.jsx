@@ -15,42 +15,48 @@ export default function Tab({ defaultTab }) {
   const location = useLocation();
   const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (location.pathname === "/my-orders") {
-      setTab(defaultTab);
-    }
-  }, [location.pathname, defaultTab]);
 
-  useEffect(() => {
-    const fetchOrderDetails = async () => {
-      try {
-        const details = await getAllFarmerOrders(Farmer_ID);
-        setData(details);
-      setFilteredData(details);
-      } catch (error) {
-        console.error('Error fetching order details:', error);
+    // Fetch data on component mount
+    useEffect(() => {
+      const fetchOrderDetails = async () => {
+        try {
+          const details = await getAllFarmerOrders(Farmer_ID);
+          setData(details);
+        } catch (error) {
+          console.error('Error fetching order details:', error);
+        }
+      };
+      fetchOrderDetails();
+    }, [Farmer_ID]);
+  
+    // Update tab and filter data based on URL change
+    useEffect(() => {
+      if (location.pathname === "/my-orders") {
+        setTab(defaultTab);
       }
-    };
-    fetchOrderDetails();
-  }, [Farmer_ID]);
-
-  const filterResult = (statusItem) => {
-    let result = [];
-    if (statusItem === "All") {
-      result = data.filter(
-        (item) =>
-          item.orderStatus.toLowerCase() === "ready to pickup" ||
-          item.orderStatus.toLowerCase() === "picked up" ||
-          item.orderStatus.toLowerCase() === "delivered"
-      );
-    } else {
-      result = data.filter(
-        (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
-      );
-    }
-    setFilteredData(result);
-    setTab(statusItem);
-  };
+    }, [location.pathname, defaultTab]);
+  
+    // Filter data based on tab selection
+    useEffect(() => {
+      const filterResult = (statusItem) => {
+        let result = [];
+        if (statusItem === "All") {
+          result = data.filter(
+            (item) =>
+              item.orderStatus.toLowerCase() === "ready to pickup" ||
+              item.orderStatus.toLowerCase() === "picked up" ||
+              item.orderStatus.toLowerCase() === "delivered"
+          );
+        } else {
+          result = data.filter(
+            (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
+          );
+        }
+        setFilteredData(result);
+      };
+      filterResult(tab);
+    }, [data, tab]);
+  
   const handleRowClick = (id) => {
     navigate(`/dashboard/my-orders/${id}`);
   };
@@ -64,9 +70,7 @@ export default function Tab({ defaultTab }) {
       <div className="flex sm:justify-end justify-center sm:mr-16 mr-0 text-custom-gray  font-medium">
         <div className="flex sm:text-sm text-xs border-b-2 ">
           <button
-            onClick={() => {
-              filterResult("All");
-            }}
+            onClick={() => setTab("All")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out  ${
               tab === "All"
                 ? "text-primary border-b-2 border-primary "
@@ -77,9 +81,7 @@ export default function Tab({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("Ready to pickup");
-            }}
+            onClick={() => setTab("Ready to pickup")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out  ${
               tab === "Ready to pickup"
                 ? "text-primary border-b-2 border-primary "
@@ -90,9 +92,7 @@ export default function Tab({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("Picked up");
-            }}
+             onClick={() => setTab("Picked up")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
               tab === "Picked up"
                 ? "text-primary border-b-2 border-primary "
@@ -103,9 +103,7 @@ export default function Tab({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("Delivered");
-            }}
+             onClick={() => setTab("Delivered")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
               tab === "Delivered"
                 ? "text-primary border-b-2 border-primary "

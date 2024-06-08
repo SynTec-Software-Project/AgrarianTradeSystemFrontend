@@ -6,14 +6,17 @@ import ReviewForm from "../components/reuseble/ReviewForm";
 import ReturnForm from "../components/Returns/ReturnForm";
 import BuyerOrderDetails from "../components/BuyerOrderDetails";
 import EditReview from "../components/Reviews/EditReview";
+import MyReviewsPage from "../pages/MyReviews";
 const Routing = () => {
   return (
     <>
       <Routes>
         <Route path="/my-orders" element={<MyOrders />} />
-        <Route path="my-reviews" element={<MyReviews />} />
-        <Route index element={<AddReviewCard />} />
-        {/* <Route path="to-review" element={<AddReviewCard />} /> */}
+        <Route path="my-reviews" element={<MyReviewsPage />}>
+          <Route index element={<AddReviewCard />} />
+          <Route path="to-review" element={<AddReviewCard />} />
+          <Route path="history" element={<MyReviews />} />
+        </Route>
         <Route path="history" element={<History />} />
         <Route path="/my-returns" element={<MyReturns />} />
         <Route path="/profile" element={<Profile />} />

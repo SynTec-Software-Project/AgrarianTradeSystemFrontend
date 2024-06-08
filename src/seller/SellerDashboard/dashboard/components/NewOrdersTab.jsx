@@ -31,14 +31,33 @@ export default function NewOrdersTab() {
   const handleRowClick = (id) => {
     navigate(`/dashboard/select-courier/${id}`);
   };
+
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     try {
+  //       const orders = await getAllFarmerOrders(sellerID);
+  //       setData(orders);
+  //     } catch (error) {
+  //       console.error('Error fetching orders:', error);
+  //       // Handle errors appropriately, e.g., show a notification to the user
+  //     }
+  //   };
+
+  //   fetchOrders();
+  // }, [sellerID]);
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const orders = await getAllFarmerOrders(sellerID);
-        setData(orders);
+
+        // Filter the orders where the status is either 'new' or 'pending'
+        const filteredOrders = orders.filter(order => 
+          order.orderStatus === 'new' || order.orderStatus === 'pending'
+        );
+        setData(filteredOrders);
       } catch (error) {
         console.error('Error fetching orders:', error);
-        // Handle errors appropriately, e.g., show a notification to the user
       }
     };
 

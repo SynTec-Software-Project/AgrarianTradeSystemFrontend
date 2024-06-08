@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import axios from 'axios';
 
-const MyReviews = () => {
+const MyReviewsPage = () => {
   const [productData, setProductData] = useState([]); 
   const [historyData, setHistoryData] = useState([]);
 
@@ -41,7 +41,6 @@ const MyReviews = () => {
         <NavLink to='to-review' style={NavLinkStyles}   >
           To Review ({productData.length})
         </NavLink>
-
         <NavLink to='history' style={NavLinkStyles}>
           History ({historyData.length})
         </NavLink>
@@ -54,4 +53,4 @@ const MyReviews = () => {
 
 
 
-export default MyReviews;
+export default MyReviewsPage;
