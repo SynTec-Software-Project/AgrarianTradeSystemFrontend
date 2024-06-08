@@ -20,7 +20,7 @@ const Routing = () => {
         <Route path="history" element={<History />} />
         <Route path="/my-returns" element={<MyReturns />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/review" element={<ReviewForm />} />
+        <Route path="/add-review/:id" element={<ReviewForm />} />
         <Route path="/return" element={<ReturnForm />} />
         <Route
           path="my-orders/:orderID"

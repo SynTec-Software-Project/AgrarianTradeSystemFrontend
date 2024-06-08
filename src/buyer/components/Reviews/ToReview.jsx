@@ -2,30 +2,51 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReviewCard from '@/seller/SellerDashboard/dashboard/components/reviews/components/ReviewCard';
+import { getProductsToReview, getReviewHistory } from '@/services/reviewServices';
 
 export const AddReviewCard = () => {
   const navigate = useNavigate();
   const [productData, setProductData] = useState([]);
+  const [historyData, setHistoryData] = useState([]);
+  // const fetchProducts = async () => {
+  //   const client = axios.create({
+  //     baseURL: "https://localhost:44376/api/Review/to-review"
+  //   });
+
+  //   try {
+  //     client.get().then((response) => {
+  //       setProductData(response.data)
+  //       // console.log(response)
+  //     })
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   // console.log(data);
+  // }
+
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
 
   const fetchProducts = async () => {
-    const client = axios.create({
-      baseURL: "https://localhost:7144/api/Review/to-review"
-    });
-
     try {
-      client.get().then((response) => {
-        setProductData(response.data)
-        // console.log(response)
-      })
+      const [productsToReview, reviewHistory] = await Promise.all([
+        getProductsToReview(),
+        getReviewHistory()
+      ]);
+
+      setProductData(productsToReview);
+      setHistoryData(reviewHistory);
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching products or history:', error);
+      // Handle errors appropriately, e.g., show a notification to the user
     }
-    // console.log(data);
-  }
+  };
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, []); // Fetch only once when the component mounts
+
 
   return (
     <>

@@ -22,7 +22,7 @@ const ReviewCard = (props) => {
         </div>
 
         <div className='items-end my-8'>
-          <Button className="color bg-green-400" onClick={() => navigate('/' + props.productId + "/" + props.id)} >{props.Button}</Button>
+          <Button className="color bg-green-400" onClick={() => navigate('/buyers/add-review/'+ props.id)} >{props.Button}</Button>
         </div>
       </div>
 
