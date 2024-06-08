@@ -14,18 +14,12 @@ export default function TabAndTables({ defaultTab }) {
   const [selectedRow, setSelectedRow] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (location.pathname === "/my-orders") {
-      setTab(defaultTab);
-    }
-  }, [location.pathname, defaultTab]);
 
   useEffect(() => {
     const fetchBuyerOrders = async () => {
       try {
         const orders = await getAllCourierOrders(Courier_ID);
         setData(orders);
-        setFilteredData(orders);
       } catch (error) {
         console.error('Error while fetching buyer orders:', error);
       }
@@ -33,23 +27,38 @@ export default function TabAndTables({ defaultTab }) {
     fetchBuyerOrders();
   }, [Courier_ID]);
 
-  const filterResult = (statusItem) => {
-    let result = [];
-    if (statusItem === "All") {
-      result = data.filter(
-        (item) =>
-          item.orderStatus.toLowerCase() === "ready to pickup" ||
-          item.orderStatus.toLowerCase() === "picked up" ||
-          item.orderStatus.toLowerCase() === "delivered"
-      );
-    } else {
-      result = data.filter(
-        (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
-      );
+  // Update tab and filter data based on URL change
+  useEffect(() => {
+    if (location.pathname === "/my-orders") {
+      setTab(defaultTab);
     }
-    setFilteredData(result);
-    setTab(statusItem);
-  };
+  }, [location.pathname, defaultTab]);
+
+  // Filter data based on tab selection
+  useEffect(() => {
+    const filterResult = (statusItem) => {
+      let result = [];
+      if (statusItem === "All") {
+        result = data.filter(
+          (item) =>
+            item.orderStatus.toLowerCase() === "ready to pickup" ||
+            item.orderStatus.toLowerCase() === "picked up" ||
+            item.orderStatus.toLowerCase() === "delivered"
+        );
+      } else {
+        result = data.filter(
+          (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
+        );
+      }
+      setFilteredData(result);
+    };
+
+    // Filter data immediately after fetching or when the tab changes
+    if (data.length > 0) {
+      filterResult(tab);
+    }
+  }, [data, tab]);
+  
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -63,9 +72,7 @@ export default function TabAndTables({ defaultTab }) {
       <div className="flex sm:justify-end justify-center sm:mr-16 mr-0 text-custom-gray  font-medium">
         <div className="flex  -mt-10 sm:text-sm text-xs border-b-2 ">
           <button
-            onClick={() => {
-              filterResult("All");
-            }}
+            onClick={() => setTab("All")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out  ${
               tab === "All"
                 ? "text-primary border-b-2 border-primary "
@@ -76,9 +83,7 @@ export default function TabAndTables({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("Ready to pickup");
-            }}
+            onClick={() => setTab("Ready to pickup")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out  ${
               tab === "Ready to pickup"
                 ? "text-primary border-b-2 border-primary "
@@ -89,9 +94,7 @@ export default function TabAndTables({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("Picked up");
-            }}
+            onClick={() => setTab("Picked up")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
               tab === "Picked up"
                 ? "text-primary border-b-2 border-primary "
@@ -102,9 +105,7 @@ export default function TabAndTables({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("Delivered");
-            }}
+            onClick={() => setTab("Delivered")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
               tab === "Delivered"
                 ? "text-primary border-b-2 border-primary "
