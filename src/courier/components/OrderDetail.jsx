@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Card, CardBody, Typography, Button } from '@material-tailwind/react';
-import Swal from "sweetalert2";
-import { Pickup_Drop_Detail } from './Pickup_Drop_Detail';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';  // JavaScript library for building user interfaces
+import { Card, CardBody, Typography, Button } from '@material-tailwind/react';  // Material UI components for styling
+import Swal from "sweetalert2";  // Library for displaying beautiful alerts
+import { Pickup_Drop_Detail } from './Pickup_Drop_Detail';  
+import { useNavigate, useParams } from 'react-router-dom'; // React Router hooks for navigation
+import axios from 'axios';  // HTTP client for making API requests
 
 const OrderDetail = () => {
+  // Get the id parameter from the URL using useParams hook
   const { id } = useParams();
-  const navigate=useNavigate();
-  const [data, setData] = useState([]);
+  const navigate = useNavigate();
+  const [data, setData] = useState([]); // State variable to hold order details
 
-
+  // Fetch order details from the server when component mounts or id changes
   useEffect(() => {
     axios.get(`https://localhost:7144/api/Order/courier/details/${id}`)
       .then((response) => {
@@ -21,7 +22,9 @@ const OrderDetail = () => {
       });
   }, [id]);
 
+  // Function to display a confirmation popup for accepting an order
   const popupAccept = () => {
+    // Display a confirmation dialog using SweetAlert2
     Swal.fire({
       title: "Are you sure?",
       text: "Do you accept this order?",
@@ -32,19 +35,23 @@ const OrderDetail = () => {
       confirmButtonText: "Yes, Accept it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        handleUpdateStatus(id ,'ready to pickup');
+        // If user confirms, update order status to 'ready to pickup' and perform necessary actions
+        handleUpdateStatus(id, 'ready to pickup');
         Swal.fire({
           title: "Accepted!",
           text: "You have accepted this order.",
           icon: "success"
         });
         handleAccept();
+        // Navigate back to the previous page
         navigate(-1);
       }
     });
   };
 
+  // Function to display a confirmation popup for rejecting an order
   const popupReject = () => {
+    // Display a confirmation dialog using SweetAlert2
     Swal.fire({
       title: "Are you sure?",
       text: "Do you reject this order?",
@@ -55,42 +62,46 @@ const OrderDetail = () => {
       confirmButtonText: "Yes, reject it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        handleUpdateStatus(id ,'new');
+        // If user confirms, update order status to 'new' and perform necessary actions
+        handleUpdateStatus(id, 'new');
         Swal.fire({
           title: "Rejected!",
           text: "You have rejected this courier.",
           icon: "success"
         });
         handleReject();
+        // Navigate back to the previous page
         navigate(-1);
       }
     });
   };
 
+  // Function to update order status in the database
   const handleUpdateStatus = (orderID, newStatus) => {
-    console.log(newStatus);
-    axios
-      .put(
-        `https://localhost:7144/api/Order/${orderID}?orderStatus=${newStatus}`,
-        { orderStatus: newStatus }
-      )
-      .then((response) => {
-        console.log("Order status updated successfully:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error updating order status:", error);
-        // Handle errors appropriately
-      });
-  };
+    axios.put(
+      `https://localhost:7144/api/Order/${orderID}?orderStatus=${newStatus}`,
+      { orderStatus: newStatus }
+    )
+    .then((response) => {
+      console.log("Order status updated successfully:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error updating order status:", error);
+      // Handle errors appropriately
+    });
+  };
 
+  // Function to handle accepting an order
   const handleAccept = async () => {
     try {
+      // Prepare HTML content for email
       const htmlContent = `
         <h2>Hello,</h2>
         <p>This is a predefined email message with <strong>HTML content</strong>.</p>
         <p>Sincerely,<br/>Your Name</p>
       `;
 
+      // Send email using API endpoint
       const response = await axios.post("https://localhost:7144/api/Email", {
         To: "bhmmpmgunathilake1999@gmail.com",
         Subject: "Agrarian Trade System",
@@ -98,19 +109,23 @@ const OrderDetail = () => {
       });
       alert(response.data);
     } catch (error) {
+      // Handle errors in sending email
       alert("Error sending email: " + error.response.data);
     }
     console.log("Accepted");
   };
 
+  // Function to handle rejecting an order
   const handleReject = async () => {
     try {
+      // Prepare HTML content for email
       const htmlContent = `
         <h2>Hello,</h2>
         <p>This is a predefined email message with <strong>HTML content</strong>.</p>
         <p>Sincerely,<br/>Your Name</p>
       `;
 
+      // Send email using API endpoint
       const response = await axios.post("https://localhost:7144/api/Email", {
         To: "bhmmpmgunathilake1999@gmail.co",
         Subject: "Agrarian Trade System",
@@ -118,18 +133,22 @@ const OrderDetail = () => {
       });
       alert(response.data);
     } catch (error) {
+      // Handle errors in sending email
       alert("Error sending email: " + error.response.data);
     }
     console.log("Rejected");
   };
 
+  // If data is not yet available, display loading message
   if (!data) {
     return <div>Loading...</div>;
   }
 
+  // Once data is available, render order details
   return (
     <div className="flex justify-center">
       <table className="w-full max-w-[50em] flex-row">
+        {/* Display product details */}
         <tr style={{ height: '50px' }}>
           <th className='p-2'>
             <Card className="w-full max-w-[50rem] flex-row">
@@ -155,6 +174,7 @@ const OrderDetail = () => {
           </th>
         </tr>
 
+        {/* Display pickup details */}
         <tr>
           <td className='p-2 mb-5'>
             <Pickup_Drop_Detail
@@ -167,6 +187,7 @@ const OrderDetail = () => {
           </td>
         </tr>
 
+        {/* Display drop details */}
         <tr>
           <td className='p-2'>
             <Pickup_Drop_Detail
@@ -178,13 +199,16 @@ const OrderDetail = () => {
           </td>
         </tr>
 
+        {/* Display buttons for accepting/rejecting the order */}
         <tr>
           <td colSpan="2" className='p-2'>
             <Card className="mt-10 w-full max-w-[50rem] flex-row">
               <CardBody className="w-full max-w-[50rem] flex-row">
                 <div className="flex w-full max-w-[50rem] gap-4 justify-center items-center">
                   <div className="flex w-max gap-4">
+                    {/* Button to accept the order */}
                     <Button color="green" onClick={popupAccept}>Accept Order</Button>
+                    {/* Button to reject the order */}
                     <Button color="red" onClick={popupReject}>Reject Order</Button>
                   </div>
                 </div>

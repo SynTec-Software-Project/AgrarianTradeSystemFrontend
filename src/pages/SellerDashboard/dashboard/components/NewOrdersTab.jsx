@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; //JavaScript library for building user interfaces
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import moment from 'moment';
+import axios from 'axios'; //for making requests to server endpoints
+import moment from 'moment'; //A library for formatting dates and times in JavaScript.
 import { Select, Option } from "@material-tailwind/react";
 
 export default function NewOrdersTab() {

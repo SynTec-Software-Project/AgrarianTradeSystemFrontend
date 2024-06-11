@@ -53,8 +53,8 @@ export function CourierList({ search, orderId }) {
   const sendPredefinedEmail = async () => {
     try {
       const htmlContent = `
-        <h2>Hello,</h2>
-        <p>This is a predefined email message with <strong>HTML content</strong>.</p>
+        <h2>Hello Courier</h2>
+        <p>This is a trial email.</p>
         <p>Sincerely,<br/>Your Name</p>
       `;
 

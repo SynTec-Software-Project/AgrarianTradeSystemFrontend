@@ -1,4 +1,3 @@
-// OrderDetail.js
 import React from 'react';
 import {
   Timeline,
