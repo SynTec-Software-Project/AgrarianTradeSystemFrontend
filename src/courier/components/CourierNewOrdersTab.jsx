@@ -24,7 +24,7 @@ export default function CourierNewOrdersTab() {
     fetchOrders();
   }, [courierID]);
   const handleRowClick = (id) => {  
-    navigate(`/couriers/new-orders//${id}`);
+    navigate(`/couriers/new-orders/${id}`);
   };
 
   return (
