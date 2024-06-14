@@ -25,13 +25,13 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
+import NotificationModal from "@/courier/components/NotificationModal";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
-
   return (
     <Navbar
       color={fixedNavbar ? "white" : "transparent"}
@@ -108,12 +108,6 @@ export function DashboardNavbar() {
             </MenuHandler>
             <MenuList className="w-max border-0">
               <MenuItem className="flex items-center gap-3">
-                <Avatar
-                  src="https://demos.creative-tim.com/material-dashboard/assets/img/team-2.jpg"
-                  alt="item-1"
-                  size="sm"
-                  variant="circular"
-                />
                 <div>
                   <Typography
                     variant="small"
