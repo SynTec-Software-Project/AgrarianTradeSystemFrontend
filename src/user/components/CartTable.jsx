@@ -3,9 +3,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 import { MdOutlineClose } from "react-icons/md";
+import { deleteCartItem } from "@/services/productServices";
+import { BUYER_ID } from "@/usersID";
 const TABLE_HEAD = ["Item", "Price", "Qty", "Sub Total", ""];   
-const BuyerId = 'example@gmail.com';// buyer id is harcoded
- 
+const BuyerId = BUYER_ID;
 export function CartTable({ cartItems ,handleDeleteItem}) {
   //const[cartItems, setCartItems] = useState([]);
   const  PopupHandler = (id) =>{
@@ -34,14 +35,17 @@ export function CartTable({ cartItems ,handleDeleteItem}) {
       }
     });
   }
+  const deleteConfirmHandler = async (itemId) => {
+    console.log(itemId);
+    try {
+      const data = await deleteCartItem(BuyerId, itemId);
+      handleDeleteItem(data);
+    } catch (error) {
+      console.error('Error deleting cart item:', error);
+     
+    }
+  };
 
-  function deleteConfirmHandler(itemId){
-    axios.delete(`https://localhost:44376/api/ShoppingCart/delete-cart-item?buyerId=${BuyerId}&cartItemId=${itemId}`)
-    .then((response)=>{         
-        handleDeleteItem(response.data);
-    })
-  }
- 
   return (
     <Card className="h-full w-full overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">
@@ -93,7 +97,7 @@ export function CartTable({ cartItems ,handleDeleteItem}) {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.price.toLocaleString()+'.00'}
+                    {item.price.toFixed(2)}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -111,7 +115,7 @@ export function CartTable({ cartItems ,handleDeleteItem}) {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {(item.quantity * item.price).toLocaleString()+'.00'}
+                    {(item.quantity * item.price).toFixed(2)}
                   </Typography>
                 </td>
                 <td className={classes}>

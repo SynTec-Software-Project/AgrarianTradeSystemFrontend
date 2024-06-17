@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -6,15 +6,17 @@ import {
 } from '@material-tailwind/react';
 import ReactGoogleAutocomplete from 'react-google-autocomplete';
 import axios from 'axios';
-
-function DeliveryFee() {
+function DeliveryFee({ originData, handleDeliveryFee, handleSelectDestination, }) {
   const [inputValue, setInputValue] = useState('Set Location');
   const [open, setOpen] = useState(false);
   const [origin, setOrigin] = useState("Colombo, Sri Lanka");
   const [destination, setDestination] = useState("Kurunegala, Sri Lanka");
   const [distance, setDistance] = useState('');
-  const [deliveryFee, setDeliveryFee] = useState('');
-
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  useEffect(() => {
+    setOrigin(originData);
+    setDestination("Kurunegala, Sri Lanka");
+  }, [origin]);
   const handleOpen = () => setOpen(!open);
 
   const fetchDistance = async (destination) => {
@@ -25,13 +27,15 @@ function DeliveryFee() {
         origins: [origin],
         destinations: [destination],
         travelMode: google.maps.TravelMode.DRIVING,
-      }, function(response, status) {
+      }, function (response, status) {
         if (status === 'OK') {
           const distanceValue = response.rows[0].elements[0].distance.value; // Distance in meters
           const distanceInKilometers = distanceValue / 1000; // Convert to kilometers
           setDistance(distanceInKilometers);
           const fee = (distanceInKilometers * 50).toFixed(2); // 50 LKR per kilometer
           setDeliveryFee(fee);
+          handleDeliveryFee(fee);
+          handleSelectDestination(destination);
         } else {
           console.error('Error fetching distance:', status);
         }
@@ -43,12 +47,12 @@ function DeliveryFee() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Card className="mt-6 w-96">
+      <Card className="w-full shadow-none">
         <CardBody>
-          <Typography variant="h5" color="blue-gray" className="mb-2">
+          <Typography variant="h5" color="blue-gray" className="mb-5">
             Delivery Location
           </Typography>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div className=' flex flex-wrap justify-between'>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <i className="fas fa-location-dot" style={{ marginRight: '1em' }} />
               <div>
@@ -66,7 +70,7 @@ function DeliveryFee() {
                 )}
               </div>
             </div>
-            <div style={{ cursor: 'pointer' }} onClick={handleOpen}>
+            <div className=' text-primary font-semibold' style={{ cursor: 'pointer' }} onClick={handleOpen}>
               Change
             </div>
           </div>
@@ -91,5 +95,4 @@ function DeliveryFee() {
     </div>
   );
 }
-
 export default DeliveryFee;

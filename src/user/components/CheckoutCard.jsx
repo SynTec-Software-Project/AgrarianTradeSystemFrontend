@@ -19,7 +19,7 @@ const calculateTotalPrice = (item) => {
                 <div>
                     <div className=' flex justify-between my-3 border-b-2 py-4 text-gray-600 font-semibold  text-sm'>
                         <h1>Sub Total :</h1>
-                        <p>Rs {sumTotalPrices.toLocaleString() + '.00'}</p>
+                        <p>Rs {sumTotalPrices.toFixed(2)}</p>
                     </div>
                     <div className=' flex justify-between my-3 border-b-2 py-4 text-gray-600 font-semibold  text-sm'>
                         <h1>Shipping cost :</h1>
@@ -31,7 +31,7 @@ const calculateTotalPrice = (item) => {
                     </div>
                     <div className=' flex justify-between my-4 py-4 text-gray-800 font-semibold '>
                         <h1>Order Total :</h1>
-                        <p>Rs {(sumTotalPrices + shippingCost).toLocaleString() + '.00'}</p>
+                        <p>Rs {(sumTotalPrices + shippingCost).toFixed(2)}</p>
                     </div>
                     <div className='mt-3 py-3'>
                         <button className='bg-primary w-full rounded-md text-white py-2 text-sm hover:bg-green-500'>Checkout Order</button>

@@ -7,17 +7,42 @@ import SearchBar from "./SearchBar";
 import { Link, useNavigate } from "react-router-dom";
 import MainNavSide from "./MainNavSide";
 import axios from "axios";
-const BuyerId = 1;
-const MainNav = () => {
+import { getCartItems, getSearchProducts } from "@/services/productServices";
+import { BUYER_ID } from "@/usersID";
+
+//BUYER ID HARD CODED
+const buyerID = BUYER_ID;
+const MainNav = ({getSearchResults}) => {
     const navigate = useNavigate();
     const [cartCount, setCartCount] = useState(0);
 
+
+    const handleSearch = async (searchTerm) => {
+      try {
+        // Fetch search results
+        navigate(`/products?search=${searchTerm}`);
+        const results = await getSearchProducts(searchTerm);
+        // Pass search results to ProductList
+        getSearchResults(results);
+        // Navigate to /products with search term as query param
+        
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    };
+  
     useEffect(() => {
-      axios.get(`https://localhost:44376/api/ShoppingCart/items?customerId=${BuyerId}`)
-      .then((response) => {
-         setCartCount(response.data.length);
-      });
-    }, [cartCount]);
+      const fetchCartItems = async () => {
+        try {
+          const cartItems = await getCartItems(buyerID);
+          setCartCount(cartItems.length);
+        } catch (error) {
+          console.error('Error fetching shopping cart items:', error);
+  
+        }
+      };
+      fetchCartItems();
+    }, [buyerID]); 
   return (
     <>
       <MainNavSide/>   
@@ -27,7 +52,7 @@ const MainNav = () => {
           <div className="w-50 max-w-full px-8 ">
             <a href="/#" className="block w-full">
               <img
-                src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-primary.svg"
+                src="https://syntecblobstorage.blob.core.windows.net/bussinescard/large-removebg-preview 1.png"
                 alt="logo"
                 className="dark:hidden"
               />
@@ -56,7 +81,7 @@ const MainNav = () => {
             <div>
               {/* signup and search */}
               <div className="flex items-center justify-end px-4 ">
-                <SearchBar />
+                <SearchBar onSearch={handleSearch} />
                 <div className="hidden justify-end pr-16 gap-3 sm:flex lg:pr-0 items-center ">
                   <Badge content={cartCount} color="green" className="mx-3">
                     <IconButton color="gray" variant="outlined" className="rounded-full"

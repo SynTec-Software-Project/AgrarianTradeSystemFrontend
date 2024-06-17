@@ -18,9 +18,6 @@ import EmailVerify from "./user/auth/EmailVerify";
 
 function App() {
   
-  
-  
-  
   // const routes = {
   //   admin: [
   //     {
@@ -42,11 +39,7 @@ function App() {
   return (
     <>
      <Routes>
-      <Route path="/dashboard/*" element={<Dashboard />} />
-      
-    </Routes> 
-
-    <Routes>
+      <Route path="/dashboard/*" element={<Dashboard />} />    
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<PageNotFound/>} />
       <Route path="/buyers/*" element={<BuyerDashboard/>}/>
@@ -64,9 +57,6 @@ function App() {
         <Route exact path="/couriers/*" element={<CourierDashboard/>}/>
       </Route>
     </Routes>
-
-
-    
     </>
   );
 }
