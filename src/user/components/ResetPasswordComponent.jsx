@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { MdOutlineErrorOutline } from "react-icons/md";
 import AuthService from '@/services/apiService';
 import ConfirmAlert from './ConfirmAlert';
+import { SpinnerColors } from '../components/Spinner.jsx';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -12,6 +13,10 @@ export default function ResetPasswordComponent() {
     const [pwd, setPwd] = useState();
     const [confirmPwd, setConfirmPwd] = useState();
     const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Function for handle password reset ----------------
+    
     const handleReset = async (e) => {
         e.preventDefault();
         if (pwd.length<8) {
@@ -26,18 +31,22 @@ export default function ResetPasswordComponent() {
         };
         try{
             setError(false);
+            setIsLoading(true);
             const response = await AuthService.resetPwd(data);
+            setIsLoading(false);
             await ConfirmAlert({message:"Password has been successfully changed"});
             console.log('Server Response:', response);
             navigate('/login');
         }
         catch(error){
+            setIsLoading(false);
             setError(true);
             console.error('Error:', error);
         }
     }
     return (
         <>
+            {isLoading && <SpinnerColors/>}
             <section className=" font-poppins">
                 <div className="max-w-6xl px-0 mx-auto lg:px-6">
                     <div className="flex flex-col items-center h-full md:flex-row">

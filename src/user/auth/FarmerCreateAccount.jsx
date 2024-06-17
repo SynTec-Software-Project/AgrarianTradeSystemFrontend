@@ -4,9 +4,9 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import AuthService from '../../services/apiService.js';
 import FarmerBanner from '../components/FarmerBanner';
 import FormLabel from '../components/FormLabel';
+import { SpinnerColors } from '../components/Spinner.jsx';
 import ConfirmAlert from '@/user/components/ConfirmAlert.jsx';
 import ErrorAlert from '@/user/components/ErrorAlert.jsx';
-import { Navigate } from 'react-router-dom';
 
 
 export default function CreateAccount() {
@@ -20,7 +20,7 @@ export default function CreateAccount() {
   const [frontNIC, setfrontNIC] = useState(null);
   const [backNIC, setbackNIC] = useState(null);
   const [GSCertificate, setGSCertificate] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const profileInputRef=useRef(null);
   const forntNICInputRef=useRef(null);
   const backNICInputRef=useRef(null);
@@ -36,6 +36,8 @@ export default function CreateAccount() {
   const add2Ref=useRef(null);
   const add3Ref=useRef(null);
   const cropRef=useRef(null);
+
+  // Handling Images ----------------------------
 
   const handleProfileImage=(e)=>{
     const file=e.target.files[0];
@@ -93,16 +95,23 @@ export default function CreateAccount() {
         console.log(file);
     } 
   }
+
+  // Validating Phone number ------------------------
+
   const validatePhoneNumber = (number) => {
     const phoneNumberRegex = /^[0-9]{10}$/;
     return phoneNumberRegex.test(number);
   };
 
+  // Validating NIC -------------------------
+  
   const validateNIC = (number) => {
     const nicRegex = /^[0-9]{12}$/;
     return nicRegex.test(number);
   };
   
+  // Function for handle form submission ------------------------
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -149,29 +158,35 @@ export default function CreateAccount() {
         AddressLine1: add1Ref.current.value,
         AddressLine2: add2Ref.current.value,
         AddressLine3: add3Ref.current.value,
-        cropDetails: cropRef.current.value
+        cropDetails: cropRef.current.value,
+        profilepic: profileImg,
+        nicfront: frontNIC,
+        nicback: backNIC,
+        gncertificate: GSCertificate
     }
-    setLoading(true);
     console.log(formData);
     try {
+        setIsLoading(true);
         const registerResponse = await AuthService.farmerRegister(formData);
-        await ConfirmAlert({message:"User account has been created"});
+        setIsLoading(false);
+        await ConfirmAlert({message:"Farmer account has been created"});
         window.location.reload();
         console.log('Server Response:', registerResponse);
         const emailResponse = AuthService.sendEmail(emailData);
         console.log('Email Response:', emailResponse);
         
     } catch (error) {
+        setIsLoading(false);
         console.error('Error:', error);
         if (error === "Email exist") {
             ErrorAlert({ message: "Error: Email already exists and you cannot register with an existing email address" });
         }
     }
-    setLoading(false);
   };
 
   return (
     <>
+        {isLoading && <SpinnerColors/>}
         <FarmerBanner/>
         <div>
         <form className="py-16 bg-gray-100 dark:bg-gray-800" onSubmit={handleSubmit}>
@@ -520,8 +535,8 @@ export default function CreateAccount() {
                             </input>
                         </div>
                         <div className="w-full md:w-auto p-1.5">
-                            <input type='submit' value="Sign In"
-                                className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl disabled:cursor-not-allowed" disabled={loading}>
+                            <input type='submit' value={isLoading==false?"Sign In":"Signing..."}
+                                className="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-md hover:bg-green-800 active:ring-2 active:ring-green-800 active:shadow-xl disabled:cursor-not-allowed" disabled={isLoading}>
                             </input>
                         </div>
                     </div>

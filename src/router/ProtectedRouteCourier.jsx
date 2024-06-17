@@ -10,7 +10,7 @@ const ProtectedRouteCourier = (props) => {
         navigate(-1);
     }
 
-    if (!token) return <Navigate to="/"/>;
+    if (!token) return <Navigate to="/login"/>;
     console.log(jwtDecode(token).role);
     useEffect(()=>{
         if(token && jwtDecode(token).role!=="Courier"){
