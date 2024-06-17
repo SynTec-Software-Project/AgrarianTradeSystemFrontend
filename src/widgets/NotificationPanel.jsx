@@ -26,10 +26,20 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
+import { useState,useEffect } from 'react';
 
 const NotificationPanel = () => {
+
+  const [notificationList,setNotificationlist]=useState([]);
+  const to="adam.jayasinghe@example.com";
+
+  
+
+
+
   return (
     <div>
+     
       <Menu>
             <MenuHandler>
               <IconButton variant="text" color="blue-gray">

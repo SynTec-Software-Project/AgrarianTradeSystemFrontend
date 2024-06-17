@@ -1,4 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
+import axios from "axios";
 import {
   Navbar,
   Typography,
@@ -26,12 +27,31 @@ import {
   setOpenSidenav,
 } from "@/context";
 import NotificationPanel from "../NotificationPanel";
+import { useState,useEffect } from "react";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+
+  const [notificationList,setNotificationlist]=useState([]);
+  const to="adam.jayasinghe@example.com";
+
+  useEffect(() => {  //use effect for fetching notification list
+    console.log("hello");
+    axios
+      .get(`https://localhost:7144/api/NewOrder/getnotification/`+to)
+      .then((response) => {
+        setNotificationlist(response.data);
+        console.log("hello inside");
+        console.log("notilist",response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching disabled dates:", error);
+      });
+  }, []);
+
 
   return (
     <Navbar

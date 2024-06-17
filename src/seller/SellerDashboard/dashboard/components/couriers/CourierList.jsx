@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { Button, List, ListItem, ListItemPrefix, ListItemSuffix, Avatar, Card, Typography } from "@material-tailwind/react";
-import { getCourierList, updateCourier, updateOrderStatus } from "@/services/orderServices";
+import {  getCourierList, updateCourier, updateOrderStatus } from "@/services/orderServices";
 
 export function CourierList({ search, orderId }) {
   const [data, setData] = useState([]);
@@ -38,7 +38,20 @@ const handleUpdateStatus = async (orderID, newStatus) => {
   console.log(newStatus);
   try {
     const response = await updateOrderStatus(orderID, newStatus);
+    var obj={
+      id: 0,
+      from: "john.perera@example.com",
+      to: "adam.jayasinghe@example.com",
+      message: "you have a new order!",
+      sendAt: "2024-06-17T19:09:04.609Z",
+      isSeen: false
+    };
+
+    
+    
+    const response2 = await axios.post("https://localhost:7144/api/NewOrder/Addnotification", obj);
     console.log('Order status updated successfully:', response);
+    console.log("new notification",response2);
   } catch (error) {
     console.error('Error updating order status:', error);
   }
