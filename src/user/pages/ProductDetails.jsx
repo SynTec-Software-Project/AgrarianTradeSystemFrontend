@@ -164,7 +164,7 @@ const ProductDetails = () => {
                 <p className=' flex items-center gap-3 font-semibold text-gray-600 text-lg'><span><FaLocationDot /></span>{product.farmerAddL3}</p>
               </div>
               {/* product description */}
-              <div className=' my-3'>
+              <div className=' mb-3'>
                 <p className=' text-gray-700'>{product.productDescription}</p>
               </div>
               {/* product price */}

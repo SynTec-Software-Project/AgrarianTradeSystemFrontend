@@ -1,12 +1,9 @@
-"use client";
 import { React, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
-
+import { jwtDecode } from 'jwt-decode';
 import { getAllCourierOrders } from "@/services/orderServices";
-import { COURIER_ID } from "@/usersID";
-const Courier_ID = COURIER_ID; //COURIER ID HARDCODED
 export default function TabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState(defaultTab);
@@ -18,14 +15,17 @@ export default function TabAndTables({ defaultTab }) {
   useEffect(() => {
     const fetchBuyerOrders = async () => {
       try {
-        const orders = await getAllCourierOrders(Courier_ID);
+        const token = sessionStorage.getItem('jwtToken');
+        const decodedData = jwtDecode(token);
+        const courierID = decodedData.email;
+        const orders = await getAllCourierOrders(courierID);
         setData(orders);
       } catch (error) {
         console.error('Error while fetching buyer orders:', error);
       }
     };
     fetchBuyerOrders();
-  }, [Courier_ID]);
+  }, []);
 
   // Update tab and filter data based on URL change
   useEffect(() => {

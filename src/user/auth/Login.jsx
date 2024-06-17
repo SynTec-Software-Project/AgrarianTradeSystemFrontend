@@ -35,6 +35,7 @@ function Login(){
             setLogError(false);
             const token = sessionStorage.getItem('jwtToken');
             const decodedData = jwtDecode(token);
+            console.log(decodedData.email)
             setIsLoading(false);
             if(decodedData.role=="Courier"){
                 navigate('/couriers/new-orders');
