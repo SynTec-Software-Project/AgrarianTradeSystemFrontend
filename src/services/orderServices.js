@@ -111,7 +111,7 @@ export const updateCourier = async (orderId, courierID) => {
 export const getCourierOrderDetails = async (id) => {
   try {
     const response = await axiosInstance.get(`/Order/courier/details/${id}`);
-    return response.data;
+    return response.data[0];
   } catch (error) {
     console.error('Error fetching order details:', error);
     throw error;

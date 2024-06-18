@@ -3,40 +3,28 @@ import { Card, CardBody, Typography, Button } from '@material-tailwind/react';  
 import Swal from "sweetalert2";  // Library for displaying beautiful alerts
 import { Pickup_Drop_Detail } from './Pickup_Drop_Detail';  
 import { useNavigate, useParams } from 'react-router-dom'; // React Router hooks for navigation
-import axios from 'axios';  // HTTP client for making API requests
+import axios from 'axios';  
 import { getCourierOrderDetails } from '@/services/orderServices';
 
 const OrderDetail = () => {
-  // Get the id parameter from the URL using useParams hook
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState([]); // State variable to hold order details
-
-  // Fetch order details from the server when component mounts or id changes
-  // useEffect(() => {
-  //   axios.get(`https://localhost:7144/api/Order/courier/details/${id}`)
-  //     .then((response) => {
-  //       setData(response.data[0]);
-  //       console.log(response.data[0]);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching order details:', error);
-  //     });
-  // }, [id]);
+  const [data, setData] = useState([]); 
 
   useEffect(() => {
     const fetchCourierOrderDetails = async () => {
+      console.log(id)
       try {
         const data = await getCourierOrderDetails(id);
+        console.log(data)
         setData(data);
       } catch (error) {
-        setError('Error fetching order details');
         console.error(error);
       }
     };
 
     fetchCourierOrderDetails();
-  }, [id]);
+  }, []);
 
   // Function to display a confirmation popup for accepting an order
   const popupAccept = () => {
@@ -123,10 +111,7 @@ const OrderDetail = () => {
         Subject: "Agrarian Trade System",
         Body: htmlContent,
       });
-      alert(response.data);
     } catch (error) {
-      // Handle errors in sending email
-      alert("Error sending email: " + error.response.data);
     }
     console.log("Accepted");
   };
@@ -147,10 +132,7 @@ const OrderDetail = () => {
         Subject: "Agrarian Trade System",
         Body: htmlContent,
       });
-      alert(response.data);
     } catch (error) {
-      // Handle errors in sending email
-      alert("Error sending email: " + error.response.data);
     }
     console.log("Rejected");
   };

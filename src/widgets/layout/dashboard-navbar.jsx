@@ -41,7 +41,7 @@ export function DashboardNavbar() {
 
   useEffect(() => {
     axios
-      .get(`https://localhost:7144/api/NewOrder/getnotification/` + to)
+      .get(`https://localhost:7144/api/Notification/to/` + to)
       .then((response) => {
         setNotificationList(response.data);
       })
@@ -52,7 +52,7 @@ export function DashboardNavbar() {
 
   const deleteNotification = (id) => {
     axios
-      .delete(`https://localhost:7144/api/NewOrder/deletenotification/${id}`)
+      .delete(`https://localhost:7144/api/Notification/${id}`)
       .then((response) => {
         console.log("Notification deleted:", response.data);
         setNotificationList(notificationList.filter((notification) => notification.id !== id));

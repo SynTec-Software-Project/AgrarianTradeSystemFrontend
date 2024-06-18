@@ -46,7 +46,7 @@ const handleUpdateStatus = async (orderID, newStatus,courierID) => {
       message: "you have a new order!",
       isSeen: false
     };   
-    const response2 = await axios.post("https://localhost:7144/api/NewOrder/Addnotification", obj);
+    const response2 = await axios.post("https://localhost:7144/api/Notification", obj);
     //console.log('Order status updated successfully:', response);
     console.log("new notification",response2);
   } catch (error) {

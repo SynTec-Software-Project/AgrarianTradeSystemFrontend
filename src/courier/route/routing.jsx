@@ -21,7 +21,7 @@ const Routing = () => {
           element={<CourierOrderDetails />}
         ></Route>
         <Route
-          path="new-orders/:orderID"
+          path="new-orders/:id"
           element={<OrderDetail/>}
         ></Route>
       </Routes>
