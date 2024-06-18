@@ -1,4 +1,8 @@
-import { MyOrders, MyReturns, MyReviews, Profile } from "@/seller/SellerDashboard/dashboard";
+import {
+  MyReturns,
+  MyReviews,
+  Profile,
+} from "@/seller/SellerDashboard/dashboard";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { AddReviewCard } from "../components/Reviews/ToReview";
@@ -7,6 +11,7 @@ import ReturnForm from "../components/Returns/ReturnForm";
 import BuyerOrderDetails from "../components/BuyerOrderDetails";
 import EditReview from "../components/Reviews/EditReview";
 import MyReviewsPage from "../pages/MyReviews";
+import MyOrders from "../pages/MyOrders";
 const Routing = () => {
   return (
     <>

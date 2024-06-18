@@ -16,47 +16,47 @@ export default function Tab({ defaultTab }) {
   const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
 
-    // Fetch data on component mount
-    useEffect(() => {
-      const fetchOrderDetails = async () => {
-        try {
-          const details = await getAllFarmerOrders(Farmer_ID);
-          setData(details);
-        } catch (error) {
-          console.error('Error fetching order details:', error);
-        }
-      };
-      fetchOrderDetails();
-    }, [Farmer_ID]);
-  
-    // Update tab and filter data based on URL change
-    useEffect(() => {
-      if (location.pathname === "/my-orders") {
-        setTab(defaultTab);
+  // Fetch data on component mount
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const details = await getAllFarmerOrders(Farmer_ID);
+        setData(details);
+      } catch (error) {
+        console.error("Error fetching order details:", error);
       }
-    }, [location.pathname, defaultTab]);
-  
-    // Filter data based on tab selection
-    useEffect(() => {
-      const filterResult = (statusItem) => {
-        let result = [];
-        if (statusItem === "All") {
-          result = data.filter(
-            (item) =>
-              item.orderStatus.toLowerCase() === "ready to pickup" ||
-              item.orderStatus.toLowerCase() === "picked up" ||
-              item.orderStatus.toLowerCase() === "delivered"
-          );
-        } else {
-          result = data.filter(
-            (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
-          );
-        }
-        setFilteredData(result);
-      };
-      filterResult(tab);
-    }, [data, tab]);
-  
+    };
+    fetchOrderDetails();
+  }, [Farmer_ID]);
+
+  // Update tab and filter data based on URL change
+  useEffect(() => {
+    if (location.pathname === "/my-orders") {
+      setTab(defaultTab);
+    }
+  }, [location.pathname, defaultTab]);
+
+  // Filter data based on tab selection
+  useEffect(() => {
+    const filterResult = (statusItem) => {
+      let result = [];
+      if (statusItem === "All") {
+        result = data.filter(
+          (item) =>
+            item.orderStatus.toLowerCase() === "ready to pickup" ||
+            item.orderStatus.toLowerCase() === "picked up" ||
+            item.orderStatus.toLowerCase() === "delivered"
+        );
+      } else {
+        result = data.filter(
+          (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
+        );
+      }
+      setFilteredData(result);
+    };
+    filterResult(tab);
+  }, [data, tab]);
+
   const handleRowClick = (id) => {
     navigate(`/dashboard/my-orders/${id}`);
   };
@@ -92,7 +92,7 @@ export default function Tab({ defaultTab }) {
           </button>
 
           <button
-             onClick={() => setTab("Picked up")}
+            onClick={() => setTab("Picked up")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
               tab === "Picked up"
                 ? "text-primary border-b-2 border-primary "
@@ -103,7 +103,7 @@ export default function Tab({ defaultTab }) {
           </button>
 
           <button
-             onClick={() => setTab("Delivered")}
+            onClick={() => setTab("Delivered")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
               tab === "Delivered"
                 ? "text-primary border-b-2 border-primary "
@@ -116,14 +116,24 @@ export default function Tab({ defaultTab }) {
       </div>
       <div>
         <div className=" flex-col justify-center text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-8">
-          <table  className="w-full text-left table-auto min-w-max">
-          <thead>
+          <table className="w-full text-left table-auto min-w-max">
+            <thead>
               <tr class="border-b border-primary">
-                <th className=" py-5 font-bold w-24 text-center align-middle">Product</th>
-                <th className=" py-5 font-bold w-24 text-center align-middle">Order reference</th>
-                <th className=" py-5 font-bold w-24 text-center align-middle">Order Placed</th>
-                <th className=" py-5 font-bold w-24 text-center align-middle">Quantity (Kg)</th>
-                <th className=" py-5 font-bold w-24 text-center align-middle">Price</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Product
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Order reference
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Order Placed
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Quantity (Kg)
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Price
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -143,61 +153,65 @@ export default function Tab({ defaultTab }) {
                     onClick={() => handleRowClick(orderID)}
                     onMouseEnter={() => setSelectedRow(orderID)}
                     onMouseLeave={() => setSelectedRow(null)}
-                    className={selectedRow === orderID ? 'bg-gray-200 cursor-pointer' : 'cursor-pointer'}
+                    className={
+                      selectedRow === orderID
+                        ? "bg-gray-200 cursor-pointer"
+                        : "cursor-pointer"
+                    }
                   >
-                        <td class="p-3 w-24 text-center align-middle">
-                          <div className="flex space-x-5 ">
-                            <Avatar
-                              src={
-                                "https://syntecblobstorage.blob.core.windows.net/products/" +
-                                productImageUrl
-                              }
-                              size="sm"
-                            />
-                            <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              {productTitle}
-                            </p>
-                          </div>
-                        </td>
+                    <td class="p-3 w-24 text-center align-middle">
+                      <div className="flex space-x-5 ">
+                        <Avatar
+                          src={
+                            "https://syntecblobstorage.blob.core.windows.net/products/" +
+                            productImageUrl
+                          }
+                          size="sm"
+                        />
+                        <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                          {productTitle}
+                        </p>
+                      </div>
+                    </td>
 
-                        <td className="p-3 w-24 text-center align-middle">
-                          <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                            {orderID}
-                          </p>
-                        </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                        {orderID}
+                      </p>
+                    </td>
 
-                        <td className="p-3 w-24 text-center align-middle">
-                          <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                            {formatDate(orderedDate)}
-                          </p>
-                        </td>
-                        <td className="p-3 w-24 text-center align-middle">
-                          <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                            {totalQuantity}Kg
-                          </p>
-                        </td>
-                        <td className="p-3 w-24 text-center align-middle">
-                          <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                            Rs.{totalPrice}
-                          </p>
-                        </td>
-                        <td className="p-3 w-24 text-center align-middle">
-                          {orderStatus.toLowerCase() === "ready to pickup" && (
-                            <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              Ready to Pickup
-                            </p>
-                          )}
-                          {orderStatus.toLowerCase() === "picked up" && (
-                            <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              Picked up
-                            </p>
-                          )}
-                          {orderStatus.toLowerCase() === "delivered" && (
-                            <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                              Delivered
-                            </p>
-                          )}
-                        </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                        {formatDate(orderedDate)}
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                        {totalQuantity}Kg
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                        Rs.{totalPrice}
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      {orderStatus.toLowerCase() === "ready to pickup" && (
+                        <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          Ready to Pickup
+                        </p>
+                      )}
+                      {orderStatus.toLowerCase() === "picked up" && (
+                        <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          Picked up
+                        </p>
+                      )}
+                      {orderStatus.toLowerCase() === "delivered" && (
+                        <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          Delivered
+                        </p>
+                      )}
+                    </td>
                   </tr>
                 );
               })}
