@@ -142,23 +142,23 @@ const ProductDetails = () => {
         setSuccessOrder={handleSuccessOrder}
         
       />
-      <div className=' grid grid-cols-4 px-8 gap-4'>
+      <div className=' md:grid grid-cols-4 px-8 pb-12 gap-4'>
         <div className=' col-span-3 h-auto bg-white rounded-md border-gray-100'>
 
-          <div className=' grid grid-cols-3 px-8 '>
+          <div className=' md:grid grid-cols-3 px-4 md:px-8 pb-8 md:pb-0'>
             {/* product image section */}
-            <div className=' py-8'>
+            <div className='py-4 md:py-8'>
               <img src={"https://syntecblobstorage.blob.core.windows.net/products/" + product.productImageUrl} alt={product.productTitle}
                 className='object-cover rounded-lg w-full'
               />
             </div>
             {/* product details section */}
-            <div className=' col-span-2 px-8 py-12'>
-              <div className=' flex justify-between items-start'>
+            <div className=' col-span-2 md:px-8 md:py-12'>
+              <div className=' md:flex justify-between items-start'>
                 {/* product name */}
                 <div>
-                  <h1 className=' text-3xl font-semibold text-gray-800'>{product.productTitle}</h1>
-                  <div className="mb-3 flex gap-5 items-center justify-between">
+                  <h1 className='text-2xl md:text-3xl font-semibold text-gray-800'>{product.productTitle}</h1>
+                  <div className="mb-3 flex md:gap-5 gap-3 items-center md:justify-between">
                     <Rating value={4} readonly />
                     <p className=' text-sm text-gray-700'>Reviews (4)</p>
                   </div>
@@ -166,8 +166,8 @@ const ProductDetails = () => {
                 <p className=' flex items-center gap-3 font-semibold text-gray-600 text-lg'><span><FaLocationDot /></span>{product.farmerAddL3}</p>
               </div>
               {/* product description */}
-              <div className=' my-3'>
-                <p className=' text-gray-700'>{product.productDescription}</p>
+              <div className=' mb-3'>
+                <p className='mt-3 md:mt-0 text-gray-700'>{product.productDescription}</p>
               </div>
               {/* product price */}
               <div>
@@ -179,7 +179,7 @@ const ProductDetails = () => {
                 <h1 className='mt-8 mb-4 text-gray-800 text-sm'>Select Quantity :</h1>
                 <ProductQuantity minimumQuantity={product.minimumQuantity} availableStock={product.availableStock} onQuantityChange={handleQuantityChange} />
               </div>
-              <div className='flex gap-3 justify-end mt-8'>
+              <div className='flex gap-3 md:justify-end mt-8'>
                 <button className='bg-transparent border-primary border rounded-full inline-flex items-center 
                                       justify-center py-2 px-8 text-center text-sm font-medium  text-primary
                                       disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'
@@ -202,7 +202,7 @@ const ProductDetails = () => {
 
         </div>
         {/* courier charges section */}
-        <div>
+        <div className='mt-4 md:mt-0'>
           <DeliveryFee originData={product.farmerAddL3 + ', Sri Lanka'} handleDeliveryFee={handleDeliveryFee}  handleSelectDestination={handleSelectDestination}/>
           <SellerDetails
             farmerFName={product.farmerFName}

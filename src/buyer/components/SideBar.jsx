@@ -28,10 +28,20 @@ export function SideBar() {
       className={`${sidenavTypes[sidenavType]} ${openSidenav ? "translate-x-0" : "-translate-x-80"
         } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
-      <div
-        className={`relative`}
+     <div
+        className='flex justify-end px-6 pt-4 '
       >
-        <Link to="/" className="py-6 px-8 text-center">
+        <IconButton
+          variant="text"
+          color="blue-gray"
+          className="xl:hidden block"
+          onClick={() => setOpenSidenav(dispatch, false)}
+        >
+          <XMarkIcon strokeWidth={2.5} className="h-5 w-5" />
+        </IconButton>
+      </div>
+      <div>
+      <Link to="/" className="px-8 text-center">
           <Typography
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
@@ -39,19 +49,9 @@ export function SideBar() {
             <h1>Buyer Dashboard</h1>
           </Typography>
         </Link>
-        <IconButton
-          variant="text"
-          color="white"
-          size="sm"
-          ripple={false}
-          className="absolute right-0 top-0 grid rounded-br-none rounded-tl-none xl:hidden"
-          onClick={() => setOpenSidenav(dispatch, false)}
-        >
-          <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
-        </IconButton>
       </div>
 
-      <div className="m-4">
+      <div className="mx-4">
         <ul className="mb-4 flex flex-col gap-1">
 
           <li className="mx-3.5 mt-4 mb-2">

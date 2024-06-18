@@ -1,4 +1,8 @@
-import { MyOrders, MyReturns, MyReviews, Profile } from "@/seller/SellerDashboard/dashboard";
+import {
+  MyReturns,
+  MyReviews,
+  Profile,
+} from "@/seller/SellerDashboard/dashboard";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { AddReviewCard } from "../components/Reviews/ToReview";
@@ -11,6 +15,7 @@ import ReturnFormCard from "@/seller/SellerDashboard/dashboard/components/review
 import History from "../components/Reviews/History";
 import { MyReturnsBuyer } from "../components/Returns/MyReturnsBuyer";
 
+import MyOrders from "../pages/MyOrders";
 const Routing = () => {
   return (
     <>

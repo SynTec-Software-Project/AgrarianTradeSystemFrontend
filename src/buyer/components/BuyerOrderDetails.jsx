@@ -8,6 +8,7 @@ import {
   TruckIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
+import { getBuyerOrderByID } from "@/services/orderServices";
 export default function BuyerOrderDetails() {
   const { orderID } = useParams();
   const [orderDetails, setOrderDetails] = useState([]);
@@ -17,9 +18,10 @@ export default function BuyerOrderDetails() {
     const fetchOrders = async () => {
       try {
         const orderData = await getBuyerOrderByID(orderID);
+        console.log(orderData);
         setOrderDetails(orderData);
       } catch (error) {
-        console.error('Error fetching order details:', error);
+        console.error("Error fetching order details:", error);
       }
     };
     fetchOrders();
@@ -83,7 +85,7 @@ export default function BuyerOrderDetails() {
           <Step
             className={` ${activeStep === 2 ? "border-8 border-red-200" : ""}`}
           >
-            <CheckIcon className="h-5 w-5 "  />
+            <CheckIcon className="h-5 w-5 " />
             <Typography
               variant="h6"
               color={activeStep === 2 ? "green" : "gray"}

@@ -107,3 +107,29 @@ export const updateCourier = async (orderId, courierID) => {
     throw error;
   }
 };
+
+export const getCourierOrderDetails = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/Order/courier/details/${id}`);
+    return response.data[0];
+  } catch (error) {
+    console.error('Error fetching order details:', error);
+    throw error;
+  }
+};
+
+
+// Function to create a new notification
+export const createNewNotification = async (formData) => {
+  try {
+    const response = await axiosInstance.post('/NewOrder/Addnotification', formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating new order:', error);
+    throw error;
+  }
+};

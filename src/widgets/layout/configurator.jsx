@@ -42,7 +42,7 @@ function formatNumber(number, decPlaces) {
 
 export function Configurator() {
   const [controller, dispatch] = useMaterialTailwindController();
-  const { openConfigurator, sidenavColor, sidenavType, fixedNavbar } =
+  const { openConfigurator } =
   controller;
   const [stars, setStars] = React.useState(0);
   const sidenavColors = {

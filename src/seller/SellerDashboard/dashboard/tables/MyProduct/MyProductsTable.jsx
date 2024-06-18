@@ -128,7 +128,7 @@ const MyProductsTable = () => {
                             color="blue-gray"
                             className="font-normal opacity-70"
                           >
-                            {p.productDescription}
+                            {`${p.productDescription.split(' ').slice(0, 3).join(' ')}...`}
                           </Typography>
                         </div>
                       </div>

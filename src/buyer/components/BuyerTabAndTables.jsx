@@ -27,7 +27,7 @@ export default function BuyerTabAndTables({ defaultTab }) {
         setData(orders);
         setFilteredData(orders);
       } catch (error) {
-        console.error('Error while fetching buyer orders:', error);
+        console.error("Error while fetching buyer orders:", error);
       }
     };
     fetchBuyerOrders();
@@ -252,7 +252,7 @@ export default function BuyerTabAndTables({ defaultTab }) {
             return (
               <>
                 <div className="group bg-gray-200 border hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out  p-4  rounded-lg shadow mt-8  ">
-                  <Link to={`/couriers/my-orders/${orderId}`}>
+                  <Link to={`/buyers/my-orders/${orderId}`}>
                     <div className="grid grid-cols-2 gap-x-10 mt-2">
                       <div>
                         <img

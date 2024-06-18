@@ -10,6 +10,7 @@ import { Pickup_Drop_Detail } from './Pickup_Drop_Detail';
 import { Popup } from './Popup'; // Import the Popup component here
 import DeliveryFee from './DeliveryFee';
 
+
 export function CourierOrderDetail() {
   const handleAccept = () => {
     // Handle accept logic here

@@ -3,16 +3,20 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { getAllCourierOrders } from '@/services/orderServices';
-import { COURIER_ID } from '@/usersID';
+import { jwtDecode } from 'jwt-decode';
+
 export default function CourierNewOrdersTab() {
-  const courierID = COURIER_ID;
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    
     const fetchOrders = async () => {
       try {
+        const token = sessionStorage.getItem('jwtToken');
+        const decodedData = jwtDecode(token);
+        const courierID = decodedData.email;
         const orders = await getAllCourierOrders(courierID);
         setData(orders);
       } catch (error) {
@@ -22,9 +26,9 @@ export default function CourierNewOrdersTab() {
     };
 
     fetchOrders();
-  }, [courierID]);
+  }, []);
   const handleRowClick = (id) => {  
-    navigate(`/couriers/new-orders//${id}`);
+    navigate(`/couriers/new-orders/${id}`);
   };
 
   return (

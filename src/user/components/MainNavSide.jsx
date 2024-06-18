@@ -65,13 +65,13 @@ const MainNavSide = () => {
                     </button>
                   </div>
                   <ul className="text-left mt-7">
-                    <li className=' my-4'><NavLink className="text-sm text-gray-800 hover:text-green-700" style={navLinkStyle} to='/'>Home</NavLink></li>
-                    <li className=' my-4'><NavLink className="text-sm text-gray-800 hover:text-green-700" style={navLinkStyle} to='/about'>About</NavLink></li>
-                    <li className=' my-4'><NavLink className="text-sm text-gray-800 hover:text-green-700" style={navLinkStyle} to='/projects'>My Orders</NavLink></li>
-                    <li className=' my-4'><NavLink className="text-sm text-gray-800 hover:text-green-700" style={navLinkStyle} to='/dashboard/my-products'>Become a Seller</NavLink></li>
-                    <li className=' my-4'><NavLink className="text-sm text-gray-800 hover:text-green-700" style={navLinkStyle} to='/contact'>Delivery Partner</NavLink></li>
-                    <li className=' my-4'><NavLink className="text-sm text-gray-800 hover:text-green-700" style={navLinkStyle} to='/contact'>Login</NavLink></li>
-                    <li className=' my-4'><NavLink className="text-sm text-gray-800 hover:text-green-700" style={navLinkStyle} to='/contact'>SignUp</NavLink></li>
+                    <li className=' my-4'><NavLink className="text-2xl my-5 text-gray-800 hover:text-green-700" style={navLinkStyle} to='/'>Home</NavLink></li>
+                    <li className=' my-4'><NavLink className="text-2xl my-5 text-gray-800 hover:text-green-700" style={navLinkStyle} to='/about'>About</NavLink></li>
+                    <li className=' my-4'><NavLink className="text-2xl my-5 text-gray-800 hover:text-green-700" style={navLinkStyle} to='/buyers/my-orders'>My Orders</NavLink></li>
+                    <li className=' my-4'><NavLink className="text-2xl my-5 text-gray-800 hover:text-green-700" style={navLinkStyle} to='/dashboard/my-products'>Become a Seller</NavLink></li>
+                    <li className=' my-4'><NavLink className="text-2xl my-5 text-gray-800 hover:text-green-700" style={navLinkStyle} to='/couriers/new-orders'>Delivery Partner</NavLink></li>
+                    <li className=' my-4'><NavLink className="text-xl font-semibold my-5 text-white rounded-md bg-primary px-5 py-2"  to='/login'>Login</NavLink></li>
+                    <li className=' my-4'><NavLink className="text-xl font-semibold my-5 text-white rounded-md bg-primary px-5 py-2"  to='/create'>SignUp</NavLink></li>
                   </ul>
 
                 </div>

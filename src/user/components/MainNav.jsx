@@ -7,14 +7,30 @@ import SearchBar from "./SearchBar";
 import { Link, useNavigate } from "react-router-dom";
 import MainNavSide from "./MainNavSide";
 import axios from "axios";
-import { getCartItems } from "@/services/productServices";
+import { getCartItems, getSearchProducts } from "@/services/productServices";
 import { BUYER_ID } from "@/usersID";
+
 //BUYER ID HARD CODED
 const buyerID = BUYER_ID;
-const MainNav = () => {
+const MainNav = ({getSearchResults}) => {
     const navigate = useNavigate();
     const [cartCount, setCartCount] = useState(0);
-    
+
+
+    const handleSearch = async (searchTerm) => {
+      try {
+        // Fetch search results
+        navigate(`/products?search=${searchTerm}`);
+        const results = await getSearchProducts(searchTerm);
+        // Pass search results to ProductList
+        getSearchResults(results);
+        // Navigate to /products with search term as query param
+        
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    };
+  
     useEffect(() => {
       const fetchCartItems = async () => {
         try {
@@ -65,7 +81,7 @@ const MainNav = () => {
             <div>
               {/* signup and search */}
               <div className="flex items-center justify-end px-4 ">
-                <SearchBar />
+                <SearchBar onSearch={handleSearch} />
                 <div className="hidden justify-end pr-16 gap-3 sm:flex lg:pr-0 items-center ">
                   <Badge content={cartCount} color="green" className="mx-3">
                     <IconButton color="gray" variant="outlined" className="rounded-full"
