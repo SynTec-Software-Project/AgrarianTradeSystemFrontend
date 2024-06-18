@@ -6,7 +6,8 @@ import OrderHistory from "../pages/OrderHistory";
 import Profile from "../pages/auth/Profile";
 import { CourierOrderDetail } from "../components/CourierOrderDetail";
 import CourierOrderDetails from "../components/CourierOrderDetails";
-import AcceptRejectOrder from "../components/AcceptRejectOrder";
+import OrderDetail from "../components/OrderDetail";
+
 const Routing = () => {
   return (
     <>
@@ -21,7 +22,7 @@ const Routing = () => {
         ></Route>
         <Route
           path="new-orders/:orderID"
-          element={<AcceptRejectOrder />}
+          element={<OrderDetail/>}
         ></Route>
       </Routes>
     </>
