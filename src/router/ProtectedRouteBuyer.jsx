@@ -2,8 +2,7 @@ import {useEffect} from "react";
 import { Outlet, useNavigate, Navigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 
-
-const ProtectedRouteFarmer = (props) => {
+const ProtectedRouteBuyer = (props) => {
     const token = sessionStorage.getItem("jwtToken");
     const navigate = useNavigate();
     function presentPage(){
@@ -13,19 +12,19 @@ const ProtectedRouteFarmer = (props) => {
     if (!token) return <Navigate to="/login"/>;
     console.log(jwtDecode(token).role);
     useEffect(()=>{
-        if(token && jwtDecode(token).role!=="Farmer"){
+        if(token && jwtDecode(token).role!=="User"){
             presentPage()
         }
-    },[token && jwtDecode(token).role!=="Farmer"])
+    },[token && jwtDecode(token).role!=="User"])
 
     const decodedData = jwtDecode(token);
 
-    if(decodedData.role === "Farmer"){
+    if(decodedData.role === "User"){
         return <Outlet {...props}/>;
     }
-    else if(decodedData.role !== "Farmer"){
+    else if(decodedData.role !== "User"){
         presentPage()
     }
 };
 
-export default ProtectedRouteFarmer;
+export default ProtectedRouteBuyer;
