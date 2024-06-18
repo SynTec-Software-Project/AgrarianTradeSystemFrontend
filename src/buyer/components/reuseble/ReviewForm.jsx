@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { addReview, getOrderDetails } from '@/services/reviewServices';
 
 export default function ReviewForm() {
-  const { id, orderId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [reviewData, setReviewData] = useState({
@@ -28,11 +28,13 @@ export default function ReviewForm() {
     };
 
     fetchOrderDetails();
+
+    console.log("Order ID:", id);
   }, [id]);
 
   const addFormData = () => {
     const formData = new FormData();
-    formData.append("OrderID", orderId);
+    formData.append("OrderID", id);
     formData.append("SellerRating", reviewData.SellerRating);
     formData.append("DeliverRating", reviewData.DeliverRating);
     formData.append("ProductRating", reviewData.ProductRating);

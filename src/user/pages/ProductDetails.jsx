@@ -15,6 +15,8 @@ import SellerDetails from '../components/SellerDetails';
 import PlaceOrderModal from '../components/PlaceOrderModal';
 import { addToCartProducts, getProductDetails } from '@/services/productServices';
 import { BUYER_ID } from '@/usersID';
+import Review from '../components/Review';
+
 function Icon() {
   return (
     <svg
@@ -213,6 +215,7 @@ const ProductDetails = () => {
           />
         </div>
       </div>
+      <Review/>
     </div>
   )
 }

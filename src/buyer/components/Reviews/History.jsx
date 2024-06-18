@@ -3,26 +3,45 @@ import { Button } from "@material-tailwind/react";
 import { Rating } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getReviewHistory } from '@/services/reviewServices';
+import { BUYER_ID } from '@/usersID';
 
 export function DefaultRating({ value }) {
   return <Rating value={value} />;
 }
+
+function formatDate(dateString) {
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const dateParts = dateString.split("-");
+  const year = dateParts[0];
+  const month = parseInt(dateParts[1], 10);
+  const day = parseInt(dateParts[2], 10);
+
+  const monthName = monthNames[month - 1];
+
+  return `${day} ${monthName} ${year}`;
+}
+
 const History = () => {
+  const buyerId = BUYER_ID;
+
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
 
   const fetchReviews = async () => {
-    const client = axios.create({
-      baseURL: "https://localhost:7144/api/Review/get-history"
-    });
-
     try {
-      client.get().then((response) => {
-        setReviews(response.data)
-        console.log(reviews)
-      })
+      const reviewHistory = await getReviewHistory(buyerId);
+
+      console.log("Rviews:", reviewHistory);
+
+      setReviews(reviewHistory);
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching products or history:', error);
+      // Handle errors appropriately, e.g., show a notification to the user
     }
   }
 
@@ -35,8 +54,8 @@ const History = () => {
         reviews.map((review, index) => (
           <div className='bg-white px-8 py-5 rounded-lg my-2 pb-1'>
             <div className='mb-5'>
-              <h1 className='my-2'>Vegetable Gallery </h1>
-              <p>Purchase date {review.reviewDate.split('T')[0]}</p>
+              <h1 className='my-2 capitalize'>{review.productType} Gallery </h1>
+              <p>Purchase date {formatDate(review.reviewDate.split('T')[0])}</p>
             </div>
             <div className='flex w-full gap-4 items-end'>
               <img src={"https://syntecblobstorage.blob.core.windows.net/reviews/" + review.reviewImageUrl}

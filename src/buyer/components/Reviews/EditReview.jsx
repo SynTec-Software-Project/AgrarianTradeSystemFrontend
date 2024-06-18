@@ -18,6 +18,8 @@ export default function EditReview() {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
 
+    const fetchData = async () => {}
+
     useEffect(() => {
         const client = axios.create({
             baseURL: "https://localhost:7144/api/"
