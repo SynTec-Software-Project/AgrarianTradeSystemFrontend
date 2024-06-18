@@ -67,7 +67,7 @@ const handleUpdateStatus = async (orderID, newStatus,courierID) => {
         Subject: "Agrarian Trade System",
         Body: htmlContent,
       });
-      alert(response.data);
+      
     } catch (error) {
       alert("Error sending email: " + error.response.data);
     }

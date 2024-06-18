@@ -3,28 +3,24 @@ import { Card, CardBody, Typography, Button } from '@material-tailwind/react';  
 import Swal from "sweetalert2";  // Library for displaying beautiful alerts
 import { Pickup_Drop_Detail } from './Pickup_Drop_Detail';  
 import { useNavigate, useParams } from 'react-router-dom'; // React Router hooks for navigation
-import axios from 'axios';  
-import { getCourierOrderDetails } from '@/services/orderServices';
+import axios from 'axios';  // HTTP client for making API requests
 
 const OrderDetail = () => {
+  // Get the id parameter from the URL using useParams hook
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState([]); 
+  const [data, setData] = useState([]); // State variable to hold order details
 
+  // Fetch order details from the server when component mounts or id changes
   useEffect(() => {
-    const fetchCourierOrderDetails = async () => {
-      console.log(id)
-      try {
-        const data = await getCourierOrderDetails(id);
-        console.log(data)
-        setData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchCourierOrderDetails();
-  }, []);
+    axios.get(`https://localhost:7144/api/Order/courier/details/${id}`)
+      .then((response) => {
+        setData(response.data[0]);
+      })
+      .catch((error) => {
+        console.error('Error fetching order details:', error);
+      });
+  }, [id]);
 
   // Function to display a confirmation popup for accepting an order
   const popupAccept = () => {
@@ -98,23 +94,43 @@ const OrderDetail = () => {
   // Function to handle accepting an order
   const handleAccept = async () => {
     try {
-      // Prepare HTML content for email
-      const htmlContent = `
-        <h2>Hello,</h2>
-        <p>This is a predefined email message with <strong>HTML content</strong>.</p>
-        <p>Sincerely,<br/>Your Name</p>
-      `;
+        // Prepare HTML content for email
+        const htmlContent = `
+          <h2>Hello,</h2>
+          <p>This is a predefined email message with <strong>HTML content</strong>.</p>
+          <p>Sincerely,<br/>Your Name</p>
+        `;
 
-      // Send email using API endpoint
-      const response = await axios.post("https://localhost:7144/api/Email", {
-        To: "bhmmpmgunathilake1999@gmail.com",
-        Subject: "Agrarian Trade System",
-        Body: htmlContent,
-      });
+        // Send email using API endpoint
+        const emailResponse = await axios.post("https://localhost:7144/api/Email", {
+            To: "bhmmpmgunathilake1999@gmail.com",
+            Subject: "Agrarian Trade System",
+            Body: htmlContent,
+        });
+        
+        // Prepare notification object
+        const notificationObj = {
+            id: 0,
+            from: "john.doe@example.com",
+            to: "adam.jayasinghe@example.com",  // Replace with actual courier ID or pass as parameter
+            message: "Your Orders has been accepted",
+            isSeen: false
+        };
+
+        // Send notification using API endpoint
+        const notificationResponse = await axios.post("https://localhost:7144/api/Notification", notificationObj);
+
+        console.log("Email sent:", emailResponse.data);
+        console.log("Notification sent:", notificationResponse.data);
+        
+        // Optionally return or handle the responses if needed
     } catch (error) {
+        // Handle errors in sending email or notification
+        console.error("Error:", error.message);
+        alert("Error sending email or notification: " + error.response.data);
     }
     console.log("Accepted");
-  };
+};
 
   // Function to handle rejecting an order
   const handleReject = async () => {
@@ -132,7 +148,22 @@ const OrderDetail = () => {
         Subject: "Agrarian Trade System",
         Body: htmlContent,
       });
+      const notificationObj = {
+        id: 0,
+        from: "john.doe@example.com",
+        to: "adam.jayasinghe@example.com",  // Replace with actual courier ID or pass as parameter
+        message: "Your Orders has been rejected",
+        isSeen: false
+    };
+
+    // Send notification using API endpoint
+    const notificationResponse = await axios.post("https://localhost:7144/api/Notification", notificationObj);
+
+    console.log("Email sent:", emailResponse.data);
+    console.log("Notification sent:", notificationResponse.data);
     } catch (error) {
+      // Handle errors in sending email
+      alert("Error sending email: " + error.response.data);
     }
     console.log("Rejected");
   };
@@ -217,7 +248,6 @@ const OrderDetail = () => {
       </table>
     </div>
   );
-
 }
 
-export default OrderDetail
+export default OrderDetail;
