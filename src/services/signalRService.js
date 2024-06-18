@@ -1,23 +1,34 @@
-import * as signalR from "@microsoft/signalr"
-let connection;
+// import React, { useEffect, useState } from "react";
+// import * as signalR from "@microsoft/signalr";
 
-export const startSignalRConnection = () => {
-  connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7144/notificationhub")
-    .configureLogging(signalR.LogLevel.Information)
-    .build();
+// const useSignalRConnection = (userId) => {
+//   const [connection, setConnection] = useState(null);
+//   const [notification, setNotification] = useState("");
 
-  connection.start().catch((err) => console.error(err.toString()));
-};
+//   useEffect(() => {
+//     const connect = new signalR.HubConnectionBuilder()
+//       .withUrl("https://localhost:7144/notificationHub")
+//       .configureLogging(signalR.LogLevel.Information)
+//       .withAutomaticReconnect()
+//       .build();
 
-export const onOrderStatusUpdate = (callback) => {
-  if (connection) {
-    connection.on("OrderStatusUpdated", callback);
-  }
-};
+//     connect.start()
+//       .then(() => {
+//         console.log("SignalR Connected");
+//         connect.on("ReceiveNotification", (message) => {
+//           setNotification(message);
+//         });
+//       })
+//       .catch(err => console.error("SignalR Connection Error: ", err));
 
-export const sendOrderStatusConfirmation = (orderId, isConfirmed) => {
-  if (connection) {
-    connection.invoke("ConfirmOrderStatus", orderId, isConfirmed).catch((err) => console.error(err.toString()));
-  }
-};
+//     setConnection(connect);
+
+//     return () => {
+//       connect.stop().then(() => console.log("SignalR Disconnected"));
+//     };
+//   }, [userId]);
+
+//   return { connection, notification, setNotification };
+// };
+
+// export default useSignalRConnection;

@@ -14,7 +14,6 @@ import PageNotFound from "./user/pages/PageNotFound";
 import ShoppingCart from "./user/pages/ShoppingCart";
 
 function App() {
-  
   // const routes = {
   //   admin: [
   //     {
@@ -32,24 +31,24 @@ function App() {
   //   ],
   //   // Define routes for other roles...
   // };
-  
+
   return (
     <>
-     <Routes>
-      <Route path="/dashboard/*" element={<Dashboard />} />    
-      <Route path="/" element={<LandingPage />} />
-      <Route path="*" element={<PageNotFound/>} />
-      <Route path="/buyers/*" element={<BuyerDashboard/>}/>
-      <Route path="/couriers/*" element={<CourierDashboard/>}/>
-      <Route path="/products" element={<ProductList/>}/>
-      <Route path="/login" element={<Login/>}></Route>
-      <Route path="/create" element={<CreateAccount/>}/>
-      <Route path="/forgotpassword" element={<ForgotPassword/>}/>
-      <Route path="/farmercreate" element={<FarmerCreateAccount/>}/>
-      <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
-      <Route path='/product-details/:id' element={<ProductDetails/>}></Route>
-      <Route path="/cart" element={<ShoppingCart/>}/>
-    </Routes>
+      <Routes>
+        <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="*" element={<PageNotFound />} />
+        <Route path="/buyers/*" element={<BuyerDashboard />} />
+        <Route path="/couriers/*" element={<CourierDashboard />} />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/create" element={<CreateAccount />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/farmercreate" element={<FarmerCreateAccount />} />
+        <Route path="/couriercreate" element={<CourierCreateAccount />} />
+        <Route path="/product-details/:id" element={<ProductDetails />}></Route>
+        <Route path="/cart" element={<ShoppingCart />} />
+      </Routes>
     </>
   );
 }

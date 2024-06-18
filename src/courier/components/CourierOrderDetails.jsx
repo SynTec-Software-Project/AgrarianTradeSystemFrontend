@@ -5,17 +5,16 @@ import {
   fetchCourierDetails,
   updateOrderStatus,
 } from "@/services/orderServices";
-import {
-  onOrderStatusUpdate,
-  sendOrderStatusConfirmation,
-} from "@/services/signalRService";
 import NotificationModal from "./NotificationModal";
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
 export default function CourierOrderDetails({ currentUser }) {
   const { orderID } = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [notification, setNotification] = useState("");
+  const [connection, setConnection] = useState(null);
+  const [showComponent, setShowComponent] = useState(false); // State variable to track button click
 
   useEffect(() => {
     fetchCourierDetails(orderID)
@@ -25,85 +24,93 @@ export default function CourierOrderDetails({ currentUser }) {
       .catch((error) => {
         console.error("Error fetching courier details:", error);
       });
-
-    onOrderStatusUpdate((message) => {
-      setNotification(message);
-    });
   }, [orderID]);
 
-  const handleUpdateStatus = async (orderID, newStatus) => {
-    try {
-      const response = await updateOrderStatus(orderID, newStatus);
-      console.log("Order status updated successfully:", response);
+  useEffect(() => {
+    const connectToHub = async () => {
+      const newConnection = new HubConnectionBuilder()
+        .withUrl("https://localhost:7144/notificationhub")
+        .withAutomaticReconnect()
+        .build();
 
-      // Determine if notification should be sent to buyer or farmer
-      let recipientId;
-      if (newStatus === "Picked Up" && currentUser.id === orderDetails.userId) {
-        recipientId = orderDetails.farmerId; // Notify farmer
-      } else if (
-        newStatus === "Delivered" &&
-        currentUser.id !== orderDetails.userId
-      ) {
-        recipientId = orderDetails.userId; // Notify buyer
-      }
+      newConnection.on("ReceiveMessage", (message) => {
+        setNotification(message);
+        console.log(message);
+      });
 
-      // Send notification to the recipient
-      if (recipientId) {
-        await sendOrderStatusConfirmation(recipientId, newStatus);
-        console.log(
-          `Notification sent to user ${recipientId} for status ${newStatus}`
-        );
-      }
-
-      // Show modal only if confirmation is required (buyer or farmer)
-      if (
-        (newStatus === "Picked Up" && currentUser.id === orderDetails.userId) ||
-        (newStatus === "Delivered" && currentUser.id !== orderDetails.userId)
-      ) {
-        setShowConfirmation(true);
-      }
-    } catch (error) {
-      console.error("Error updating order status:", error);
-    }
-  };
-
-  const handleConfirmation = async (isConfirmed) => {
-    setShowConfirmation(false); // Close modal after confirmation
-
-    if (isConfirmed) {
       try {
-        const response = await confirmUpdateOrderStatus(
-          orderDetails.orderID,
-          orderDetails.orderStatus
-        );
-        console.log("Order status confirmed:", response);
+        await newConnection.start();
+        console.log("Connected to SignalR hub");
+        setConnection(newConnection);
       } catch (error) {
-        console.error("Error confirming order status:", error);
+        console.error("Error connecting to SignalR hub:", error);
       }
-    } else {
-      console.log("Confirmation declined");
+    };
+
+    if (!connection) {
+      connectToHub();
+    }
+  }, [connection]);
+
+  const handleButtonClick = async () => {
+    if (connection && orderDetails) {
+      const notification = {
+        OrderID: orderDetails.orderID,
+        OrderStatus: orderDetails.orderStatus,
+        FarmerID: orderDetails.farmerID,
+        FarmerFName: orderDetails.farmerFName,
+        FarmerLName: orderDetails.farmerLName,
+        BuyerID: orderDetails.buyerID,
+        CustomerFName: orderDetails.customerFName,
+        CustomerLName: orderDetails.customerLName,
+      };
+      console.log(orderDetails);
+      try {
+        await connection.send("SendNotification", notification);
+        console.log("Notification sent");
+        setShowConfirmation(true);
+        // Determine recipient based on order status
+        if (orderDetails.orderStatus.toLowerCase() === "ready to pickup") {
+          setShowConfirmation(true); // Show confirmation modal for farmer
+          console.log("Notify farmer directly if required");
+        } else if (orderDetails.orderStatus.toLowerCase() === "picked up") {
+          // Handle logic to notify buyer directly (if needed)
+          console.log("Notify buyer directly if required");
+        }
+      } catch (error) {
+        console.error("Error sending notification:", error);
+      }
     }
   };
-  const handleUpdateButtonClick = () => {
-    console.log("UPDATE ORDER STATUS button clicked");
-    handleUpdateStatus(orderID, orderDetails.orderStatus.toLowerCase());
+
+  const handleConfirmation = async (confirm) => {
+    if (confirm && orderDetails) {
+      try {
+        const updatedOrder = await updateOrderStatus(orderDetails.orderID, {
+          status: "picked up",
+        });
+        setOrderDetails(updatedOrder);
+        console.log("Order status updated");
+      } catch (error) {
+        console.error("Error updating order status:", error);
+      }
+    }
+    setShowConfirmation(false);
   };
 
   return (
     <div>
-      {orderDetails && ( // Render OrderOverview only when orderDetails is available
+      {orderDetails && (
         <div className="sm:-mt-12 -mt-4">
           <OrderOverview orderDetails={orderDetails} type="Courier" />
         </div>
       )}
-
-      {orderDetails && ( // Render order status text only when orderDetails is available
+      {orderDetails && (
         <p className="text-sm text-red-300 flex justify-center sm:pt-10 pt-6 overline uppercase font-sans">
           The order has been {orderDetails.orderStatus}
         </p>
       )}
-
-      {orderDetails && // Render "UPDATE ORDER STATUS" button conditionally
+      {orderDetails &&
         (orderDetails.orderStatus.toLowerCase() === "ready to pickup" ||
           orderDetails.orderStatus.toLowerCase() === "picked up") && (
           <div className="flex flex-row sm:space-x-16 space-x-4 justify-center sm:pt-8 pt-6">
@@ -114,23 +121,19 @@ export default function CourierOrderDetails({ currentUser }) {
             </div>
             <button
               className="bg-primary text-sm shadow-lg h-10 w-48 rounded-lg flex items-center justify-center font-medium text-white focus:ring-2 focus:ring-primary focus:text-primary focus:bg-gray-200 transition duration-300 ease-out hover:bg-green-400"
-              onClick={handleUpdateButtonClick}
+              onClick={handleButtonClick}
             >
               UPDATE ORDER STATUS
             </button>
           </div>
         )}
-
-      {showConfirmation && (
+      {/* {showConfirmation && (
         <NotificationModal
-          message={
-            "Your order status has been updated to ${orderDetails.orderStatus}"
-          }
+          message={notification}
           onConfirm={() => handleConfirmation(true)}
           onCancel={() => handleConfirmation(false)}
         />
-      )}
-
+      )} */}
       {notification && <div className="notification">{notification}</div>}
     </div>
   );

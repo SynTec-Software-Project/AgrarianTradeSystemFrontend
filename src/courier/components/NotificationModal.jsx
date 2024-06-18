@@ -1,6 +1,8 @@
 import React from "react";
 
 const NotificationModal = ({ message, onConfirm, onCancel }) => {
+  //
+
   return (
     <div className="fixed  flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded shadow-lg ">

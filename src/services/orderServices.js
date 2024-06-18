@@ -1,5 +1,5 @@
 import axiosInstance from "@/axiosConfig";
-import { sendOrderStatusConfirmation } from "./signalRService";
+// import { sendOrderStatusConfirmation } from "./signalRService";
 
 // Function to create a new order
 export const createNewOrder = async (formData) => {
@@ -109,7 +109,7 @@ export const updateCourier = async (orderId, courierID) => {
   }
 };
 
-export const confirmOrderStatus = async (orderId, isConfirmed) => {
-  sendOrderStatusConfirmation(orderId, isConfirmed);
-};
+// export const confirmOrderStatus = async (orderId, isConfirmed) => {
+//   sendOrderStatusConfirmation(orderId, isConfirmed);
+// };
 

@@ -26,12 +26,45 @@ import {
   setOpenSidenav,
 } from "@/context";
 import NotificationModal from "@/courier/components/NotificationModal";
+import { useState, useEffect } from "react";
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
-export function DashboardNavbar() {
+export function DashboardNavbar({ userId }) {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [showNotificationModal, setShowNotificationModal] = useState(false); // State to manage modal display
+  const [notification, setNotification] = useState("");
+  const [notificationList, setNotificationList] = useState([]);
+
+  useEffect(() => {
+    const connectToHub = async () => {
+      const newConnection = new HubConnectionBuilder()
+        .withUrl("https://localhost:7144/notificationhub")
+        .withAutomaticReconnect()
+        .build();
+
+      newConnection.on("ReceiveMessage", (message) => {
+        setNotification(message);
+        setShowNotificationModal(true);
+        console.log(message);
+      });
+
+      try {
+        await newConnection.start();
+        console.log("Connected to SignalR hub");
+      } catch (error) {
+        console.error("Error connecting to SignalR hub:", error);
+      }
+    };
+
+    connectToHub();
+  }, []); // Function to handle when a notification is received
+
+  const handleNotificationReceived = () => {
+    setShowNotificationModal(false); // Show modal when notification is received
+  };
   return (
     <Navbar
       color={fixedNavbar ? "white" : "transparent"}
@@ -114,7 +147,13 @@ export function DashboardNavbar() {
                     color="blue-gray"
                     className="mb-1 font-normal"
                   >
-                    <strong>New message</strong> from Laur
+                    {showNotificationModal && (
+                      <NotificationModal
+                        message={notification}
+                        onConfirm={() => setShowNotificationModal(false)}
+                        onCancel={() => setShowNotificationModal(false)}
+                      />
+                    )}{" "}
                   </Typography>
                   <Typography
                     variant="small"
