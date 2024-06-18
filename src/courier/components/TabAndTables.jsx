@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import { getAllCourierOrders } from "@/services/orderServices";
 export default function TabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
@@ -15,13 +15,13 @@ export default function TabAndTables({ defaultTab }) {
   useEffect(() => {
     const fetchBuyerOrders = async () => {
       try {
-        const token = sessionStorage.getItem('jwtToken');
+        const token = sessionStorage.getItem("jwtToken");
         const decodedData = jwtDecode(token);
         const courierID = decodedData.email;
         const orders = await getAllCourierOrders(courierID);
         setData(orders);
       } catch (error) {
-        console.error('Error while fetching buyer orders:', error);
+        console.error("Error while fetching buyer orders:", error);
       }
     };
     fetchBuyerOrders();
@@ -58,7 +58,6 @@ export default function TabAndTables({ defaultTab }) {
       filterResult(tab);
     }
   }, [data, tab]);
-  
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -120,13 +119,23 @@ export default function TabAndTables({ defaultTab }) {
       <div>
         <div class="relative w-11/12   h-full ml-12 content-center  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-8 hidden sm:block  ">
           <table class="w-full text-left table-auto  ">
-          <thead>
+            <thead>
               <tr class="border-b border-primary ">
-                <th className=" py-5 font-bold w-24 text-center align-middle">Product</th>
-                <th className=" py-5 font-bold w-24 text-center align-middle">Order reference</th>
-                <th className=" py-5 font-bold w-24 text-center align-middle">Delivery Date</th>
-                <th className=" py-5 font-bold w-24 text-center align-middle">Pickup Date</th>
-                <th className=" py-5 font-bold w-24 text-center align-middle">Delivery Fee</th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Product
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Order reference
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Delivery Date
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Pickup Date
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Delivery Fee
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -148,68 +157,70 @@ export default function TabAndTables({ defaultTab }) {
                       onClick={() => handleRowClick(orderID)}
                       onMouseEnter={() => setSelectedRow(orderID)}
                       onMouseLeave={() => setSelectedRow(null)}
-                      className={selectedRow === orderID ? 'bg-gray-200 cursor-pointer' : 'cursor-pointer'}
+                      className={
+                        selectedRow === orderID
+                          ? "bg-gray-200 cursor-pointer"
+                          : "cursor-pointer"
+                      }
                     >
-  
-                          <td class="p-3 w-24 text-center align-middle ">
-                            <div class="flex space-x-5  ">
-                              <Avatar
-                                src={
-                                  "https://syntecblobstorage.blob.core.windows.net/products/" +
-                                  productImageUrl
-                                }
-                                size="sm"
-                              />
-                              <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                                {productTitle}
-                              </p>
-                            </div>
-                          </td>
+                      <td class="p-3 w-24 text-center align-middle ">
+                        <div class="flex space-x-5  ">
+                          <Avatar
+                            src={
+                              "https://syntecblobstorage.blob.core.windows.net/products/" +
+                              productImageUrl
+                            }
+                            size="sm"
+                          />
+                          <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                            {productTitle}
+                          </p>
+                        </div>
+                      </td>
 
-                          <td class="p-3 w-24 text-center align-middle">
-                            <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              {orderID}
-                            </p>
-                          </td>
+                      <td class="p-3 w-24 text-center align-middle">
+                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                          {orderID}
+                        </p>
+                      </td>
 
-                          <td class="p-3 w-24 text-center align-middle">
-                            <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              {formatDate(deliveryDate)}
-                            </p>
-                          </td>
-                          <td class="p-3 w-24 text-center align-middle">
-                            <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              {formatDate(pickupDate)}
-                            </p>
-                          </td>
-                          <td class="p-3 w-24 text-center align-middle">
-                            <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              Rs.{deliveryFee}
-                            </p>
-                          </td>
-                          {/* <td class="p-3 w-24 text-center align-middle">
+                      <td class="p-3 w-24 text-center align-middle">
+                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                          {formatDate(deliveryDate)}
+                        </p>
+                      </td>
+                      <td class="p-3 w-24 text-center align-middle">
+                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                          {formatDate(pickupDate)}
+                        </p>
+                      </td>
+                      <td class="p-3 w-24 text-center align-middle">
+                        <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                          Rs.{deliveryFee}
+                        </p>
+                      </td>
+                      {/* <td class="p-3 w-24 text-center align-middle">
                             <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
                               {customerAddL3}
                             </p>
                           </td> */}
-                          <td className="p-3 w-24 text-center align-middle ">
-                            {orderStatus.toLowerCase() ===
-                              "ready to pickup" && (
-                              <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                                Ready to Pickup
-                              </p>
-                            )}
-                            {orderStatus.toLowerCase() === "picked up" && (
-                              <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                                Picked up
-                              </p>
-                            )}
-                            {orderStatus.toLowerCase() === "delivered" && (
-                              <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                                Delivered
-                              </p>
-                            )}
-                          </td>      
+                      <td className="p-3 w-24 text-center align-middle ">
+                        {orderStatus.toLowerCase() === "ready to pickup" && (
+                          <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                            Ready to Pickup
+                          </p>
+                        )}
+                        {orderStatus.toLowerCase() === "picked up" && (
+                          <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                            Picked up
+                          </p>
+                        )}
+                        {orderStatus.toLowerCase() === "delivered" && (
+                          <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                            Delivered
+                          </p>
+                        )}
+                      </td>
                     </tr>
                   </>
                 );
