@@ -1,4 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
+import { RiDeleteBack2Fill } from "react-icons/ri";
+import { SiGooglemessages } from "react-icons/si";
 import axios from "axios";
 import {
   Navbar,
@@ -18,7 +20,6 @@ import {
   Cog6ToothIcon,
   BellIcon,
   ClockIcon,
-  CreditCardIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
 import {
@@ -26,8 +27,7 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
-import NotificationPanel from "../NotificationPanel";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -35,23 +35,31 @@ export function DashboardNavbar() {
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
 
-  const [notificationList,setNotificationlist]=useState([]);
-  const to="adam.jayasinghe@example.com";
+  const [notificationList, setNotificationList] = useState([]);
+  const to = "adam.jayasinghe@example.com";
 
-  useEffect(() => {  //use effect for fetching notification list
-    console.log("hello");
+  useEffect(() => {
     axios
-      .get(`https://localhost:7144/api/NewOrder/getnotification/`+to)
+      .get(`https://localhost:7144/api/NewOrder/getnotification/` + to)
       .then((response) => {
-        setNotificationlist(response.data);
-        console.log("hello inside");
-        console.log("notilist",response.data);
+        setNotificationList(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching disabled dates:", error);
+        console.error("Error fetching notifications:", error);
       });
   }, []);
 
+  const deleteNotification = (id) => {
+    axios
+      .delete(`https://localhost:7144/api/NewOrder/deletenotification/${id}`)
+      .then((response) => {
+        console.log("Notification deleted:", response.data);
+        setNotificationList(notificationList.filter((notification) => notification.id !== id));
+      })
+      .catch((error) => {
+        console.error("Error deleting notification:", error);
+      });
+  };
 
   return (
     <Navbar
@@ -121,7 +129,50 @@ export function DashboardNavbar() {
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
           </Link>
-          <NotificationPanel/>
+
+          <Menu>
+            <MenuHandler>
+              <IconButton variant="text" color="blue-gray">
+                <BellIcon className="h-5 w-5 text-blue-gray-500" />
+              </IconButton>
+            </MenuHandler>
+
+            <MenuList className="w-max border-0">
+              {notificationList.map((notification) => (
+                <MenuItem key={notification.id} className="flex items-center gap-3">
+                <SiGooglemessages className="text-3xl -mt-6" /> {/* Increase size and adjust top margin */}
+                <div className="flex-grow">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="mt-1 font-normal"
+                  >
+                    <strong>{notification.from}</strong>
+                  </Typography>
+                  <Typography
+                    
+                    color="green"
+                    className="flex items-center gap-1 text-xs font-normal"
+                  >
+                    <strong>{notification.message}</strong>
+                  </Typography>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="flex items-center gap-1 text-xs font-normal opacity-60"
+                  >
+                    <ClockIcon className="h-3.5 w-3.5" /> {new Date(notification.sendAt).toLocaleTimeString()}
+                  </Typography>
+                </div>
+                <RiDeleteBack2Fill
+                  className="ml-6 text-2xl cursor-pointer" // Increase left margin and size
+                  onClick={() => deleteNotification(notification.id)}
+                />
+              </MenuItem>              
+              ))}
+            </MenuList>
+          </Menu>
+
           <IconButton
             variant="text"
             color="blue-gray"

@@ -8,6 +8,7 @@ export function CourierList({ search, orderId }) {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState(false);
   const [courierList, setCourierList] = useState([]);
+  const [courierEmail ,setCourierEmail]=useState('');
   const handlePopup = (courierId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -21,36 +22,32 @@ export function CourierList({ search, orderId }) {
       if (result.isConfirmed) {
         setSelected(true);
         handleUpdateCourier(courierId);
-        console.log(orderId);
-        handleUpdateStatus(orderId ,'pending');
+        handleUpdateStatus(orderId ,'pending',courierId);
         Swal.fire({
           title: "Selected!",
           text: "You have selected this courier.",
           icon: "success"
         });
-        sendPredefinedEmail();
+       sendPredefinedEmail();
       }
     });
   };
 
 
-const handleUpdateStatus = async (orderID, newStatus) => {
-  console.log(newStatus);
+const handleUpdateStatus = async (orderID, newStatus,courierID) => {
+  
   try {
-    const response = await updateOrderStatus(orderID, newStatus);
+   const response = await updateOrderStatus(orderID, newStatus);
+   console.log(courierID);
     var obj={
       id: 0,
-      from: "john.perera@example.com",
-      to: "adam.jayasinghe@example.com",
+      from: "john@example.com",
+      to: courierID,
       message: "you have a new order!",
-      sendAt: "2024-06-17T19:09:04.609Z",
       isSeen: false
-    };
-
-    
-    
+    };   
     const response2 = await axios.post("https://localhost:7144/api/NewOrder/Addnotification", obj);
-    console.log('Order status updated successfully:', response);
+    //console.log('Order status updated successfully:', response);
     console.log("new notification",response2);
   } catch (error) {
     console.error('Error updating order status:', error);
@@ -76,6 +73,7 @@ const handleUpdateStatus = async (orderID, newStatus) => {
     }
   };
   const handleUpdateCourier = async (courierID) => {
+    console.log(courierID)
     try {
       await updateCourier(orderId, courierID);
       console.log('Courier updated '+orderId+' : '+courierID+' successfully');
@@ -120,11 +118,11 @@ const handleUpdateStatus = async (orderID, newStatus) => {
       {data ? data.map((values) => {
         const { courierFName, courierLName, addressLine1, addressLine2, addressLine3, courierImageUrl, courierID } = values;
         return (
-          <Card className="w-100" key={courierID}>
+          <Card className="w-full" key={courierID}>
             <List>
-              <ListItem ripple={false} className="flex items-center">
+              <ListItem ripple={false} className="flex items-center my-3">
                 <ListItemPrefix>
-                  <Avatar variant="circular" alt="courier" src={courierImageUrl} />
+                  <Avatar variant="circular" alt="courier" src={"https://syntecblobstorage.blob.core.windows.net/user/"+courierImageUrl} />
                 </ListItemPrefix>
                 <div className="flex flex-col ml-4">
                   <Typography variant="h6" color="blue-gray">
@@ -138,6 +136,7 @@ const handleUpdateStatus = async (orderID, newStatus) => {
                   <Button
                     disabled={selected}
                     variant="gradient"
+                    color="green"
                     className="ml-auto"
                     onClick={() => handlePopup(courierID)}
                   >
