@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import NormalReviewCard from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/NormalReviewCard';
+import React, { useEffect, useState } from 'react';
 import { Rating } from "@material-tailwind/react";
 import ImageModal from './components/ImageModal';
 import ImageGallery from './components/ImageGallery';
 import {
   Button,
 } from "@material-tailwind/react";
-import PopupBox from '@/pages/SellerDashboard/dashboard/components/reviews/reuseble seller/PopupBox';
+import PopupBox from './components/reviews/components/PopupBox';
+import NormalReviewCard from './components/reviews/components/NormalReviewCard';
+import { getOrderDetails, getReviewsForProduct, getSellerDetails } from '@/services/reviewServices';
+import { formatDate } from './components/reviews/components/ReviewCard';
+import { useParams } from 'react-router-dom';
 
 const paragraStyles = {
   WebkitLineClamp: 3,
@@ -28,38 +31,98 @@ const data = [
   }
 ];
 
+export const SingleReview = (props) => {
+  return (
+    <>
+      <div className='flex'>
+        <div>
+          <img src={props.userImg} alt="" className='w-[50px] h-auto rounded-[20px] py-2 ml-8' />
+        </div>
+        <div className='ml-6'>
+          <p>{props.name}</p>
+          <p className='text-blue-gray-400'>{props.date}</p>
+        </div>
+        <div className='ml-8'>
+          <Rating value={props.rating} />
+        </div>
+        <p className='ml-96 text-blue-gray-800'>2 years ago...</p>
+      </div>
+      <p className='py-5 px-28 text-blue-gray-800' style={{ ...paragraStyles }}>
+        {props.comment}
+      </p>
+      <div className='ml-28'>
+        <ImageModal images={props.imgs} open={props.open} setOpen={props.setOpen} />
+        <ImageGallery returnImgs={props.imgs} handleOpen={props.handleOpen} />
+      </div>
+      {props.reply && <>
+        <div className='flex py-7 ml-52'>
+          <div>
+            <img src={props.sellerImg} alt="" className='w-[50px] h-auto rounded-[20px] py-2 ml-8' />
+          </div>
+          <div className='ml-6'>
+            <p>{props.sellerName}</p>
+            <p className='text-blue-gray-400'>{props.replyDate}</p>
+          </div>
+        </div>
+        <p className='ml-80'>{props.reply}</p>
+      </>}
+
+      {props.sellerName && <div className=' my-8 flex ml-[750px]'>
+        <Button className="color bg-green-400 " onClick={props.handlePopupOpen} >{props.isSubmited ? "Edit" : "Reply"}</Button>
+      </div>}
+
+      <div className='pb-2 mb-2'></div>
+
+      <hr className='py-2' />
+    </>
+  )
+}
+
 const Review = () => {
+  const { id } = useParams();
   const [open, setOpen] = React.useState(false);
   const [popupOpen, setPopupOpen] = React.useState(false);
-  const [ isSubmited, setIsSubmited ] = React.useState(false);
+  const [isSubmited, setIsSubmited] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handlePopupOpen = () => setPopupOpen(true);
 
-  const handlePopupSubmit = () =>{
-    console.log("submited");
-    setPopupOpen(false);
-    setIsSubmited(true);
+  const [product, setProduct] = useState({});
+  const [reviews, setReviews] = useState([]);
+  const [seller, setSeller] = useState({});
+
+  const getProductData = async () => {
+    const data = await getOrderDetails(id);
+    setProduct(data);
   }
 
-  const DefaultRating = () => {
-    return <Rating value={4} />;
-  };
+  const getReviews = async () => {
+    const data = await getReviewsForProduct(product?.productId);
+    console.log(data);
+    setReviews(data);
+  }
 
-  const [returnImgs, setReturnImgs] = useState([
-    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
-    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
-    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
-    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
-    "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
-  ]);
+  const getSellerData = async () => {
+    const data = await getSellerDetails(product?.productId);
+    console.log(data);
+    setSeller(data);
+  }
 
+  useEffect(() => {
+    getProductData()
+  }, [])
+
+  useEffect(() => {
+    getReviews()
+    getSellerData();
+  }, [product])
 
   return (
     <>
       <PopupBox
-      open={popupOpen}
-      setOpen={setPopupOpen}
-      handleSubmit={handlePopupSubmit}
+        open={popupOpen}
+        setOpen={setPopupOpen}
+        // handleSubmit={handlePopupSubmit}
+        id={product?.reviewId}
       />
       <div>
 
@@ -67,52 +130,38 @@ const Review = () => {
           <h1 className='text-[#00000082]'> Reply Reviews</h1>
         </div>
         <div className='bg-white rounded-lg'>
-          {data.map((item, index) => (
-            <NormalReviewCard
-              key={index}
-              type={item.type}
-              pDate={item.pDate}
-              iType={item.iType}
-              img={item.img}
+          <NormalReviewCard
+            key={product?.reviewId}
+            type={product?.productType}
+            pDate={product?.orderedDate ? formatDate(product.orderedDate.split('T')[0]) : ""}
+            iType={product?.productTitle}
+            img={"https://syntecblobstorage.blob.core.windows.net/products/" + product?.productImageUrl}
+            quantity={product?.totalQuantity}
+            desc={product?.productDescription}
+          />
+
+          <hr className='py-2' />
+
+          {reviews && reviews.map((r) => (
+            <SingleReview
+              userImg={"https://syntecblobstorage.blob.core.windows.net/profilepic/" + r?.buyerProfileImageUrl}
+              name={r?.buyerFirstName + " " + r?.buyerLastName}
+              date={r?.reviewDate ? formatDate(r.reviewDate.split('T')[0]) : ""}
+              rating={r?.productRating}
+              comment={r?.comment}
+              imgs={["https://syntecblobstorage.blob.core.windows.net/reviews/" + r?.reviewImageUrl]}
+              sellerImg={"https://syntecblobstorage.blob.core.windows.net/profilepic/" + seller?.farmerProfileUrl}
+              sellerName={seller?.farmerFName + " " + seller?.farmerLName}
+              // replyDate={}
+              reply={r?.reply}
+              open={open}
+              setOpen={setOpen}
+              handleOpen={handleOpen}
+              handlePopupOpen={handlePopupOpen}
+              isSubmited={isSubmited}
             />
           ))}
-          <hr className='py-2' />
-          <div className='flex'>
-            <div>
-              <img src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg" alt="" className='w-[50px] h-auto rounded-[20px] py-2 ml-8' />
-            </div>
-            <div className='ml-6'>
-              <p>Emma Robet</p>
-              <p className='text-blue-gray-400'>14 February 2023</p>
-            </div>
-            <div className='ml-8'>
-              <DefaultRating />
-            </div>
-            <p className='ml-96 text-blue-gray-800'>2 years ago...</p>
-          </div>
-          <p className='py-5 px-28 text-blue-gray-800' style={{ ...paragraStyles }}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Reprehenderit praesentium doloribus hic unde commodi modi voluptas a neque,
-            ullam aperiam mollitia alias magnam veniam expedita earum fuga quisquam suscipit rem.
-          </p>
-          <div className='ml-28'>
-            <ImageModal images={returnImgs} open={open} setOpen={setOpen} />
-            <ImageGallery returnImgs={returnImgs} handleOpen={handleOpen} />
-          </div>
-          <div className='flex py-7 ml-52'>
-              <div>
-              <img src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg" alt="" className='w-[50px] h-auto rounded-[20px] py-2 ml-8' />
-            </div>
-            <div className='ml-6'>
-              <p>Emma Robet</p>
-              <p className='text-blue-gray-400'>14 February 2023</p>
-            </div>
-          </div>
-          <p className='ml-80'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. </p>
 
-          <div className=' my-8 flex ml-[750px]'>
-            <Button className="color bg-green-400 " onClick={handlePopupOpen} >{isSubmited?"Edit":"Reply"}</Button>
-          </div>
         </div>
 
       </div>

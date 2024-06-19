@@ -215,7 +215,7 @@ const ProductDetails = () => {
           />
         </div>
       </div>
-      <Review/>
+      <Review id={id}/>
     </div>
   )
 }

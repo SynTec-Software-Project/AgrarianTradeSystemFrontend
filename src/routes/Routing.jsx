@@ -12,6 +12,8 @@ import SelectCourier from "@/seller/SellerDashboard/dashboard/components/SelectC
 import OrderDetails from "@/seller/SellerDashboard/dashboard/components/OrderDetails";
 import AddProducts from "@/seller/SellerDashboard/dashboard/AddProducts";
 import UpdateProduct from "@/seller/SellerDashboard/dashboard/UpdateProduct";
+import ReturnProductDetails from "@/seller/SellerDashboard/dashboard/components/reviews/ReturnProductDetails";
+import Review from "@/seller/SellerDashboard/dashboard/Review";
 const Routing = () => {
   return (
     <>
@@ -30,7 +32,15 @@ const Routing = () => {
           {" "}
         </Route>
 
+        <Route path="/my-reviews/review/:id" element={<Review />}>
+          {" "}
+        </Route>
+
         <Route path="/my-returns" element={<MyReturns />}>
+          {" "}
+        </Route>
+
+        <Route path="/my-returns/:id" element={<ReturnProductDetails />}>
           {" "}
         </Route>
 

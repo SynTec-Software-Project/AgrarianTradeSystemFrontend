@@ -44,7 +44,7 @@ const SellerReviewCard = (props) => {
         </div>
 
         <div className='items-end my-8'>
-          <Button className="color bg-green-400" onClick={() => navigate('/dashboard/my-reviews/review')} >{props.Button}</Button>
+          <Button className="color bg-green-400" onClick={() => navigate('/dashboard/my-reviews/review/' + props.id)} >{props.Button}</Button>
         </div>
       </div>
 

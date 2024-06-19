@@ -4,6 +4,7 @@ import { Rating } from "@material-tailwind/react";
 import FileSelect from './FileSelect';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addReview, getOrderDetails } from '@/services/reviewServices';
+import { formatDate } from '@/seller/SellerDashboard/dashboard/components/reviews/components/ReviewCard';
 
 export default function ReviewForm() {
   const { id } = useParams();
@@ -63,8 +64,8 @@ export default function ReviewForm() {
       {product ? (
         <div className="bg-white px-8 py-5 rounded-lg my-2 pb-1">
           <div className="mb-5">
-            <h1 className="my-2">{product.productType}</h1>
-            <p>Purchase date {product.dateCreated}</p>
+            <h1 className="my-2 capitalize">{product.productType} Gallery</h1>
+            <p>Purchased on {formatDate(product.orderedDate.split('T')[0])}</p>
           </div>
           <div className="flex w-full gap-4 items-end">
             <img
@@ -74,7 +75,7 @@ export default function ReviewForm() {
             />
             <div className="w-full px-3">
               <h1 className="font-semibold text-gray-800 text-lg my-3">
-                {product.productTitle} - {product.availableStock}Kg
+                {product.productTitle} - {product.totalQuantity}Kg
               </h1>
               <p className="text-blue-gray-500">{product.productDescription}</p>
             </div>
@@ -83,7 +84,7 @@ export default function ReviewForm() {
             <h1>Product rating</h1>
             <div className="pr-4">
               <Rating
-                value={reviewData.ProductRating}
+                value={reviewData?.ProductRating}
                 onChange={(value) =>
                   setReviewData((prev) => ({ ...prev, ProductRating: value }))
                 }
@@ -99,7 +100,7 @@ export default function ReviewForm() {
         <div className="flex gap-20 px-8">
           <h1>Seller Service</h1>
           <Rating
-            value={reviewData.SellerRating}
+            value={reviewData?.SellerRating}
             onChange={(value) =>
               setReviewData((prev) => ({ ...prev, SellerRating: value }))
             }
@@ -108,7 +109,7 @@ export default function ReviewForm() {
         <div className="flex gap-16 px-8 pt-3">
           <h1>Delivery Service</h1>
           <Rating
-            value={reviewData.DeliverRating}
+            value={reviewData?.DeliverRating}
             onChange={(value) =>
               setReviewData((prev) => ({ ...prev, DeliverRating: value }))
             }
