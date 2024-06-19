@@ -16,9 +16,9 @@ const filesavedPopup = () => {
 
 const AddProducts = () => {
   const navigate = useNavigate();
-  const handleSubmit = (formData) => {
+  const handleSubmit = async (formData) => {
     try {
-      addProduct(formData);
+      await addProduct(formData);
       filesavedPopup();
       navigate(-1);
     } catch (error) {

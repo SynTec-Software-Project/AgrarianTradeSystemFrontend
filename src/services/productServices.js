@@ -3,12 +3,13 @@ import axiosInstance from "@/axiosConfig";
 //function add products
 export const addProduct = async (formData) => {
     try {
-        const response = await axiosInstance.post('/product', formData, {
+        const response = await axiosInstance.post('/Product', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
         return response.data;
+        
     } catch (error) {
         console.error('Error adding product:', error);
         throw error;

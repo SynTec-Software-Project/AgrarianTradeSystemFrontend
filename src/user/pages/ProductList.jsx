@@ -75,7 +75,7 @@ const ProductList = () => {
       <SortBar handleSortedData={handleSortedData}/>
       <div className='grid grid-cols-5'>
        <Filterbar items={products} applyFilters={applyFilters} />
-        <div className=' col-span-4 overflow-y-auto flex flex-wrap py-4  px-4 gap-6  bg-secondary min-h-screen'>
+        <div className=' col-span-4 overflow-y-auto flex flex-wrap py-4  px-4 gap-4  bg-secondary min-h-screen'>
           
           {filteredProducts.length>0 ?
           filteredProducts.map((product,index) => {
