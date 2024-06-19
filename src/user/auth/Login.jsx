@@ -36,9 +36,16 @@ function Login(){
             const token = sessionStorage.getItem('jwtToken');
             const decodedData = jwtDecode(token);
             console.log(decodedData.email)
+            console.log(decodedData.role)
             setIsLoading(false);
             if(decodedData.role=="Courier"){
                 navigate('/couriers/new-orders');
+            }
+            if(decodedData.role=="Farmer"){
+                navigate('/dashboard/my-products');
+            }
+            if(decodedData.role=="User"){
+                navigate('/dashboard/my-products');
             }
         }
         catch (error){

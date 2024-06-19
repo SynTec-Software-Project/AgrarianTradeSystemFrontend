@@ -49,7 +49,9 @@ function App() {
       <Route path="/farmercreate" element={<FarmerCreateAccount/>}/>
       <Route path="/couriercreate" element={<CourierCreateAccount/>}/>
       <Route path='/product-details/:id' element={<ProductDetails/>}></Route>
-      <Route path="/cart" element={<ShoppingCart/>}/>
+      <Route element={<ProtectedRouteBuyer/>}>
+        <Route path="/cart" element={<ShoppingCart/>}/>
+      </Route>
       <Route path="/verify-email" element={<EmailVerify/>} />
       <Route element={<ProtectedRouteCourier/>}>
         <Route exact path="/couriers/*" element={<CourierDashboard/>}/>
