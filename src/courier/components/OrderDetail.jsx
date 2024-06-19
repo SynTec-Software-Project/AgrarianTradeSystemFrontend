@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';  // JavaScript library for building user interfaces
-import { Card, CardBody, Typography, Button } from '@material-tailwind/react';  // Material UI components for styling
-import Swal from "sweetalert2";  // Library for displaying beautiful alerts
+import React, { useEffect, useState } from 'react'; 
+import { Card, CardBody, Typography, Button } from '@material-tailwind/react'; 
+import Swal from "sweetalert2";
 import { Pickup_Drop_Detail } from './Pickup_Drop_Detail';  
-import { useNavigate, useParams } from 'react-router-dom'; // React Router hooks for navigation
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';  // HTTP client for making API requests
 
 const OrderDetail = () => {
-  // Get the id parameter from the URL using useParams hook
-  const { id } = useParams();
+  const { id } = useParams(); // Get the id parameter from the URL using useParams hook
   const navigate = useNavigate();
   const [data, setData] = useState([]); // State variable to hold order details
 
-  // Fetch order details from the server when component mounts or id changes
+  // Fetch order details
   useEffect(() => {
     axios.get(`https://localhost:7144/api/Order/courier/details/${id}`)
       .then((response) => {
@@ -22,9 +21,7 @@ const OrderDetail = () => {
       });
   }, [id]);
 
-  // Function to display a confirmation popup for accepting an order
   const popupAccept = () => {
-    // Display a confirmation dialog using SweetAlert2
     Swal.fire({
       title: "Are you sure?",
       text: "Do you accept this order?",
@@ -43,15 +40,33 @@ const OrderDetail = () => {
           icon: "success"
         });
         handleAccept();
-        // Navigate back to the previous page
         navigate(-1);
       }
     });
   };
 
-  // Function to display a confirmation popup for rejecting an order
+  const handleAccept = async () => {
+    try {
+      // Prepare notification object
+      const notificationObj = {
+        id: 0,
+        from: "john.doe@example.com",
+        to: "adam.jayasinghe@example.com",
+        message: "Your Orders has been accepted",
+        isSeen: false
+      };
+
+      // Send notification using API endpoint
+      const notificationResponse = await axios.post("https://localhost:7144/api/Notification", notificationObj);
+      console.log("Notification sent:", notificationResponse.data);
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Error sending notification: " + error.response.data);
+    }
+    console.log("Accepted");
+  };
+
   const popupReject = () => {
-    // Display a confirmation dialog using SweetAlert2
     Swal.fire({
       title: "Are you sure?",
       text: "Do you reject this order?",
@@ -70,110 +85,46 @@ const OrderDetail = () => {
           icon: "success"
         });
         handleReject();
-        // Navigate back to the previous page
         navigate(-1);
       }
     });
   };
 
-  // Function to update order status in the database
-  const handleUpdateStatus = (orderID, newStatus) => {
-    axios.put(
-      `https://localhost:7144/api/Order/${orderID}?orderStatus=${newStatus}`,
-      { orderStatus: newStatus }
-    )
-    .then((response) => {
-      console.log("Order status updated successfully:", response.data);
-    })
-    .catch((error) => {
-      console.error("Error updating order status:", error);
-      // Handle errors appropriately
-    });
-  };
-
-  // Function to handle accepting an order
-  const handleAccept = async () => {
-    try {
-        // Prepare HTML content for email
-        const htmlContent = `
-          <h2>Hello,</h2>
-          <p>This is a predefined email message with <strong>HTML content</strong>.</p>
-          <p>Sincerely,<br/>Your Name</p>
-        `;
-
-        // Send email using API endpoint
-        const emailResponse = await axios.post("https://localhost:7144/api/Email", {
-            To: "bhmmpmgunathilake1999@gmail.com",
-            Subject: "Agrarian Trade System",
-            Body: htmlContent,
-        });
-        
-        // Prepare notification object
-        const notificationObj = {
-            id: 0,
-            from: "john.doe@example.com",
-            to: "adam.jayasinghe@example.com",  // Replace with actual courier ID or pass as parameter
-            message: "Your Orders has been accepted",
-            isSeen: false
-        };
-
-        // Send notification using API endpoint
-        const notificationResponse = await axios.post("https://localhost:7144/api/Notification", notificationObj);
-
-        console.log("Email sent:", emailResponse.data);
-        console.log("Notification sent:", notificationResponse.data);
-        
-        // Optionally return or handle the responses if needed
-    } catch (error) {
-        // Handle errors in sending email or notification
-        console.error("Error:", error.message);
-        alert("Error sending email or notification: " + error.response.data);
-    }
-    console.log("Accepted");
-};
-
-  // Function to handle rejecting an order
   const handleReject = async () => {
     try {
-      // Prepare HTML content for email
-      const htmlContent = `
-        <h2>Hello,</h2>
-        <p>This is a predefined email message with <strong>HTML content</strong>.</p>
-        <p>Sincerely,<br/>Your Name</p>
-      `;
-
-      // Send email using API endpoint
-      const response = await axios.post("https://localhost:7144/api/Email", {
-        To: "bhmmpmgunathilake1999@gmail.co",
-        Subject: "Agrarian Trade System",
-        Body: htmlContent,
-      });
+      // Prepare notification object
       const notificationObj = {
         id: 0,
         from: "john.doe@example.com",
-        to: "adam.jayasinghe@example.com",  // Replace with actual courier ID or pass as parameter
+        to: "adam.jayasinghe@example.com", 
         message: "Your Orders has been rejected",
         isSeen: false
-    };
+      };
 
-    // Send notification using API endpoint
-    const notificationResponse = await axios.post("https://localhost:7144/api/Notification", notificationObj);
-
-    console.log("Email sent:", emailResponse.data);
-    console.log("Notification sent:", notificationResponse.data);
+      // Send notification using API endpoint
+      const notificationResponse = await axios.post("https://localhost:7144/api/Notification", notificationObj);
+      console.log("Notification sent:", notificationResponse.data);
     } catch (error) {
-      // Handle errors in sending email
-      alert("Error sending email: " + error.response.data);
+      alert("Error sending notification: " + error.response.data);
     }
     console.log("Rejected");
   };
 
-  // If data is not yet available, display loading message
+  // Function to update order status in the database
+  const handleUpdateStatus = (orderID, newStatus) => {
+    axios.put(`https://localhost:7144/api/Order/${orderID}?orderStatus=${newStatus}`, { orderStatus: newStatus })
+      .then((response) => {
+        console.log("Order status updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating order status:", error);
+      });
+  };
+
   if (!data) {
     return <div>Loading...</div>;
   }
 
-  // Once data is available, render order details
   return (
     <div className="flex justify-center">
       <table className="w-full max-w-[50em] flex-row">
@@ -235,9 +186,7 @@ const OrderDetail = () => {
               <CardBody className="w-full max-w-[50rem] flex-row">
                 <div className="flex w-full max-w-[50rem] gap-4 justify-center items-center">
                   <div className="flex w-max gap-4">
-                    {/* Button to accept the order */}
                     <Button color="green" onClick={popupAccept}>Accept Order</Button>
-                    {/* Button to reject the order */}
                     <Button color="red" onClick={popupReject}>Reject Order</Button>
                   </div>
                 </div>

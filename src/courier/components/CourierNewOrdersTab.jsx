@@ -17,12 +17,10 @@ export default function CourierNewOrdersTab() {
         const decodedData = jwtDecode(token);
         const courierID = decodedData.email;
         const orders = await getAllCourierOrders(courierID);
-        // Filter only pending orders
         const pendingOrders = orders.filter(order => order.orderStatus === 'pending');
         setData(pendingOrders);
       } catch (error) {
         console.error('Error fetching orders:', error);
-        // Handle errors appropriately, e.g., show a notification to the user
       }
     };
 
