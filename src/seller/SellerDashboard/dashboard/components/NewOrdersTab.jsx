@@ -4,13 +4,12 @@ import axios from 'axios'; //for making requests to server endpoints
 import moment from 'moment'; //A library for formatting dates and times in JavaScript.
 import { Select, Option } from "@material-tailwind/react";
 import { getAllFarmerOrders } from '@/services/orderServices';
-import { FARMER_ID } from '@/usersID';
+import { jwtDecode } from 'jwt-decode';
 
 export default function NewOrdersTab() {
   const [data, setData] = useState([]); // State to store fetched data
-  const [selectedRow, setSelectedRow] = useState(null); // State to store the ID of the selected row
-  const navigate = useNavigate(); // Navigate function from React Router
-  const sellerID = FARMER_ID; // Seller ID, for example
+  const [selectedRow, setSelectedRow] = useState(null);
+  const navigate = useNavigate();
 
   // State variable to manage filter options, initialized with default values
   const [filterOptions, setFilterOptions] = useState(["new", "pending"]);
@@ -33,11 +32,14 @@ export default function NewOrdersTab() {
 
   // Effect hook to fetch orders from the server and filter based on seller ID and filter options
   useEffect(() => {
+    const token = sessionStorage.getItem('jwtToken');
+    const decodedData = jwtDecode(token);
+    const sellerID = decodedData.email;
     const fetchOrders = async () => {
       try {
         const orders = await getAllFarmerOrders(sellerID);
         // Filter the orders based on the filterOptions
-        const filteredOrders = orders.filter(order => 
+        const filteredOrders = orders.filter(order =>
           filterOptions.includes(order.orderStatus)
         );
         setData(filteredOrders);
@@ -47,7 +49,7 @@ export default function NewOrdersTab() {
     };
 
     fetchOrders();
-  }, [sellerID, filterOptions]); // Dependencies for the effect hook
+  }, [filterOptions]);
 
   return (
     <div>

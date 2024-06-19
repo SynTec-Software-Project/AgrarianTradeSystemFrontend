@@ -8,7 +8,7 @@ const SellerDetails = ({ farmerFName, farmerLName, farmerProfileUrl, farmerAddL1
                 <h1 className='text-gray-900 font-semibold text-xl mx-3'>Seller Details</h1>
                 <div className='flex gap-3 items-start mt-3'>
                     <img
-                        src={farmerProfileUrl ? farmerProfileUrl : defaultProfileUrl}
+                        src={farmerProfileUrl ? ('https://syntecblobstorage.blob.core.windows.net/profilepic/' +farmerProfileUrl) : defaultProfileUrl}
                         alt="seller"
                         className="w-20 h-20 rounded-full"
                     />

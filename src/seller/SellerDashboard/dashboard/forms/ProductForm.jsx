@@ -5,12 +5,22 @@ import { Button } from "@material-tailwind/react";
 import { fruits, productTypes, productTypesSelect, vegetables } from '@/data/product-type-data';
 import FileUpload from './FileUpload';
 import { useNavigate } from 'react-router-dom';
-import { FARMER_ID } from '@/usersID';
-
+import { jwtDecode } from 'jwt-decode';
 const ProductForm = ({ onSubmitData, productData, isUpdate ,handleupdateImage }) => {
+  const[sellerId, setSellerId] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setSellerId(decodedData.email);
+      console.log(decodedData.email)
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, [sellerId]);
   // seller id hardcoded
-  const SellerId = FARMER_ID;
   // get user inputs
   const productTitleRef = useRef(null);
   const productDescriptionRef = useRef(null);
@@ -22,6 +32,7 @@ const ProductForm = ({ onSubmitData, productData, isUpdate ,handleupdateImage })
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const[change, setChange] = useState(true);
+
 
   // category selection functions
   const handleProductTypeChange = (event) => {
@@ -100,14 +111,13 @@ const ProductForm = ({ onSubmitData, productData, isUpdate ,handleupdateImage })
 
   //upload product function
   function addFormData() {
-    console.log('addFormData');
     if (!validateForm()) {
       return;
     }
     setLoading(true);
     const formData = new FormData();
     formData.append('productTitle', productTitleRef.current.value);
-    formData.append('FarmerID', SellerId);
+    formData.append('FarmerID', sellerId);
     formData.append('productDescription', productDescriptionRef.current.value);
     formData.append('unitPrice', unitPriceRef.current.value);
     formData.append('availableStock', availableStockRef.current.value);
