@@ -37,7 +37,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState([]);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [deliveryFee, setDeliveryFee] = useState(0);
-  const [destination , setDestination] = useState('');
+  const [destination, setDestination] = useState('');
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successOrder, setSuccessOrder] = useState(false);
@@ -56,7 +56,7 @@ const ProductDetails = () => {
 
     fetchProductDetails();
   }, [id]);
-  
+
   const handleModalOPen = () => {
     try {
       const token = sessionStorage.getItem('jwtToken');
@@ -64,7 +64,6 @@ const ProductDetails = () => {
         console.error('Token not found in sessionStorage.');
         return;
       }
-  
       let decodedData;
       try {
         decodedData = jwtDecode(token);
@@ -74,7 +73,13 @@ const ProductDetails = () => {
         return;
       }
       if (decodedData.role === 'User') {
-        setModelOpen(true);
+        if (deliveryFee === 0) {
+          alert('Please set the delivery location');
+        }
+        else {
+          modelOpen ? setModelOpen(false) :
+            setModelOpen(true);
+        }
       } else {
         navigate('/login');
         console.log('Cannot buy, user not logged in or does not have proper role');
@@ -95,78 +100,78 @@ const ProductDetails = () => {
     setSuccessOrder(success);
   }
 
-  
-const addToCart = async (productId) => {
-  try {
-    // Retrieve the JWT token from sessionStorage
-    const token = sessionStorage.getItem('jwtToken');
-    if (!token) {
-      console.error('Token not found in sessionStorage.');
-      navigate('/login');
-      return;
-    }
-    let decodedData;
+
+  const addToCart = async (productId) => {
     try {
-      decodedData = jwtDecode(token);
-      console.log('Decoded Data:', decodedData);
-    } catch (error) {
-      console.error('Failed to decode token:', error);
-      navigate('/login');
-      return;
-    }
-
-    // Check if the user has the 'User' role
-    if (decodedData.role === 'User') {
-      setLoading(true);
-      const cart = {
-        buyerId: buyerID,
-        productId: productId,
-        quantity: selectedQuantity
-      };
-
-      try {
-        // Attempt to add the product to the cart
-        await addToCartProducts(cart);
-        setOpen(true); // Open the success message or modal
-        console.log('Product added to cart successfully.');
-      } catch (error) {
-        console.error('Error adding items to the cart:', error);
-      } finally {
-        setLoading(false);
+      // Retrieve the JWT token from sessionStorage
+      const token = sessionStorage.getItem('jwtToken');
+      if (!token) {
+        console.error('Token not found in sessionStorage.');
+        navigate('/login');
+        return;
       }
-    } else {
-      // Navigate to login if the user role is not 'User'
-      console.log('User role is not authorized. Redirecting to login.');
-     navigate('/login');
+      let decodedData;
+      try {
+        decodedData = jwtDecode(token);
+        console.log('Decoded Data:', decodedData);
+      } catch (error) {
+        console.error('Failed to decode token:', error);
+        navigate('/login');
+        return;
+      }
+
+      // Check if the user has the 'User' role
+      if (decodedData.role === 'User') {
+        setLoading(true);
+        const cart = {
+          buyerId: buyerID,
+          productId: productId,
+          quantity: selectedQuantity
+        };
+
+        try {
+          // Attempt to add the product to the cart
+          await addToCartProducts(cart);
+          setOpen(true); // Open the success message or modal
+          console.log('Product added to cart successfully.');
+        } catch (error) {
+          console.error('Error adding items to the cart:', error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        // Navigate to login if the user role is not 'User'
+        console.log('User role is not authorized. Redirecting to login.');
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred:', error);
     }
-  } catch (error) {
-    console.error('An unexpected error occurred:', error);
   }
-}
 
 
-    // const token = sessionStorage.getItem('jwtToken');
-    // const decodedData = jwtDecode(token);
-    // if (decodedData.Role === 'User') {
-    //   setLoading(true);
-    //   var cart = {
-    //     buyerId: buyerID,
-    //     productId: productId,
-    //     quantity: selectedQuantity
-    //   }
-    //   try {
-    //     await addToCartProducts(cart);
-    //     setOpen(true);
-    //   } catch (error) {
-    //     console.error('Error adding items to the cart:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // }
-    // else{
-    //   <Navigate to={"/login"}/>
-    // }
-  
+  // const token = sessionStorage.getItem('jwtToken');
+  // const decodedData = jwtDecode(token);
+  // if (decodedData.Role === 'User') {
+  //   setLoading(true);
+  //   var cart = {
+  //     buyerId: buyerID,
+  //     productId: productId,
+  //     quantity: selectedQuantity
+  //   }
+  //   try {
+  //     await addToCartProducts(cart);
+  //     setOpen(true);
+  //   } catch (error) {
+  //     console.error('Error adding items to the cart:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+  // else{
+  //   <Navigate to={"/login"}/>
+  // }
+
 
   const handleQuantityChange = (newQuantity) => {
     setSelectedQuantity(newQuantity);
@@ -209,7 +214,7 @@ const addToCart = async (productId) => {
         deliveryFee={deliveryFee}
         destination={destination}
         setSuccessOrder={handleSuccessOrder}
-        
+
       />
       <div className=' md:grid grid-cols-4 px-8 pb-12 gap-4'>
         <div className=' col-span-3 h-auto bg-white rounded-md border-gray-100'>
@@ -262,7 +267,7 @@ const addToCart = async (productId) => {
                                       disabled:bg-gray-300 disabled:border-gray-300 disabled:text-dark-500' disabled={loading}
 
                   onClick={() => { addToCart(id) }}
-                 // onClick={() => { handleUser}}
+                // onClick={() => { handleUser}}
                 >
                   {loading ? 'Adding to cart' : 'Add to Cart'}
                 </button>
@@ -273,7 +278,7 @@ const addToCart = async (productId) => {
         </div>
         {/* courier charges section */}
         <div className='mt-4 md:mt-0'>
-          <DeliveryFee originData={product.farmerAddL3 + ', Sri Lanka'} handleDeliveryFee={handleDeliveryFee}  handleSelectDestination={handleSelectDestination}/>
+          <DeliveryFee originData={product.farmerAddL3 + ', Sri Lanka'} handleDeliveryFee={handleDeliveryFee} handleSelectDestination={handleSelectDestination} />
           <SellerDetails
             farmerFName={product.farmerFName}
             farmerLName={product.farmerLName}
