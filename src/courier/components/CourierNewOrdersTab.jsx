@@ -11,22 +11,22 @@ export default function CourierNewOrdersTab() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    
     const fetchOrders = async () => {
       try {
         const token = sessionStorage.getItem('jwtToken');
         const decodedData = jwtDecode(token);
         const courierID = decodedData.email;
         const orders = await getAllCourierOrders(courierID);
-        setData(orders);
+        const pendingOrders = orders.filter(order => order.orderStatus === 'pending');
+        setData(pendingOrders);
       } catch (error) {
         console.error('Error fetching orders:', error);
-        // Handle errors appropriately, e.g., show a notification to the user
       }
     };
 
     fetchOrders();
   }, []);
+
   const handleRowClick = (id) => {  
     navigate(`/couriers/new-orders/${id}`);
   };
