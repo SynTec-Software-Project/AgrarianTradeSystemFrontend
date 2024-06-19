@@ -43,7 +43,14 @@ export default function TabAndTables({ defaultTab }) {
           (item) =>
             item.orderStatus.toLowerCase() === "ready to pickup" ||
             item.orderStatus.toLowerCase() === "picked up" ||
-            item.orderStatus.toLowerCase() === "delivered"
+            item.orderStatus.toLowerCase() === "review" ||
+            item.orderStatus.toLowerCase() === "return"
+        );
+      } else if (statusItem === "Delivered") {
+        result = data.filter(
+          (item) =>
+            item.orderStatus.toLowerCase() === "review" ||
+            item.orderStatus.toLowerCase() === "return"
         );
       } else {
         result = data.filter(
@@ -52,11 +59,7 @@ export default function TabAndTables({ defaultTab }) {
       }
       setFilteredData(result);
     };
-
-    // Filter data immediately after fetching or when the tab changes
-    if (data.length > 0) {
-      filterResult(tab);
-    }
+    filterResult(tab);
   }, [data, tab]);
 
   const formatDate = (dateString) => {
@@ -215,7 +218,8 @@ export default function TabAndTables({ defaultTab }) {
                             Picked up
                           </p>
                         )}
-                        {orderStatus.toLowerCase() === "delivered" && (
+                        {(orderStatus.toLowerCase() === "review" ||
+                          orderStatus.toLowerCase() === "return") && (
                           <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                             Delivered
                           </p>
@@ -286,7 +290,8 @@ export default function TabAndTables({ defaultTab }) {
                                 Picked up
                               </p>
                             )}
-                            {orderStatus === "Delivered" && (
+                            {(orderStatus === "review" ||
+                              orderStatus === "return") && (
                               <p class=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 Delivered
                               </p>

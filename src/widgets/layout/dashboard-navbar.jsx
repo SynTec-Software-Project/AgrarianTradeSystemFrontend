@@ -29,14 +29,21 @@ import {
   setOpenSidenav,
 } from "@/context";
 import { useState, useEffect } from "react";
+import { updateOrderStatus } from "@/services/orderServices";
+import Swal from "sweetalert2";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [confirm, setConfirm] = useState(false);
+  const [selected, setSelected] = useState(false);
 
   const [notificationList, setNotificationList] = useState([]);
+  //const to = "john.perera@example.com";
+  //const to = "nimesha@mail.com";
+  //const to = "john.doe@example.com";
   const [notificationCount, setNotificationCount] = useState(0);
   const to = "adam.jayasinghe@example.com";
 
@@ -45,6 +52,7 @@ export function DashboardNavbar() {
       .get(`https://localhost:7144/api/Notification/to/` + to)
       .then((response) => {
         setNotificationList(response.data);
+        //setConfirm(response.data.isSeen);
         setNotificationCount(response.data.length);
       })
       .catch((error) => {
@@ -63,6 +71,77 @@ export function DashboardNavbar() {
       .catch((error) => {
         console.error("Error deleting notification:", error);
       });
+  };
+
+  const handleUpdateStatus = async (orderID, newStatus, notifyId) => {
+    try {
+      const response = await updateOrderStatus(orderID, newStatus);
+      console.log("Order status updated successfully:", response);
+      deleteNotification(notifyId);
+    } catch (error) {
+      console.error("Error updating order status:", error);
+    }
+  };
+
+  const handlePopup = (notification) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to confirm the order?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#44bd32",
+      cancelButtonColor: "#888",
+      confirmButtonText: "Yes",
+      canclelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSelected(true);
+        // Handle updating tracking status
+        handleUpdateStatus(
+          notification.orderID,
+          notification.orderStatus === "ready to pickup"
+            ? "picked up"
+            : "review",
+          notification.id
+        );
+      }
+    });
+  };
+
+  const handlePopup2 = (notification) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to cancel the order?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#44bd32",
+      cancelButtonColor: "#888",
+      confirmButtonText: "Yes",
+      canclelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSelected(true);
+        deleteNotification(notification.id);
+      }
+    });
+  };
+
+  const handlePopup3 = (notification) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to return the order?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#44bd32",
+      cancelButtonColor: "#888",
+      confirmButtonText: "Yes",
+      canclelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSelected(true);
+        handleUpdateStatus(notification.orderID, "return", notification.id);
+      }
+    });
   };
 
   return (
@@ -134,39 +213,131 @@ export function DashboardNavbar() {
                   </div>
                 </IconButton>
               </MenuHandler>
-
               <MenuList className="w-max border-0">
-                {notificationList.map((notification) => (
-                  <MenuItem key={notification.id} className="flex items-center gap-3">
-                    <SiGooglemessages className="text-3xl -mt-6" /> {/* Increase size and adjust top margin */}
-                    <div className="flex-grow">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="mt-1 font-normal"
-                      >
-                        <strong>{notification.from}</strong>
-                      </Typography>
-                      <Typography
-                        color="green"
-                        className="flex items-center gap-1 text-xs font-normal"
-                      >
-                        <strong>{notification.message}</strong>
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="flex items-center gap-1 text-xs font-normal opacity-60"
-                      >
-                        <ClockIcon className="h-3.5 w-3.5" /> {new Date(notification.sendAt).toLocaleTimeString()}
-                      </Typography>
-                    </div>
-                    <RiDeleteBack2Fill
-                      className="ml-6 text-2xl cursor-pointer" // Increase left margin and size
-                      onClick={() => deleteNotification(notification.id)}
-                    />
-                  </MenuItem>
-                ))}
+                {notificationList.map((notification) =>
+                  notification.isSeen ? (
+                    <MenuItem
+                      key={notification.id}
+                      className="flex items-start gap-2 p-2 bg-white"
+                    >
+                      <SiGooglemessages className="text-4xl  mt-2" />
+                      <div className="flex-grow">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mt-1 font-normal"
+                        ></Typography>
+                        <Typography
+                          color="green"
+                          className="text-sm font-medium"
+                        >
+                          <strong>{notification.message}</strong>
+                        </Typography>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="flex flex-col gap-1 text-xs font-normal mt-2"
+                        >
+                          <div className="flex space-x-4 mt-2">
+                            <button
+                              className="bg-primary text-white px-4 py-2 rounded hover:bg-green-900 transition-colors"
+                              onClick={() => handlePopup(notification)}
+                            >
+                              Confirm
+                            </button>
+                            {notification.orderStatus === "ready to pickup" ? (
+                              <button
+                                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-900 transition-colors"
+                                onClick={() => handlePopup2(notification)}
+                              >
+                                Cancel
+                              </button>
+                            ) : (
+                              <button
+                                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-900 transition-colors"
+                                onClick={() => handlePopup3(notification)}
+                              >
+                                Return
+                              </button>
+                            )}
+                          </div>
+                          <div className="w-full border-b border-gray-300 my-2"></div>
+                          <div className="flex items-center gap-1">
+                            <ClockIcon className="h-4 w-4 text-gray-500" />
+                            {new Date(notification.sendAt).toLocaleTimeString()}
+                          </div>
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  ) : (
+                    <MenuItem
+                      key={notification.id}
+                      className="flex items-center gap-3"
+                    >
+                      <SiGooglemessages className="text-3xl -mt-6" />{" "}
+                      {/* Increase size and adjust top margin */}
+                      <div className="flex-grow">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mt-1 font-normal"
+                        >
+                          <strong>{notification.from}</strong>
+                        </Typography>
+                        <Typography
+                          color="green"
+                          className="flex items-center gap-1 text-xs font-normal"
+                        >
+                          <strong>{notification.message}</strong>
+                        </Typography>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="flex items-center gap-1 text-xs font-normal opacity-60"
+                        >
+                          <ClockIcon className="h-3.5 w-3.5" />{" "}
+                          {new Date(notification.sendAt).toLocaleTimeString()}
+                        </Typography>
+                      </div>
+                      <RiDeleteBack2Fill
+                        className="ml-6 text-2xl cursor-pointer" // Increase left margin and size
+                        onClick={() => deleteNotification(notification.id)}
+                      />
+                    </MenuItem>
+                  )
+                )}
+//                 {notificationList.map((notification) => (
+//                   <MenuItem key={notification.id} className="flex items-center gap-3">
+//                     <SiGooglemessages className="text-3xl -mt-6" /> {/* Increase size and adjust top margin */}
+//                     <div className="flex-grow">
+//                       <Typography
+//                         variant="small"
+//                         color="blue-gray"
+//                         className="mt-1 font-normal"
+//                       >
+//                         <strong>{notification.from}</strong>
+//                       </Typography>
+//                       <Typography
+//                         color="green"
+//                         className="flex items-center gap-1 text-xs font-normal"
+//                       >
+//                         <strong>{notification.message}</strong>
+//                       </Typography>
+//                       <Typography
+//                         variant="small"
+//                         color="blue-gray"
+//                         className="flex items-center gap-1 text-xs font-normal opacity-60"
+//                       >
+//                         <ClockIcon className="h-3.5 w-3.5" /> {new Date(notification.sendAt).toLocaleTimeString()}
+//                       </Typography>
+//                     </div>
+//                     <RiDeleteBack2Fill
+//                       className="ml-6 text-2xl cursor-pointer" // Increase left margin and size
+//                       onClick={() => deleteNotification(notification.id)}
+//                     />
+//                   </MenuItem>
+//                 ))}
+
               </MenuList>
             </Menu>
           </div>
