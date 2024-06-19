@@ -5,9 +5,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 import { getAllFarmerOrders } from "@/services/orderServices";
-import { FARMER_ID } from "@/usersID";
+import { jwtDecode } from "jwt-decode";
 
-const Farmer_ID = FARMER_ID;
 export default function Tab({ defaultTab }) {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState(defaultTab);
@@ -18,16 +17,19 @@ export default function Tab({ defaultTab }) {
 
   // Fetch data on component mount
   useEffect(() => {
+    const token = sessionStorage.getItem('jwtToken');
+        const decodedData = jwtDecode(token);
+        const sellerID = decodedData.email;
     const fetchOrderDetails = async () => {
       try {
-        const details = await getAllFarmerOrders(Farmer_ID);
+        const details = await getAllFarmerOrders(sellerID);
         setData(details);
       } catch (error) {
         console.error("Error fetching order details:", error);
       }
     };
     fetchOrderDetails();
-  }, [Farmer_ID]);
+  }, []);
 
   // Update tab and filter data based on URL change
   useEffect(() => {

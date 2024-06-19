@@ -4,13 +4,12 @@ import axios from 'axios';
 import moment from 'moment';
 import { Select, Option } from "@material-tailwind/react";
 import { getAllFarmerOrders } from '@/services/orderServices';
-import { FARMER_ID } from '@/usersID';
+import { jwtDecode } from 'jwt-decode';
 
 export default function NewOrdersTab() {
-  const [data, setData] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null); // State to store the ID of the selected row
+  const [data, setData] = useState([]); // State to store fetched data
+  const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
-  const sellerID = FARMER_ID;
 
   const [filterOptions, setFilterOptions] = useState(["new", "pending"]);
 
@@ -30,10 +29,14 @@ export default function NewOrdersTab() {
   };
 
   useEffect(() => {
+    const token = sessionStorage.getItem('jwtToken');
+    const decodedData = jwtDecode(token);
+    const sellerID = decodedData.email;
     const fetchOrders = async () => {
       try {
         const orders = await getAllFarmerOrders(sellerID);
-        const filteredOrders = orders.filter(order => 
+        // Filter the orders based on the filterOptions
+        const filteredOrders = orders.filter(order =>
           filterOptions.includes(order.orderStatus)
         );
         setData(filteredOrders);
@@ -43,7 +46,7 @@ export default function NewOrdersTab() {
     };
 
     fetchOrders();
-  }, [sellerID, filterOptions]);
+  }, [filterOptions]);
 
   return (
     <div>
