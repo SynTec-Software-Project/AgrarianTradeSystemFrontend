@@ -22,11 +22,10 @@ function SelectCourier() {
         setData(details);
       } catch (error) {
         console.error('Error fetching order details:', error);
-        // Handle errors appropriately
       }
     };
     fetchOrderDetails();
-  }, [id]); // Only run the effect when orderID changes
+  }, [id]);
  
   return (
     <>
