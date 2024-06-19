@@ -43,9 +43,9 @@ export function DashboardNavbar() {
   const [notificationList, setNotificationList] = useState([]);
   //const to = "john.perera@example.com";
   //const to = "nimesha@mail.com";
-  //const to = "john.doe@example.com";
+  const to = "john.doe@example.com";
   const [notificationCount, setNotificationCount] = useState(0);
-  const to = "adam.jayasinghe@example.com";
+  //const to = "ajithperera@mail.com";
 
   useEffect(() => {
     axios
@@ -65,7 +65,9 @@ export function DashboardNavbar() {
       .delete(`https://localhost:7144/api/Notification/${id}`)
       .then((response) => {
         console.log("Notification deleted:", response.data);
-        setNotificationList(notificationList.filter((notification) => notification.id !== id));
+        setNotificationList(
+          notificationList.filter((notification) => notification.id !== id)
+        );
         setNotificationCount(notificationCount - 1);
       })
       .catch((error) => {
@@ -147,18 +149,20 @@ export function DashboardNavbar() {
   return (
     <Navbar
       color={fixedNavbar ? "white" : "transparent"}
-      className={`rounded-xl transition-all ${fixedNavbar
+      className={`rounded-xl transition-all ${
+        fixedNavbar
           ? "sticky top-4 z-40 py-3 shadow-md shadow-blue-gray-500/5"
           : "px-0 py-1"
-        }`}
+      }`}
       fullWidth
       blurred={fixedNavbar}
     >
       <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
         <div className="capitalize">
           <Breadcrumbs
-            className={`bg-transparent p-0 transition-all ${fixedNavbar ? "mt-1" : ""
-              }`}
+            className={`bg-transparent p-0 transition-all ${
+              fixedNavbar ? "mt-1" : ""
+            }`}
           >
             <Link to={`/${layout}`}>
               <Typography
@@ -196,7 +200,7 @@ export function DashboardNavbar() {
               color="red"
               className="flex gap-2 items-center normal-case px-3"
               onClick={logout}
-            > 
+            >
               <UserCircleIcon className="h-5 w-5 text-red-500" />
               Sign Out
             </Button>
@@ -204,7 +208,10 @@ export function DashboardNavbar() {
               <MenuHandler>
                 <IconButton variant="text" color="blue-gray">
                   <div className="relative">
-                    <BellIcon fontSize={45} className="h-6 w-6  text-blue-gray-500" />
+                    <BellIcon
+                      fontSize={45}
+                      className="h-6 w-6  text-blue-gray-500"
+                    />
                     {notificationCount > 0 && (
                       <span className="absolute p-1 top-0 right-0 inline-flex items-center justify-center h-3 w-4 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
                         {notificationCount}
@@ -306,38 +313,6 @@ export function DashboardNavbar() {
                     </MenuItem>
                   )
                 )}
-//                 {notificationList.map((notification) => (
-//                   <MenuItem key={notification.id} className="flex items-center gap-3">
-//                     <SiGooglemessages className="text-3xl -mt-6" /> {/* Increase size and adjust top margin */}
-//                     <div className="flex-grow">
-//                       <Typography
-//                         variant="small"
-//                         color="blue-gray"
-//                         className="mt-1 font-normal"
-//                       >
-//                         <strong>{notification.from}</strong>
-//                       </Typography>
-//                       <Typography
-//                         color="green"
-//                         className="flex items-center gap-1 text-xs font-normal"
-//                       >
-//                         <strong>{notification.message}</strong>
-//                       </Typography>
-//                       <Typography
-//                         variant="small"
-//                         color="blue-gray"
-//                         className="flex items-center gap-1 text-xs font-normal opacity-60"
-//                       >
-//                         <ClockIcon className="h-3.5 w-3.5" /> {new Date(notification.sendAt).toLocaleTimeString()}
-//                       </Typography>
-//                     </div>
-//                     <RiDeleteBack2Fill
-//                       className="ml-6 text-2xl cursor-pointer" // Increase left margin and size
-//                       onClick={() => deleteNotification(notification.id)}
-//                     />
-//                   </MenuItem>
-//                 ))}
-
               </MenuList>
             </Menu>
           </div>
