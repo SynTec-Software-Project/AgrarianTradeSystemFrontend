@@ -16,6 +16,7 @@ import PlaceOrderModal from '../components/PlaceOrderModal';
 import { addToCartProducts, getProductDetails } from '@/services/productServices';
 import { BUYER_ID } from '@/usersID';
 import { jwtDecode } from 'jwt-decode';
+import Review from '../components/Review';
 function Icon() {
   return (
     <svg
@@ -290,6 +291,7 @@ const ProductDetails = () => {
           />
         </div>
       </div>
+      <Review id={id}/>
     </div>
   )
 }

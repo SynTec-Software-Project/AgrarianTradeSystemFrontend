@@ -47,7 +47,14 @@ export default function Tab({ defaultTab }) {
           (item) =>
             item.orderStatus.toLowerCase() === "ready to pickup" ||
             item.orderStatus.toLowerCase() === "picked up" ||
-            item.orderStatus.toLowerCase() === "delivered"
+            item.orderStatus.toLowerCase() === "review" ||
+            item.orderStatus.toLowerCase() === "return"
+        );
+      } else if (statusItem === "Delivered") {
+        result = data.filter(
+          (item) =>
+            item.orderStatus.toLowerCase() === "review" ||
+            item.orderStatus.toLowerCase() === "return"
         );
       } else {
         result = data.filter(
@@ -208,7 +215,8 @@ export default function Tab({ defaultTab }) {
                           Picked up
                         </p>
                       )}
-                      {orderStatus.toLowerCase() === "delivered" && (
+                      {(orderStatus.toLowerCase() === "review" ||
+                        orderStatus.toLowerCase() === "return") && (
                         <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                           Delivered
                         </p>
@@ -260,17 +268,17 @@ export default function Tab({ defaultTab }) {
                       <div className="">
                         {status === "Ready to pickup" && (
                           <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                            {status}
+                            Ready to pickup
                           </p>
                         )}
                         {status === "Picked up" && (
                           <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                            {status}
+                            Picked up
                           </p>
                         )}
-                        {status === "Delivered" && (
+                        {(status === "review" || status === "return") && (
                           <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                            {status}
+                            Delivered
                           </p>
                         )}
                       </div>

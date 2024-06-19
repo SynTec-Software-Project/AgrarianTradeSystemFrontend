@@ -1,6 +1,6 @@
 "use client";
 import { React, useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 import { getAllBuyerOrders } from "@/services/orderServices";
@@ -13,6 +13,8 @@ export default function BuyerTabAndTables({ defaultTab }) {
   const [tab, setTab] = useState(defaultTab);
   const [filteredData, setFilteredData] = useState([]);
   const location = useLocation();
+  const [selectedRow, setSelectedRow] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (location.pathname === "/my-orders") {
@@ -23,9 +25,8 @@ export default function BuyerTabAndTables({ defaultTab }) {
   useEffect(() => {
     const fetchBuyerOrders = async () => {
       try {
-        const orders = await getAllBuyerOrders(Buyer_ID);
-        setData(orders);
-        setFilteredData(orders);
+        const details = await getAllBuyerOrders(Buyer_ID);
+        setData(details);
       } catch (error) {
         console.error("Error while fetching buyer orders:", error);
       }
@@ -33,22 +34,35 @@ export default function BuyerTabAndTables({ defaultTab }) {
     fetchBuyerOrders();
   }, [Buyer_ID]);
 
-  const filterResult = (statusItem) => {
-    let result = [];
-    if (statusItem === "All") {
-      result = data.filter(
-        (item) =>
-          item.orderStatus.toLowerCase() === "ready to pickup" ||
-          item.orderStatus.toLowerCase() === "picked up" ||
-          item.orderStatus.toLowerCase() === "delivered"
-      );
-    } else {
-      result = data.filter(
-        (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
-      );
-    }
-    setFilteredData(result);
-    setTab(statusItem);
+  useEffect(() => {
+    const filterResult = (statusItem) => {
+      let result = [];
+      if (statusItem === "All") {
+        result = data.filter(
+          (item) =>
+            item.orderStatus.toLowerCase() === "ready to pickup" ||
+            item.orderStatus.toLowerCase() === "picked up" ||
+            item.orderStatus.toLowerCase() === "review" ||
+            item.orderStatus.toLowerCase() === "return"
+        );
+      } else if (statusItem === "Delivered") {
+        result = data.filter(
+          (item) =>
+            item.orderStatus.toLowerCase() === "review" ||
+            item.orderStatus.toLowerCase() === "return"
+        );
+      } else {
+        result = data.filter(
+          (item) => item.orderStatus.toLowerCase() === statusItem.toLowerCase()
+        );
+      }
+      setFilteredData(result);
+    };
+    filterResult(tab);
+  }, [data, tab]);
+
+  const handleRowClick = (id) => {
+    navigate(`/buyers/my-orders/${id}`);
   };
 
   const formatDate = (dateString) => {
@@ -59,11 +73,9 @@ export default function BuyerTabAndTables({ defaultTab }) {
   return (
     <div>
       <div className="flex sm:justify-end justify-center sm:mr-16 mr-0 text-custom-gray  font-medium">
-        <div className="flex  -mt-10 sm:text-sm text-xs border-b-2 ">
+        <div className="flex sm:text-sm text-xs border-b-2 ">
           <button
-            onClick={() => {
-              filterResult("All");
-            }}
+            onClick={() => setTab("All")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out  ${
               tab === "All"
                 ? "text-primary border-b-2 border-primary "
@@ -74,11 +86,9 @@ export default function BuyerTabAndTables({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("ready to pickup");
-            }}
+            onClick={() => setTab("Ready to pickup")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out  ${
-              tab === "ready to pickup"
+              tab === "Ready to pickup"
                 ? "text-primary border-b-2 border-primary "
                 : "text-custom_gray "
             }`}
@@ -87,11 +97,9 @@ export default function BuyerTabAndTables({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("picked up");
-            }}
+            onClick={() => setTab("Picked up")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
-              tab === "picked up"
+              tab === "Picked up"
                 ? "text-primary border-b-2 border-primary "
                 : "text-custom_gray"
             }`}
@@ -100,11 +108,9 @@ export default function BuyerTabAndTables({ defaultTab }) {
           </button>
 
           <button
-            onClick={() => {
-              filterResult("delivered");
-            }}
+            onClick={() => setTab("Delivered")}
             className={`focus:outline-none  sm:w-40 w-24 transition duration-300 ease-in-out ${
-              tab === "delivered"
+              tab === "Delivered"
                 ? "text-primary border-b-2 border-primary "
                 : "text-custom_gray "
             }`}
@@ -115,124 +121,105 @@ export default function BuyerTabAndTables({ defaultTab }) {
       </div>
 
       <div>
-        <div class="relative w-11/12   h-full ml-12 content-center  text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-20 hidden sm:block  ">
-          <table class="w-full text-left table-auto  ">
+        <div className=" flex-col justify-center text-custom_gray bg-white shadow-md overflow-auto rounded-xl bg-clip-border mt-8">
+          <table className="w-full text-left table-auto min-w-max">
             <thead>
-              <tr>
-                <div class="pl-8 pr-4 grid grid-cols-6 gap-x-6 gap-4 border-b border-primary bg-green-500 text-gray-100 text-md">
-                  <th class="col-span-1  ml-6  pt-8 pb-6 font-bold">
-                    <p class="block font-sans antialiased font-medium leading-none  ">
-                      Product
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans antialiased font-medium leading-none  ">
-                      Order reference
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans antialiased font-medium leading-none  ">
-                      Order placed
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans antialiased font-medium leading-none  ">
-                      Delivery Date
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans antialiased font-medium leading-none  ">
-                      Quantity
-                    </p>
-                  </th>
-                  <th class="col-span-1  pt-8 pb-6 font-bold">
-                    <p class="block font-sans antialiased font-medium leading-none  ">
-                      status
-                    </p>
-                  </th>
-                </div>
+              <tr class="border-b border-primary">
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Product
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Order reference
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Order Placed
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Delivery Date
+                </th>
+                <th className=" py-5 font-bold w-24 text-center align-middle">
+                  Quantity (Kg)
+                </th>
               </tr>
             </thead>
-
             <tbody>
               {filteredData.map((values) => {
                 const {
                   orderID,
                   productTitle,
                   orderedDate,
-                  deliveryDate,
                   totalQuantity,
                   productImageUrl,
+                  deliveryDate,
                   orderStatus,
                 } = values; //destructuring
                 return (
-                  <>
-                    <tr
-                      key={orderID}
-                      className="hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out ease-in"
-                    >
-                      <Link to={`/buyers/my-orders/${orderID}`}>
-                        <div class=" pl-8 pr-8 grid grid-cols-6 gap-x-6 gap-4 border-b border-blue-gray-50">
-                          <td class="p-3 col-span-1 ">
-                            <div class="flex space-x-5  ">
-                              <Avatar
-                                src={
-                                  "https://syntecblobstorage.blob.core.windows.net/products/" +
-                                  productImageUrl
-                                }
-                                size="sm"
-                              />
-                              <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                                {productTitle}
-                              </p>
-                            </div>
-                          </td>
+                  <tr
+                    key={orderID}
+                    onClick={() => handleRowClick(orderID)}
+                    onMouseEnter={() => setSelectedRow(orderID)}
+                    onMouseLeave={() => setSelectedRow(null)}
+                    className={
+                      selectedRow === orderID
+                        ? "bg-gray-200 cursor-pointer"
+                        : "cursor-pointer"
+                    }
+                  >
+                    <td class="p-3 w-24 text-center align-middle">
+                      <div className="flex space-x-5 ">
+                        <Avatar
+                          src={
+                            "https://syntecblobstorage.blob.core.windows.net/products/" +
+                            productImageUrl
+                          }
+                          size="sm"
+                        />
+                        <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                          {productTitle}
+                        </p>
+                      </div>
+                    </td>
 
-                          <td class="p-3 col-span-1">
-                            <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              {orderID}
-                            </p>
-                          </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                        {orderID}
+                      </p>
+                    </td>
 
-                          <td class="p-3 col-span-1">
-                            <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              {formatDate(orderedDate)}
-                            </p>
-                          </td>
-
-                          <td class="p-3 col-span-1">
-                            <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              {formatDate(deliveryDate)}
-                            </p>
-                          </td>
-                          <td class="p-3 col-span-1">
-                            <p class="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
-                              {totalQuantity}Kg
-                            </p>
-                          </td>
-
-                          <td className="p-3 col-span-1  ">
-                            {orderStatus.toLowerCase() ===
-                              "ready to pickup" && (
-                              <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                                Ready to Pickup
-                              </p>
-                            )}
-                            {orderStatus.toLowerCase() === "picked up" && (
-                              <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                                Picked up
-                              </p>
-                            )}
-                            {orderStatus.toLowerCase() === "delivered" && (
-                              <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
-                                Delivered
-                              </p>
-                            )}
-                          </td>
-                        </div>
-                      </Link>
-                    </tr>
-                  </>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                        {formatDate(orderedDate)}
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                        {formatDate(deliveryDate)}
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      <p className="block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1">
+                        {totalQuantity}Kg
+                      </p>
+                    </td>
+                    <td className="p-3 w-24 text-center align-middle">
+                      {orderStatus.toLowerCase() === "ready to pickup" && (
+                        <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          Ready to Pickup
+                        </p>
+                      )}
+                      {orderStatus.toLowerCase() === "picked up" && (
+                        <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          Picked up
+                        </p>
+                      )}
+                      {(orderStatus.toLowerCase() === "review" ||
+                        orderStatus.toLowerCase() === "return") && (
+                        <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          Delivered
+                        </p>
+                      )}
+                    </td>
+                  </tr>
                 );
               })}
             </tbody>
@@ -289,7 +276,7 @@ export default function BuyerTabAndTables({ defaultTab }) {
                                 {status}
                               </p>
                             )}
-                            {status === "Delivered" && (
+                            {(status === "review" || status === "return") && (
                               <p class=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                                 {status}
                               </p>

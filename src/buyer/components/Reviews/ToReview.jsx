@@ -3,40 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReviewCard from '@/seller/SellerDashboard/dashboard/components/reviews/components/ReviewCard';
 import { getProductsToReview, getReviewHistory } from '@/services/reviewServices';
+import { BUYER_ID } from '@/usersID';
 
 export const AddReviewCard = () => {
+  const buyerId = BUYER_ID;
+
   const navigate = useNavigate();
   const [productData, setProductData] = useState([]);
   const [historyData, setHistoryData] = useState([]);
-  // const fetchProducts = async () => {
-  //   const client = axios.create({
-  //     baseURL: "https://localhost:44376/api/Review/to-review"
-  //   });
-
-  //   try {
-  //     client.get().then((response) => {
-  //       setProductData(response.data)
-  //       // console.log(response)
-  //     })
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   // console.log(data);
-  // }
-
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
 
   const fetchProducts = async () => {
     try {
-      const [productsToReview, reviewHistory] = await Promise.all([
-        getProductsToReview(),
-        getReviewHistory()
-      ]);
+      const productsToReview = await getProductsToReview(buyerId);
+
+      console.log(productsToReview);
 
       setProductData(productsToReview);
-      setHistoryData(reviewHistory);
+      // setHistoryData(reviewHistory);
     } catch (error) {
       console.error('Error fetching products or history:', error);
       // Handle errors appropriately, e.g., show a notification to the user
@@ -62,6 +45,8 @@ export const AddReviewCard = () => {
           img={item.productImageUrl}
           description={item.productDescription}
           stock={item.availableStock}
+          pDate={item.orderedDate?.split("T")[0]}
+          quantity={item.totalQuantity}
         />
       ))}
     </>

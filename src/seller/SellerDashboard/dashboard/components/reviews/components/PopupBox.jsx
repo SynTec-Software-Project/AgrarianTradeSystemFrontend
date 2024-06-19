@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Button,
   Dialog,
@@ -7,11 +7,23 @@ import {
   Textarea,
 } 
 from "@material-tailwind/react";
+import { addReply } from "@/services/reviewServices";
 
-export default function PopupBox({ open, setOpen, handleSubmit }) {
+export default function PopupBox({ open, setOpen, id }) {
+  const [reply, setReply ] = useState('');
 
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const handleSubmit = async () => {
+    const res = await addReply(id, reply);
+
+    if (res.status === 200) {
+      setOpen(false);
+    } else {
+      console.log("Error adding reply")
+    }
   }
 
   return (
@@ -33,7 +45,9 @@ export default function PopupBox({ open, setOpen, handleSubmit }) {
             Reply Comment
           </div>
           <div className="grid gap-6">
-            <Textarea label="Comment" />
+            <Textarea label="Comment" onChange={(e) => {
+              setReply(e.target.value);
+            }}/>
           </div>
         </DialogBody>
         <DialogFooter className="space-x-2">

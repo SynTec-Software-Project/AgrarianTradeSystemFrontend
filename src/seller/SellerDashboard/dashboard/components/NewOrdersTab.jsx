@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'; //JavaScript library for building user interfaces
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; //for making requests to server endpoints
-import moment from 'moment'; //A library for formatting dates and times in JavaScript.
+import axios from 'axios';
+import moment from 'moment';
 import { Select, Option } from "@material-tailwind/react";
 import { getAllFarmerOrders } from '@/services/orderServices';
 import { jwtDecode } from 'jwt-decode';
@@ -11,7 +11,6 @@ export default function NewOrdersTab() {
   const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
 
-  // State variable to manage filter options, initialized with default values
   const [filterOptions, setFilterOptions] = useState(["new", "pending"]);
 
   // Function to handle filtering when the user selects an option from the dropdown
@@ -25,12 +24,10 @@ export default function NewOrdersTab() {
     }
   };
 
-  // Function to handle row click, navigates to a different page
   const handleRowClick = (id) => {
     navigate(`/dashboard/select-courier/${id}`);
   };
 
-  // Effect hook to fetch orders from the server and filter based on seller ID and filter options
   useEffect(() => {
     const token = sessionStorage.getItem('jwtToken');
     const decodedData = jwtDecode(token);

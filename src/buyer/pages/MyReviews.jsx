@@ -1,23 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import axios from 'axios';
+import { getProductsToReview, getReviewHistory } from '@/services/reviewServices';
+import { BUYER_ID } from '@/usersID';
 
 const MyReviewsPage = () => {
+  const buyer_id = BUYER_ID;
+
   const [productData, setProductData] = useState([]); 
   const [historyData, setHistoryData] = useState([]);
 
   const fetchProducts = async () => {
-    const client = axios.create({
-      baseURL: "https://localhost:7144/api/Review/"
-    });
+   const productHistory = await getProductsToReview(buyer_id);
+   const reviewHistory = await getReviewHistory(buyer_id)
 
-    client.get("to-review").then((response) => {
-      setProductData(response.data)
-    })
-
-    client.get("get-history").then((response) => {
-      setHistoryData(response.data)
-    })
+   setProductData(productHistory);
+   setHistoryData(reviewHistory);
   }
 
   useEffect(() => {

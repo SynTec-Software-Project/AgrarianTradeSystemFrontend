@@ -34,11 +34,11 @@ const OrderOverview = ({ orderDetails, type }) => {
 
         <div>
           <div className=" flex sm:flex-row flex-col justify-center sm:space-x-24 sm:space-y-0 space-y-4 sm:mt-13 mt-8  ">
-            <div className="group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-md  rounded-lg  hover:bg-primary  transition duration-300 ">
-              <div className="mb-2 sm:text-2xl text-xl font-bold  text-primary  text-center group-hover:text-white">
+            <div className="group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-md  rounded-lg    transition duration-300 ">
+              <div className="mb-2 sm:text-2xl text-xl font-bold  text-primary  text-center">
                 Customer Details
               </div>
-              <div className=" text-gray-600  sm:space-y-3 space-y-2 p-1 ml-3 text-center group-hover:text-gray-800">
+              <div className=" text-gray-600  sm:space-y-3 space-y-2 p-1 ml-3 text-center ">
                 <div>
                   {orderDetails.customerFName} {orderDetails.customerLName}
                 </div>
@@ -54,11 +54,11 @@ const OrderOverview = ({ orderDetails, type }) => {
             </div>
 
             {type === "Courier" && (
-              <div className="group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-md  rounded-lg  hover:bg-primary  transition duration-300">
-                <div className="mb-2 sm:text-2xl text-xl font-bold  text-primary  text-center group-hover:text-white">
+              <div className="group basis-1/4 sm:p-6 p-3 bg-gray-200 border  shadow-md  rounded-lg    transition duration-300 ">
+                <div className="mb-2 sm:text-2xl text-xl font-bold  text-primary  text-center">
                   Seller Details
                 </div>
-                <div className=" text-gray-600  sm:space-y-3 space-y-2 p-1 ml-3 text-center group-hover:text-gray-800">
+                <div className=" text-gray-600  sm:space-y-3 space-y-2 p-1 ml-3 text-center ">
                   <div>
                     {orderDetails.farmerFName} {orderDetails.farmerLName}
                   </div>
