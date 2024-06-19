@@ -11,6 +11,10 @@ import ReturnForm from "../components/Returns/ReturnForm";
 import BuyerOrderDetails from "../components/BuyerOrderDetails";
 import EditReview from "../components/Reviews/EditReview";
 import MyReviewsPage from "../pages/MyReviews";
+import ReturnFormCard from "@/seller/SellerDashboard/dashboard/components/reviews/components/ReturnFormCard";
+import History from "../components/Reviews/History";
+import { MyReturnsBuyer } from "../components/Returns/MyReturnsBuyer";
+
 import MyOrders from "../pages/MyOrders";
 const Routing = () => {
   return (
@@ -20,13 +24,15 @@ const Routing = () => {
         <Route path="my-reviews" element={<MyReviewsPage />}>
           <Route index element={<AddReviewCard />} />
           <Route path="to-review" element={<AddReviewCard />} />
-          <Route path="history" element={<MyReviews />} />
+          <Route path="history" element={<History />} />
         </Route>
-        <Route path="history" element={<History />} />
-        <Route path="/my-returns" element={<MyReturns />} />
+        <Route path="" element={<ReturnFormCard />} />
+        {/* <Route path="history" element={<History />} /> */}
+        <Route path="/view-return/:id" element={<ReturnFormCard />} />
+        <Route path="/my-returns" element={<MyReturnsBuyer />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/add-review/:id" element={<ReviewForm />} />
-        <Route path="/return" element={<ReturnForm />} />
+        
         <Route
           path="my-orders/:orderID"
           element={<BuyerOrderDetails />}

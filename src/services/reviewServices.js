@@ -1,8 +1,8 @@
 import axiosInstance from "@/axiosConfig";
 
-export const getProductsToReview = async () => {
+export const getProductsToReview = async (buyerId) => {
     try {
-        const response = await axiosInstance.get('/Review/to-review');
+        const response = await axiosInstance.get(`/Review/to-review/buyer?buyerId=${encodeURI(buyerId)}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching products to review:', error);
@@ -11,9 +11,9 @@ export const getProductsToReview = async () => {
 };
 
 // Function to fetch review history
-export const getReviewHistory = async () => {
+export const getReviewHistory = async (buyerId) => {
     try {
-        const response = await axiosInstance.get('/Review/get-history');
+        const response = await axiosInstance.get(`/Review/review-history?buyerId=${encodeURI(buyerId)}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching review history:', error);
@@ -39,10 +39,20 @@ export const addReview = async (formData) => {
 // Function to fetch order details
 export const getOrderDetails = async (id) => {
     try {
-      const response = await axiosInstance.get(`/Order/buyer/details/${id}`);
-      return response.data[0];
+        const response = await axiosInstance.get(`/Order/buyer/details/${id}`);
+        return response.data[0];
     } catch (error) {
-      console.error('Error fetching order details:', error);
-      throw error;
+        console.error('Error fetching order details:', error);
+        throw error;
     }
-  };
+};
+
+export const getReviewsForFarmer = async (farmerId) => {
+    try {
+        const response = await axiosInstance.get(`/Review/reviews/farmer?farmerId=${encodeURI(farmerId)}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching products to review:', error);
+        throw error;
+    }
+};
