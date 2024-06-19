@@ -4,11 +4,20 @@ import { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 import { MdOutlineClose } from "react-icons/md";
 import { deleteCartItem } from "@/services/productServices";
-import { BUYER_ID } from "@/usersID";
+import { jwtDecode } from "jwt-decode";
 const TABLE_HEAD = ["Item", "Price", "Qty", "Sub Total", ""];   
-const BuyerId = BUYER_ID;
 export function CartTable({ cartItems ,handleDeleteItem}) {
   //const[cartItems, setCartItems] = useState([]);
+  const [buyerID, setBuyerID] = useState('');
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setBuyerID(decodedData.email);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
   const  PopupHandler = (id) =>{
     Swal.fire({
       title: "Are you sure?",
@@ -38,7 +47,7 @@ export function CartTable({ cartItems ,handleDeleteItem}) {
   const deleteConfirmHandler = async (itemId) => {
     console.log(itemId);
     try {
-      const data = await deleteCartItem(BuyerId, itemId);
+      const data = await deleteCartItem(buyerID, itemId);
       handleDeleteItem(data);
     } catch (error) {
       console.error('Error deleting cart item:', error);

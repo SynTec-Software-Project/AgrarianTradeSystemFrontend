@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     Button,
     Dialog,
@@ -10,12 +10,20 @@ import {
     CardBody,
 } from "@material-tailwind/react";
 import { createNewOrder } from '@/services/orderServices';
-import { BUYER_ID } from '@/usersID';
 const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee, destination ,setSuccessOrder }) => {
-    const buyerID = BUYER_ID;
+    const [buyerID, setBuyerID] = useState('');
     const addL1Ref = useRef(null);
     const addL2Ref = useRef(null);
     const [loading, setLoading] = useState(false);
+    useEffect(() => {
+      try{
+        const token = sessionStorage.getItem('jwtToken');
+        const decodedData = jwtDecode(token);
+        setBuyerID(decodedData.email);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    }, []);
     const handleModalOPen = () => {
         open ? setOpen(false) :
             setOpen(true);   

@@ -4,16 +4,26 @@ import CheckoutCard from '../components/CheckoutCard'
 import { CartTable } from '../components/CartTable'
 import axios from 'axios'
 import { getCartItems } from '@/services/productServices'
-import { BUYER_ID } from '@/usersID'
+import { jwtDecode } from 'jwt-decode'
+
 
 const ShoppingCart = () => {
   const[cartItems, setCartItems] = useState([]);
-  const BuyerId = BUYER_ID;
-
+  const [buyerID, setBuyerID] = useState('');
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setBuyerID(decodedData.email);
+      console.log(decodedData.email)
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const cartData = await getCartItems(BuyerId);
+        const cartData = await getCartItems(buyerID);
         setCartItems(cartData);
       } catch (error) {
         console.error('Error fetching cart details:', error);

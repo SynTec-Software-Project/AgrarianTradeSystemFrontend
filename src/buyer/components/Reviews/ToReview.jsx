@@ -3,14 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReviewCard from '@/seller/SellerDashboard/dashboard/components/reviews/components/ReviewCard';
 import { getProductsToReview, getReviewHistory } from '@/services/reviewServices';
-import { BUYER_ID } from '@/usersID';
+import { jwtDecode } from 'jwt-decode';
 
 export const AddReviewCard = () => {
-  const buyerId = BUYER_ID;
-
   const navigate = useNavigate();
   const [productData, setProductData] = useState([]);
   const [historyData, setHistoryData] = useState([]);
+  const [buyerId, setBuyerID] = useState('');
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setBuyerID(decodedData.email);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
 
   const fetchProducts = async () => {
     try {

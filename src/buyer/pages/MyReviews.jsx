@@ -2,17 +2,25 @@ import React, {useState, useEffect} from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import axios from 'axios';
 import { getProductsToReview, getReviewHistory } from '@/services/reviewServices';
-import { BUYER_ID } from '@/usersID';
+import { jwtDecode } from 'jwt-decode';
 
 const MyReviewsPage = () => {
-  const buyer_id = BUYER_ID;
 
   const [productData, setProductData] = useState([]); 
   const [historyData, setHistoryData] = useState([]);
-
+  const [buyerID, setBuyerID] = useState('');
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setBuyerID(decodedData.email);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
   const fetchProducts = async () => {
-   const productHistory = await getProductsToReview(buyer_id);
-   const reviewHistory = await getReviewHistory(buyer_id)
+   const productHistory = await getProductsToReview(buyerID);
+   const reviewHistory = await getReviewHistory(buyerID)
 
    setProductData(productHistory);
    setHistoryData(reviewHistory);
@@ -47,8 +55,5 @@ const MyReviewsPage = () => {
     </div>
   );
 };
-
-
-
 
 export default MyReviewsPage;

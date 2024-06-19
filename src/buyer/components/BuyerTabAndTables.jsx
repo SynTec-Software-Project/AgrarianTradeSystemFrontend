@@ -4,9 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 import { getAllBuyerOrders } from "@/services/orderServices";
-import { BUYER_ID } from "@/usersID";
-
-const Buyer_ID = BUYER_ID;
+import { jwtDecode } from "jwt-decode";
 
 export default function BuyerTabAndTables({ defaultTab }) {
   const [data, setData] = useState([]);
@@ -15,6 +13,16 @@ export default function BuyerTabAndTables({ defaultTab }) {
   const location = useLocation();
   const [selectedRow, setSelectedRow] = useState(null);
   const navigate = useNavigate();
+  const [buyerID, setBuyerID] = useState('');
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setBuyerID(decodedData.email);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
 
   useEffect(() => {
     if (location.pathname === "/my-orders") {
@@ -25,14 +33,14 @@ export default function BuyerTabAndTables({ defaultTab }) {
   useEffect(() => {
     const fetchBuyerOrders = async () => {
       try {
-        const details = await getAllBuyerOrders(Buyer_ID);
+        const details = await getAllBuyerOrders(buyerID);
         setData(details);
       } catch (error) {
         console.error("Error while fetching buyer orders:", error);
       }
     };
     fetchBuyerOrders();
-  }, [Buyer_ID]);
+  }, [buyerID]);
 
   useEffect(() => {
     const filterResult = (statusItem) => {
@@ -43,7 +51,8 @@ export default function BuyerTabAndTables({ defaultTab }) {
             item.orderStatus.toLowerCase() === "ready to pickup" ||
             item.orderStatus.toLowerCase() === "picked up" ||
             item.orderStatus.toLowerCase() === "review" ||
-            item.orderStatus.toLowerCase() === "return"
+            item.orderStatus.toLowerCase() === "return" ||
+            item.orderStatus.toLowerCase() === "new" 
         );
       } else if (statusItem === "Delivered") {
         result = data.filter(
@@ -207,6 +216,12 @@ export default function BuyerTabAndTables({ defaultTab }) {
                           Ready to Pickup
                         </p>
                       )}
+                      {(orderStatus.toLowerCase() === "new" ||
+                        orderStatus.toLowerCase() === "pending") && (
+                        <p className=" bg-yellow-400 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          New Order
+                        </p>
+                      )}
                       {orderStatus.toLowerCase() === "picked up" && (
                         <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                           Picked up
@@ -218,6 +233,7 @@ export default function BuyerTabAndTables({ defaultTab }) {
                           Delivered
                         </p>
                       )}
+                      
                     </td>
                   </tr>
                 );

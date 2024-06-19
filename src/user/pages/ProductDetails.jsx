@@ -14,7 +14,6 @@ import { set } from 'date-fns';
 import SellerDetails from '../components/SellerDetails';
 import PlaceOrderModal from '../components/PlaceOrderModal';
 import { addToCartProducts, getProductDetails } from '@/services/productServices';
-import { BUYER_ID } from '@/usersID';
 import { jwtDecode } from 'jwt-decode';
 import Review from '../components/Review';
 function Icon() {
@@ -33,7 +32,6 @@ function Icon() {
     </svg>
   );
 }
-const buyerID = BUYER_ID;
 const ProductDetails = () => {
   const [product, setProduct] = useState([]);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -45,6 +43,18 @@ const ProductDetails = () => {
   const { id } = useParams();
   const [modelOpen, setModelOpen] = useState(false);
   const navigate = useNavigate();
+  const [buyerID, setBuyerID] = useState('');
+  
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setBuyerID(decodedData.email);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
+  
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {

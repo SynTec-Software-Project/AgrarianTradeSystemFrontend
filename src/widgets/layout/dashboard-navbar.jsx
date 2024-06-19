@@ -31,6 +31,7 @@ import {
 import { useState, useEffect } from "react";
 import { updateOrderStatus } from "@/services/orderServices";
 import Swal from "sweetalert2";
+import { jwtDecode } from "jwt-decode";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -39,14 +40,22 @@ export function DashboardNavbar() {
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
   const [confirm, setConfirm] = useState(false);
   const [selected, setSelected] = useState(false);
+  const [to , setTo] = useState("");
 
   const [notificationList, setNotificationList] = useState([]);
-  //const to = "john.perera@example.com";
-  //const to = "nimesha@mail.com";
-  const to = "john.doe@example.com";
-  const [notificationCount, setNotificationCount] = useState(0);
-  //const to = "ajithperera@mail.com";
 
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setTo(decodedData.email);
+      console.log(decodedData.email)
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, [to]);
   useEffect(() => {
     axios
       .get(`https://localhost:7144/api/Notification/to/` + to)

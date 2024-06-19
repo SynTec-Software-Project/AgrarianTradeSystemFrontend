@@ -1,52 +1,68 @@
 import React, { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
 import { BsCoin } from "react-icons/bs";
-import { Badge, IconButton, Avatar } from "@material-tailwind/react";
+import { Badge, IconButton, Avatar, Select } from "@material-tailwind/react";
 import { HomeIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
 import SearchBar from "./SearchBar";
 import { Link, useNavigate } from "react-router-dom";
 import MainNavSide from "./MainNavSide";
-import axios from "axios";
 import { getCartItems, getSearchProducts } from "@/services/productServices";
-import { BUYER_ID } from "@/usersID";
+import UserDropdown from "./UserDropdown";
+import { jwtDecode } from "jwt-decode";
 
-//BUYER ID HARD CODED
-const buyerID = BUYER_ID;
-const MainNav = ({getSearchResults}) => {
-    const navigate = useNavigate();
-    const [cartCount, setCartCount] = useState(0);
+const MainNav = ({ getSearchResults }) => {
+  const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(0);
+  const [userName, setUserName] = useState('');
+  const [buyerID, setBuyerID] = useState('');
+  const [isUserLogged, setIsUserLogged] = useState(false);
+  useEffect(() => {
+    try {
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setUserName(decodedData.email);
+      if (decodedData) {
+        setIsUserLogged(true);
+      }
+      if (decodedData.role == 'User') {
+        setBuyerID(decodedData.email);
+      }
+      console.log(decodedData.email)
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
 
+  const handleSearch = async (searchTerm) => {
+    try {
+      // Fetch search results
+      navigate(`/products?search=${searchTerm}`);
+      const results = await getSearchProducts(searchTerm);
+      // Pass search results to ProductList
+      getSearchResults(results);
+      // Navigate to /products with search term as query param
 
-    const handleSearch = async (searchTerm) => {
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
       try {
-        // Fetch search results
-        navigate(`/products?search=${searchTerm}`);
-        const results = await getSearchProducts(searchTerm);
-        // Pass search results to ProductList
-        getSearchResults(results);
-        // Navigate to /products with search term as query param
-        
+        const cartItems = await getCartItems(buyerID);
+        setCartCount(cartItems.length);
       } catch (error) {
-        console.error('Error fetching search results:', error);
+        console.error('Error fetching shopping cart items:', error);
+
       }
     };
-  
-    useEffect(() => {
-      const fetchCartItems = async () => {
-        try {
-          const cartItems = await getCartItems(buyerID);
-          setCartCount(cartItems.length);
-        } catch (error) {
-          console.error('Error fetching shopping cart items:', error);
-  
-        }
-      };
-      fetchCartItems();
-    }, [buyerID]); 
+    fetchCartItems();
+  }, [buyerID]);
   return (
     <>
-      <MainNavSide/>   
-      <div className="hidden md:grid grid-cols-4 gap-0 px-4 py-2">  
+      <MainNavSide />
+      <div className="hidden md:grid grid-cols-4 gap-0 px-4 py-2">
         <div className="">
           {/* image */}
           <div className="w-50 max-w-full px-8 ">
@@ -85,22 +101,35 @@ const MainNav = ({getSearchResults}) => {
                 <div className="hidden justify-end pr-16 gap-3 sm:flex lg:pr-0 items-center ">
                   <Badge content={cartCount} color="green" className="mx-3">
                     <IconButton color="gray" variant="outlined" className="rounded-full"
-                     onClick={() => navigate("/cart")}
+                      onClick={() => navigate("/cart")}
                     >
                       <ShoppingCartIcon className="h-3 w-3" />
                     </IconButton>
                   </Badge>
-                  <Link to={"/login"} className='bg-transparent border-primary border rounded-full inline-flex items-center 
-                                      justify-center py-2 px-8 text-center text-sm font-medium  text-primary
-                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
-                    Login
-                  </Link>
-
-                  <Link to={"/create"} className='bg-primary border-primary border w-full rounded-full inline-flex items-center 
-                                      justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
-                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
-                    SignUp
-                  </Link>
+                  {
+                    isUserLogged ?
+                      <>
+                        <div className="w-28 flex items-center">
+                          <UserDropdown userName={userName} />
+                        </div>
+                      </>
+                      :
+                      <>
+                        <div className="flex gap-3">
+                          <Link to={"/login"} className='bg-transparent border-primary border rounded-full inline-flex items-center 
+                                        justify-center py-2 px-8 text-center text-sm font-medium  text-primary
+                                        disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
+                            Login
+                          </Link>
+                        
+                          <Link to={"/create"} className='bg-primary border-primary border w-full rounded-full inline-flex items-center 
+                                        justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
+                                        disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
+                            SignUp
+                          </Link>
+                        </div>
+                      </>
+                  }
                 </div>
               </div>
             </div>

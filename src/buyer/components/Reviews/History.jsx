@@ -4,7 +4,7 @@ import { Rating } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getReviewHistory } from '@/services/reviewServices';
-import { BUYER_ID } from '@/usersID';
+import { jwtDecode } from 'jwt-decode';
 
 export function DefaultRating({ value }) {
   return <Rating value={value} />;
@@ -27,7 +27,17 @@ function formatDate(dateString) {
 }
 
 const History = () => {
-  const buyerId = BUYER_ID;
+  const [buyerId, setBuyerID] = useState('');
+  useEffect(() => {
+    try{
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setBuyerID(decodedData.email);
+      console.log(decodedData.email)
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
 
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);

@@ -3,49 +3,20 @@ import { Button } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 import SellerReturnCard from '@/seller/SellerDashboard/dashboard/components/reviews/components/SellerReturnCard';
 import { getReturnsForBuyer } from '@/services/returnServices';
-import { BUYER_ID } from '@/usersID';
 import BuyerReturnCard from '../BuyerReturnCard';
-
-
-const data = [
-    {
-        type: 'Vegetable Gallery',
-        who: 'Purchased on 16 Dec 2023',
-        img: "https://tse1.mm.bing.net/th?id=OIP.bprm9Awwe2tzYwo80PtKIwHaE6&pid=Api&P=0&h=220",
-        diliDate: 'Returned on 16 Dec 2023',
-        iType: 'Leeks Stock-500kg',
-        rq: 'Returned Quantity - 100kg',
-        cof: 'Amount Returned Quantity - Ru.10000.00',
-        Button: 'View'
-    },
-    {
-        type: 'Vegetable Gallery',
-        who: 'Purchased on 16 Dec 2023',
-        img: "https://purepng.com/public/uploads/large/purepng.com-carrotscarrotvegetablesfreshdeliciousefoodhealthycarrots-481521740717jmglq.png",
-        diliDate: 'Returned on 16 Dec 2023',
-        iType: 'Leeks Stock-500kg',
-        rq: 'Returned Quantity - 100kg',
-        cof: 'Amount Returned Quantity - Ru.10000.00',
-        Button: 'View'
-    },
-    {
-        type: 'Vegetable Gallery',
-        who: 'Purchased on 16 Dec 2023',
-        img: "https://snaped.fns.usda.gov/sites/default/files/styles/crop_ratio_7_5/public/seasonal-produce/2018-05/pumpkin.jpg?itok=IXGgRg1X",
-        diliDate: 'Returned on 16 Dec 2023',
-        iType: 'Leeks Stock-500kg',
-        rq: 'Returned Quantity - 100kg',
-        cof: 'Amount Returned Quantity - Ru.10000.00',
-        Button: 'View'
-    }
-
-
-]
-
-
+import { jwtDecode } from 'jwt-decode';
 
 export function MyReturnsBuyer() {
-    const buyerId = BUYER_ID;
+    const [buyerId, setBuyerID] = useState('');
+    useEffect(() => {
+      try{
+        const token = sessionStorage.getItem('jwtToken');
+        const decodedData = jwtDecode(token);
+        setBuyerID(decodedData.email);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    }, []);
     const navigate = useNavigate();
 
     const [returns, setReturns] = useState([]);
