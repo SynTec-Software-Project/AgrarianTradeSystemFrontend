@@ -2,8 +2,8 @@ import React from 'react'
 import MainNav from './components/MainNav'
 import AboutSection from './components/AboutSection'
 import Hero from './components/Hero'
-import FarmerBanner from './components/FarmerBanner'
 import CourierBanner2 from './components/CourierBanner2'
+import FarmerBanner2 from './components/FarmerBanner2'
 const LandingPage = () => {
   return (
     <div className='bg-secondary'>
@@ -11,7 +11,7 @@ const LandingPage = () => {
       <Hero/>
       <AboutSection /> 
       <div className='bg-white py-12'>
-      <FarmerBanner/>  
+      <FarmerBanner2/>  
       </div>
       <div className='bg-primary py-12'>
       <CourierBanner2/>  

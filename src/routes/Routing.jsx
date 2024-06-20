@@ -27,7 +27,9 @@ const Routing = () => {
         <Route path="/my-orders" element={<MyOrders />}>
           {" "}
         </Route>
-
+        <Route path="/profile" element={<Profile/>}>
+          {" "}
+        </Route>
         <Route path="/my-reviews" element={<MyReviews />}>
           {" "}
         </Route>

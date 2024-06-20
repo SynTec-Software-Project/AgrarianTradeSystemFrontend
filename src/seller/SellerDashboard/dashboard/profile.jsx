@@ -1,8 +1,9 @@
+import ChangeDetails from "@/user/components/ChangeDetails";
 
 export function Profile() {
   return (
     <>
-      <h1>profile</h1>
+      <ChangeDetails/>
     </>
   );
 }

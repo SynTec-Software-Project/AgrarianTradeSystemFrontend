@@ -58,7 +58,7 @@ export const routes = [
     ],
   },
   {
-    title: "auth pages",
+    title: "profile",
     layout: "dashboard",
     pages: [
       {
@@ -66,12 +66,6 @@ export const routes = [
         name: "Profile",
         path: "/profile",
         element: <Profile />,
-      },
-      {
-        icon: <RectangleStackIcon {...icon} />,
-        name: "sign up",
-        path: "/sign-up",
-        element: <SignUp />,
       },
     ],
   },
