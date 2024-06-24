@@ -1,28 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
 import { BsCoin } from "react-icons/bs";
-import { Badge, IconButton, Avatar } from "@material-tailwind/react";
+import { Badge, IconButton, Avatar, Select } from "@material-tailwind/react";
 import { HomeIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
 import SearchBar from "./SearchBar";
+import { Link, useNavigate } from "react-router-dom";
+import MainNavSide from "./MainNavSide";
+import { getCartItems, getSearchProducts } from "@/services/productServices";
+import UserDropdown from "./UserDropdown";
+import { jwtDecode } from "jwt-decode";
 
-const MainNav = () => {
+const MainNav = ({ getSearchResults }) => {
+  const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(0);
+  const [userName, setUserName] = useState('');
+  const [buyerID, setBuyerID] = useState('');
+  const [isUserLogged, setIsUserLogged] = useState(false);
+  useEffect(() => {
+    try {
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      setUserName(decodedData.email);
+      if (decodedData) {
+        setIsUserLogged(true);
+      }
+      if (decodedData.role == 'User') {
+        setBuyerID(decodedData.email);
+      }
+      console.log(decodedData.email)
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  }, []);
 
+  const handleSearch = async (searchTerm) => {
+    try {
+      // Fetch search results
+      navigate(`/products?search=${searchTerm}`);
+      const results = await getSearchProducts(searchTerm);
+      // Pass search results to ProductList
+      getSearchResults(results);
+      // Navigate to /products with search term as query param
+
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const cartItems = await getCartItems(buyerID);
+        setCartCount(cartItems.length);
+      } catch (error) {
+        console.error('Error fetching shopping cart items:', error);
+
+      }
+    };
+    fetchCartItems();
+  }, [buyerID]);
   return (
     <>
-      <div className="grid grid-cols-3 gap-0 px-8 py-2">
+      <MainNavSide />
+      <div className="hidden md:grid grid-cols-4 gap-0 px-4 py-2">
         <div className="">
           {/* image */}
-          <div className="w-50 max-w-full px-4 ">
+          <div className="w-50 max-w-full px-8 ">
             <a href="/#" className="block w-full">
               <img
-                src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-primary.svg"
+                src="https://syntecblobstorage.blob.core.windows.net/bussinescard/large-removebg-preview 1.png"
                 alt="logo"
                 className="dark:hidden"
               />
             </a>
           </div>
         </div>
-        <div className="col-span-2">
+        <div className="  md:col-span-3">
           <div className="grid grid-rows-2 ">
             <div>
               {/* delivery */}
@@ -35,7 +88,7 @@ const MainNav = () => {
                   <ListItem NavLink="/buyers/my-orders">My Orders</ListItem>
                   <ListItem NavLink="/#">Offers</ListItem>
                 </ul>
-                <ul className="block  lg:flex  justify-end pr-4 text-primary text-sm">
+                <ul className="flex  justify-end  text-primary text-sm">
                   <ListItem NavLink="/dashboard/my-products"><BsCoin size={24} className=" mx-2" />Become a Seller</ListItem>
                   <ListItem NavLink="/couriers/new-orders"><TbTruckDelivery size={25} className=" mx-2" />Delivery Partner</ListItem>
                 </ul>
@@ -44,24 +97,39 @@ const MainNav = () => {
             <div>
               {/* signup and search */}
               <div className="flex items-center justify-end px-4 ">
-                <SearchBar />
+                <SearchBar onSearch={handleSearch} />
                 <div className="hidden justify-end pr-16 gap-3 sm:flex lg:pr-0 items-center ">
-                  <Badge content="5" color="green" className="mx-3">
-                    <IconButton color="gray" variant="outlined" className="rounded-full">
+                  <Badge content={cartCount} color="green" className="mx-3">
+                    <IconButton color="gray" variant="outlined" className="rounded-full"
+                      onClick={() => navigate("/cart")}
+                    >
                       <ShoppingCartIcon className="h-3 w-3" />
                     </IconButton>
                   </Badge>
-                  <button className='bg-transparent border-primary border rounded-full inline-flex items-center 
-                                      justify-center py-2 px-8 text-center text-sm font-medium  text-primary
-                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
-                    Login
-                  </button>
-
-                  <button className='bg-primary border-primary border w-full rounded-full inline-flex items-center 
-                                      justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
-                                      disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
-                    SignUp
-                  </button>
+                  {
+                    isUserLogged ?
+                      <>
+                        <div className="w-28 flex items-center">
+                          <UserDropdown userName={userName} />
+                        </div>
+                      </>
+                      :
+                      <>
+                        <div className="flex gap-3">
+                          <Link to={"/login"} className='bg-transparent border-primary border rounded-full inline-flex items-center 
+                                        justify-center py-2 px-8 text-center text-sm font-medium  text-primary
+                                        disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
+                            Login
+                          </Link>
+                        
+                          <Link to={"/create"} className='bg-primary border-primary border w-full rounded-full inline-flex items-center 
+                                        justify-center py-2 px-7 text-center text-sm font-medium   text-white hover:bg-primary/90
+                                        disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5'>
+                            SignUp
+                          </Link>
+                        </div>
+                      </>
+                  }
                 </div>
               </div>
             </div>

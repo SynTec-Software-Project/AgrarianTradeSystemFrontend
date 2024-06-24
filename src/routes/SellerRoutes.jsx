@@ -6,8 +6,8 @@ import {
   ServerStackIcon,
   RectangleStackIcon,
 } from "@heroicons/react/24/solid";
-import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/pages/SellerDashboard/dashboard";
-import { SignIn, SignUp } from "@/pages/SellerDashboard/auth";
+import { MyProducts, MyOrders, NewOrders, MyReviews, MyReturns, Profile } from "@/seller/SellerDashboard/dashboard";
+import { SignIn, SignUp } from "@/seller/SellerDashboard/auth";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -58,7 +58,7 @@ export const routes = [
     ],
   },
   {
-    title: "auth pages",
+    title: "profile",
     layout: "dashboard",
     pages: [
       {
@@ -66,12 +66,6 @@ export const routes = [
         name: "Profile",
         path: "/profile",
         element: <Profile />,
-      },
-      {
-        icon: <RectangleStackIcon {...icon} />,
-        name: "sign up",
-        path: "/sign-up",
-        element: <SignUp />,
       },
     ],
   },

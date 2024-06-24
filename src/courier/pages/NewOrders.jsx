@@ -1,11 +1,10 @@
 import React from 'react'
-
-const NewOrders = () => {
+import CourierNewOrdersTab from '../components/CourierNewOrdersTab'
+function CourierNewOrders() {
   return (
-    <div><h1>
-        couriers new orders
-        </h1></div>
+    <div>
+      <CourierNewOrdersTab />
+    </div>
   )
 }
-
-export default NewOrders
+export default CourierNewOrders
