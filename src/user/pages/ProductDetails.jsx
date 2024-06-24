@@ -44,7 +44,6 @@ const ProductDetails = () => {
   const [modelOpen, setModelOpen] = useState(false);
   const navigate = useNavigate();
   const [buyerID, setBuyerID] = useState('');
-  
   useEffect(() => {
     try{
       const token = sessionStorage.getItem('jwtToken');
@@ -54,7 +53,6 @@ const ProductDetails = () => {
       console.error('Error fetching orders:', error);
     }
   }, []);
-  
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -67,7 +65,6 @@ const ProductDetails = () => {
 
     fetchProductDetails();
   }, [id]);
-
   const handleModalOPen = () => {
     try {
       const token = sessionStorage.getItem('jwtToken');
@@ -110,11 +107,8 @@ const ProductDetails = () => {
   const handleSuccessOrder = (success) => {
     setSuccessOrder(success);
   }
-
-
   const addToCart = async (productId) => {
     try {
-      // Retrieve the JWT token from sessionStorage
       const token = sessionStorage.getItem('jwtToken');
       if (!token) {
         console.error('Token not found in sessionStorage.');

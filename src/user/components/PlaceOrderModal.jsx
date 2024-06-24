@@ -10,6 +10,7 @@ import {
     CardBody,
 } from "@material-tailwind/react";
 import { createNewOrder } from '@/services/orderServices';
+import { jwtDecode } from 'jwt-decode';
 const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee, destination ,setSuccessOrder }) => {
     const [buyerID, setBuyerID] = useState('');
     const addL1Ref = useRef(null);
@@ -20,6 +21,7 @@ const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee
         const token = sessionStorage.getItem('jwtToken');
         const decodedData = jwtDecode(token);
         setBuyerID(decodedData.email);
+        console.log(decodedData.email)
       } catch (error) {
         console.error('Error fetching orders:', error);
       }
