@@ -42,6 +42,7 @@ const ProductDetails = () => {
   const [successOrder, setSuccessOrder] = useState(false);
   const { id } = useParams();
   const [modelOpen, setModelOpen] = useState(false);
+  const[reviewsCount, setReviewsCount] = useState(0);
   const navigate = useNavigate();
   const [buyerID, setBuyerID] = useState('');
   useEffect(() => {
@@ -176,7 +177,9 @@ const ProductDetails = () => {
   // else{
   //   <Navigate to={"/login"}/>
   // }
-
+   const getReviewsCount = (count) => {
+    setReviewsCount(count);
+   };
 
   const handleQuantityChange = (newQuantity) => {
     setSelectedQuantity(newQuantity);
@@ -239,7 +242,7 @@ const ProductDetails = () => {
                   <h1 className='text-2xl md:text-3xl font-semibold text-gray-800'>{product.productTitle}</h1>
                   <div className="mb-3 flex md:gap-5 gap-3 items-center md:justify-between">
                     <Rating value={4} readonly />
-                    <p className=' text-sm text-gray-700'>Reviews (4)</p>
+                    <p className=' text-sm text-gray-700'>Reviews ({reviewsCount})</p>
                   </div>
                 </div>
                 <p className=' flex items-center gap-3 font-semibold text-gray-600 text-lg'><span><FaLocationDot /></span>{product.farmerAddL3}</p>
@@ -295,7 +298,7 @@ const ProductDetails = () => {
           />
         </div>
       </div>
-      <Review id={id}/>
+      <Review id={id} setReviewsCount={getReviewsCount}/>
     </div>
   )
 }

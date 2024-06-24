@@ -17,7 +17,7 @@ const AllReview = ({id}) => {
   }
 
   const getReviews = async () => {
-    const data = await getReviewsForProduct(product?.productId);
+    const data = await getReviewsForProduct(id);
     console.log(data);
     setReviews(data);
   }

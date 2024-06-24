@@ -3,13 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { getReviewsForProduct } from '@/services/reviewServices';
 import AllReview from './Allreview';
 
-const Review = ({ id }) => {
-
+const Review = ({ id ,setReviewsCount }) => {
   const [reviews, setReviews] = useState([]);
+  
 
   const getReviews = async () => {
     const data = await getReviewsForProduct(id);
+    console.log(data);
     setReviews(data);
+    setReviewsCount(data.length);
   }
 
   useEffect(() => {

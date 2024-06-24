@@ -10,22 +10,13 @@ export const AddReviewCard = () => {
   const [productData, setProductData] = useState([]);
   const [historyData, setHistoryData] = useState([]);
   const [buyerId, setBuyerID] = useState('');
-  useEffect(() => {
-    try{
-      const token = sessionStorage.getItem('jwtToken');
-      const decodedData = jwtDecode(token);
-      setBuyerID(decodedData.email);
-    } catch (error) {
-      console.error('Error fetching orders:', error);
-    }
-  }, []);
 
   const fetchProducts = async () => {
     try {
-      const productsToReview = await getProductsToReview(buyerId);
-
+      const token = sessionStorage.getItem('jwtToken');
+      const decodedData = jwtDecode(token);
+      const productsToReview = await getProductsToReview(decodedData.email);
       console.log(productsToReview);
-
       setProductData(productsToReview);
       // setHistoryData(reviewHistory);
     } catch (error) {
