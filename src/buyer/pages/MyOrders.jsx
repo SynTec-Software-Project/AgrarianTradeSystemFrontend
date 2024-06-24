@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BuyerTabAndTables from "../components/BuyerTabAndTables";
+import BuyerTabAndTables from "../components/BuyerTable";
 export function MyOrders() {
   const [defaultTab, setDefaultTab] = useState("All");
   return (
