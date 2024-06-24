@@ -17,6 +17,7 @@ import {
   updateOrderStatus,
 } from "@/services/orderServices";
 import { FARMER_ID } from "@/usersID";
+import { sendNotification } from "@/services/notificationService";
 
 export function CourierList({ search, orderId }) {
   const [data, setData] = useState([]);
@@ -58,10 +59,7 @@ export function CourierList({ search, orderId }) {
         message: "you have a new order!",
         isSeen: false,
       };
-      const response2 = await axios.post(
-        "https://localhost:7144/api/Notification",
-        obj
-      );
+      const response2 = await sendNotification(obj);
       console.log("new notification", response2);
     } catch (error) {
       console.error("Error updating order status:", error);

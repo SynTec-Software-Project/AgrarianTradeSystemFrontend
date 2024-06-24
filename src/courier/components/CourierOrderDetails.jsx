@@ -8,6 +8,7 @@ import {
 } from "@/services/orderServices";
 import { Alert } from "@material-tailwind/react";
 import { Icon } from "@mui/material";
+import { sendNotification } from "@/services/notificationService";
 
 export default function CourierOrderDetails() {
   const { orderID } = useParams();
@@ -32,7 +33,7 @@ export default function CourierOrderDetails() {
     orderStatus
   ) => {
     try {
-      var obj = {
+      var notificationData = {
         id: 0,
         from: "john.doe@example.com",
         to: receiverEmail,
@@ -48,11 +49,8 @@ export default function CourierOrderDetails() {
           ", Please confirm your order",
         isSeen: true,
       };
-      const response2 = await axios.post(
-        "https://localhost:7144/api/Notification",
-        obj
-      );
-      console.log("new notification", response2);
+      const response = await sendNotification(notificationData);
+      console.log("new notification", response.data);
     } catch (error) {
       console.error("Error sending notification:", error);
     }

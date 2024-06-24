@@ -32,6 +32,7 @@ import { useState, useEffect } from "react";
 import { updateOrderStatus } from "@/services/orderServices";
 import Swal from "sweetalert2";
 import { jwtDecode } from "jwt-decode";
+import { fetchNotifications } from "@/services/notificationService";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -56,17 +57,20 @@ export function DashboardNavbar() {
       console.error('Error fetching orders:', error);
     }
   }, [to]);
+  
   useEffect(() => {
-    axios
-      .get(`https://localhost:7144/api/Notification/to/` + to)
-      .then((response) => {
-        setNotificationList(response.data);
-        //setConfirm(response.data.isSeen);
-        setNotificationCount(response.data.length);
-      })
-      .catch((error) => {
-        console.error("Error fetching notifications:", error);
-      });
+    const getNotifications = async () => {
+      try {
+        const notifications = await fetchNotifications(to);
+        setNotificationList(notifications);
+        setNotificationCount(notifications.length);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+        // Optionally, handle the error here (e.g., show a notification to the user)
+      }
+    };
+
+    getNotifications();
   }, [to]);
 
   const deleteNotification = (id) => {
