@@ -1,7 +1,7 @@
 import { Rating } from '@material-tailwind/react';
 import React, { useState, useEffect } from 'react';
-import AllReview from './AllReview';
 import { getReviewsForProduct } from '@/services/reviewServices';
+import AllReview from './Allreview';
 
 const Review = ({ id }) => {
 

@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Rating } from '@material-tailwind/react';
-import ImageGallery from '../../seller/SellerDashboard/dashboard/components/ImageGallery';
-import ImageModal from '../../seller/SellerDashboard/dashboard/components/ImageModal';
 import { getOrderDetails, getReviewsForProduct, getSellerDetails } from '@/services/reviewServices';
 import { SingleReview } from '@/seller/SellerDashboard/dashboard/Review';
 import { formatDate } from '@/seller/SellerDashboard/dashboard/components/reviews/components/ReviewCard';
