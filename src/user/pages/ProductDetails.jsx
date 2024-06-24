@@ -155,28 +155,6 @@ const ProductDetails = () => {
     }
   }
 
-
-  // const token = sessionStorage.getItem('jwtToken');
-  // const decodedData = jwtDecode(token);
-  // if (decodedData.Role === 'User') {
-  //   setLoading(true);
-  //   var cart = {
-  //     buyerId: buyerID,
-  //     productId: productId,
-  //     quantity: selectedQuantity
-  //   }
-  //   try {
-  //     await addToCartProducts(cart);
-  //     setOpen(true);
-  //   } catch (error) {
-  //     console.error('Error adding items to the cart:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
-  // else{
-  //   <Navigate to={"/login"}/>
-  // }
    const getReviewsCount = (count) => {
     setReviewsCount(count);
    };

@@ -45,7 +45,7 @@ export const SingleReview = (props) => {
         <div className='ml-8'>
           <Rating value={props.rating} />
         </div>
-        <p className='ml-96 text-blue-gray-800'>2 years ago...</p>
+        {/* <p className='ml-96 text-blue-gray-800'>2 years ago...</p> */}
       </div>
       <p className='py-5 px-28 text-blue-gray-800' style={{ ...paragraStyles }}>
         {props.comment}
@@ -57,7 +57,7 @@ export const SingleReview = (props) => {
       {props.reply && <>
         <div className='flex py-7 ml-52'>
           <div>
-            <img src={props.sellerImg} alt="" className='w-[50px] h-auto rounded-[20px] py-2 ml-8' />
+            <img src={props.sellerImg} alt="" className='w-[60px] h-auto rounded-[20px] py-2 ml-8' />
           </div>
           <div className='ml-6'>
             <p>{props.sellerName}</p>
