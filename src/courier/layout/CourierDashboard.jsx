@@ -1,8 +1,8 @@
 import React from 'react'
 import { Configurator, DashboardNavbar, Sidenav,} from '@/widgets/layout'
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
-import Routing from '../route/Routing';
 import { SideBar } from '../components/SideBar';
+import Routing from '../route/Routing';
 
 const CourierDashboard = () => {
   return (
