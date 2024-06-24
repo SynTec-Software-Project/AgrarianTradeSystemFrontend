@@ -1,8 +1,6 @@
-"use client";
 import { useEffect, useState } from "react";
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Avatar } from "@material-tailwind/react";
 import { getAllFarmerOrders } from "@/services/orderServices";
 import { jwtDecode } from "jwt-decode";
