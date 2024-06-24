@@ -204,18 +204,18 @@ export default function Tab({ defaultTab }) {
                     </td>
                     <td className="p-3 w-24 text-center align-middle">
                       {orderStatus.toLowerCase() === "ready to pickup" && (
-                        <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                        <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased  leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                           Ready to Pickup
                         </p>
                       )}
                       {orderStatus.toLowerCase() === "picked up" && (
-                        <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                        <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased  leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                           Picked up
                         </p>
                       )}
                       {(orderStatus.toLowerCase() === "review" ||
                         orderStatus.toLowerCase() === "return") && (
-                        <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                        <p className=" bg-primary rounded-lg block font-sans text-sm antialiased leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                           Delivered
                         </p>
                       )}
@@ -265,17 +265,17 @@ export default function Tab({ defaultTab }) {
                     <div className="col-span-1 text-gray-600 flex flex-col space-y-3  group-hover:text-custom_gray">
                       <div className="">
                         {status === "Ready to pickup" && (
-                          <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          <p className=" bg-red-200 rounded-lg block font-sans text-sm antialiased  leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                             Ready to pickup
                           </p>
                         )}
                         {status === "Picked up" && (
-                          <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          <p className=" bg-indigo-200 rounded-lg block font-sans text-sm antialiased  leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                             Picked up
                           </p>
                         )}
                         {(status === "review" || status === "return") && (
-                          <p className=" bg-primary rounded-lg block font-sans text-sm antialiased font-light leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
+                          <p className=" bg-primary rounded-lg block font-sans text-sm antialiased leading-normal text-blue-gray-900 pt-1 h-8 w-28 font-medium text-center">
                             Delivered
                           </p>
                         )}
