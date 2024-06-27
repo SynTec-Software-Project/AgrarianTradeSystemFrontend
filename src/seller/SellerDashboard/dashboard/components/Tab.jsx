@@ -244,10 +244,7 @@ export default function Tab({ defaultTab }) {
               orderStatus,
             } = values; //destructuring
             return (
-              <div
-                key={orderID}
-                className="group bg-gray-200 border hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out  p-4  rounded-lg shadow mt-8  "
-              >
+              <div className="group bg-gray-200 border hover:border hover:border-primary hover:bg-green-50 transition duration-300 ease-out  p-4  rounded-lg shadow mt-8  ">
                 <Link to={`/dashboard/my-orders/${orderID}`}>
                   <Avatar
                     src={

@@ -15,7 +15,7 @@ export default function OrderDetails() {
         const details = await getFarmerOrderDetails(orderID);
         setOrderDetails(details);
       } catch (error) {
-        console.error('Error fetching order details:', error);
+        console.error("Error fetching order details:", error);
         // Handle errors appropriately
       }
     };
