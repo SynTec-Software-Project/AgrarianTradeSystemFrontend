@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-//const BASE_URL = 'https://agrariantradesystemapi.azurewebsites.net';
-const BASE_URL = 'https://localhost:7144';
+const BASE_URL = 'https://agrariantradesystemapi.azurewebsites.net';
+//const BASE_URL = 'https://localhost:7144';
 const api = axios.create({
   baseURL: BASE_URL,
 });

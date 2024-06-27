@@ -11,24 +11,24 @@ import {
 } from "@material-tailwind/react";
 import { createNewOrder } from '@/services/orderServices';
 import { jwtDecode } from 'jwt-decode';
-const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee, destination ,setSuccessOrder }) => {
+const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee, destination, setSuccessOrder }) => {
     const [buyerID, setBuyerID] = useState('');
     const addL1Ref = useRef(null);
     const addL2Ref = useRef(null);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
-      try{
-        const token = sessionStorage.getItem('jwtToken');
-        const decodedData = jwtDecode(token);
-        setBuyerID(decodedData.email);
-        console.log(decodedData.email)
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
+        try {
+            const token = sessionStorage.getItem('jwtToken');
+            const decodedData = jwtDecode(token);
+            setBuyerID(decodedData.email);
+            console.log(decodedData.email)
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
     }, []);
     const handleModalOPen = () => {
         open ? setOpen(false) :
-            setOpen(true);   
+            setOpen(true);
     };
     var subTotal = 0;
     var delivery = 0;
@@ -40,18 +40,23 @@ const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee
     const handlePost = async (formData) => {
         setLoading(true);
         try {
-          await createNewOrder(formData);
-          setLoading(false);
-          handleModalOPen();
-          setSuccessOrder(true);
+            await createNewOrder(formData);
+            setLoading(false);
+            handleModalOPen();
+            setSuccessOrder(true);
         } catch (error) {
-          console.error('Error creating new order:', error);
-          setLoading(false);
+            console.error('Error creating new order:', error);
+            setLoading(false);
         }
-      };
+    };
 
     const handleSubmit = () => {
         setLoading(true);
+        // Current timestamp for ordered date
+        const orderedDate = new Date();
+        // Calculate delivery date by adding 3 days to ordered date
+        const deliveryDateObject = new Date(orderedDate.getTime() + 3 * 24 * 60 * 60 * 1000);
+        const deliveryDate = deliveryDateObject.toISOString();
         var formData = {
             buyerID: buyerID,
             productID: product.productId,
@@ -61,11 +66,11 @@ const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee
             orderStatus: "new",
             deliveryFee: 200,
             totalQuantity: 40,
-            orderedDate: new Date().toISOString(), // Current timestamp
+            orderedDate:orderedDate.toISOString(),
             totalPrice: 400,
             courierID: null,
-            pickupDate: null, // Adjust as needed
-            deliveryDate: null, // Adjust as needed
+            pickupDate: null, 
+            deliveryDate: deliveryDate, 
         };
         handlePost(formData);
     }
@@ -84,17 +89,17 @@ const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee
                                 {/* delivery address detais */}
                                 <h1 className='text-gray-600 font-semibold  text-lg my-3'>Delivery Address :</h1>
                                 <div className='my-3'>
-                                    <input placeholder="Address Line 1"  ref={addL1Ref} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' />
+                                    <input placeholder="Address Line 1" ref={addL1Ref} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' />
                                 </div>
                                 <div className='my-2'>
-                                    <input placeholder="Address Line 2"  ref={addL2Ref} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'/>
+                                    <input placeholder="Address Line 2" ref={addL2Ref} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' />
                                 </div>
                                 <div className='my-2'>
-                                  <p>{destination}.</p>
+                                    <p>{destination}.</p>
                                 </div>
                             </div>
                         </div>
-                       
+
                         {/* product details section */}
                         <div className=' col-span-2 px-8'>
                             <div className=' flex justify-between items-start'>
@@ -140,7 +145,7 @@ const PlaceOrderModal = ({ open, setOpen, product, selectedQuantity, deliveryFee
                         cancel
                     </Button>
                     <Button variant="gradient" color="green" onClick={handleSubmit}>
-                       {loading ? 'Processing...' : 'Confirm Order'} 
+                        {loading ? 'Processing...' : 'Confirm Order'}
                     </Button>
                 </DialogFooter>
             </Dialog>

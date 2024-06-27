@@ -7,10 +7,8 @@ import {
   Alert
 } from "@material-tailwind/react";
 import ProductQuantity from '../components/ProductQuantity';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DeliveryFee from '@/courier/components/DeliveryFee';
-import { set } from 'date-fns';
 import SellerDetails from '../components/SellerDetails';
 import PlaceOrderModal from '../components/PlaceOrderModal';
 import { addToCartProducts, getProductDetails } from '@/services/productServices';
@@ -42,11 +40,13 @@ const ProductDetails = () => {
   const [successOrder, setSuccessOrder] = useState(false);
   const { id } = useParams();
   const [modelOpen, setModelOpen] = useState(false);
-  const[reviewsCount, setReviewsCount] = useState(0);
+  const [reviewsCount, setReviewsCount] = useState(0);
   const navigate = useNavigate();
   const [buyerID, setBuyerID] = useState('');
+
+//retrieve user email from the token
   useEffect(() => {
-    try{
+    try {
       const token = sessionStorage.getItem('jwtToken');
       const decodedData = jwtDecode(token);
       setBuyerID(decodedData.email);
@@ -54,6 +54,7 @@ const ProductDetails = () => {
       console.error('Error fetching orders:', error);
     }
   }, []);
+//retrieve product details from the database
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -66,6 +67,8 @@ const ProductDetails = () => {
 
     fetchProductDetails();
   }, [id]);
+
+//function to open the order modal
   const handleModalOPen = () => {
     try {
       const token = sessionStorage.getItem('jwtToken');
@@ -97,17 +100,18 @@ const ProductDetails = () => {
       console.error('An error occurred:', error);
     }
   };
+//function to set the destination and delivery fee
   const handleSelectDestination = (destination) => {
     setDestination(destination);
   }
-
   const handleDeliveryFee = (fee) => {
     setDeliveryFee(fee);
   }
-
+//function to handle the success order alert
   const handleSuccessOrder = (success) => {
     setSuccessOrder(success);
   }
+//function to add the product to the cart
   const addToCart = async (productId) => {
     try {
       const token = sessionStorage.getItem('jwtToken');
@@ -138,7 +142,7 @@ const ProductDetails = () => {
         try {
           // Attempt to add the product to the cart
           await addToCartProducts(cart);
-          setOpen(true); // Open the success message or modal
+          setOpen(true);
           console.log('Product added to cart successfully.');
         } catch (error) {
           console.error('Error adding items to the cart:', error);
@@ -154,11 +158,12 @@ const ProductDetails = () => {
       console.error('An unexpected error occurred:', error);
     }
   }
-
-   const getReviewsCount = (count) => {
+//function to get the reviews count
+  const getReviewsCount = (count) => {
     setReviewsCount(count);
-   };
+  };
 
+//function to handle the quantity change
   const handleQuantityChange = (newQuantity) => {
     setSelectedQuantity(newQuantity);
   };
@@ -253,7 +258,6 @@ const ProductDetails = () => {
                                       disabled:bg-gray-300 disabled:border-gray-300 disabled:text-dark-500' disabled={loading}
 
                   onClick={() => { addToCart(id) }}
-                // onClick={() => { handleUser}}
                 >
                   {loading ? 'Adding to cart' : 'Add to Cart'}
                 </button>
@@ -276,7 +280,7 @@ const ProductDetails = () => {
           />
         </div>
       </div>
-      <Review id={id} setReviewsCount={getReviewsCount}/>
+      <Review id={id} setReviewsCount={getReviewsCount} />
     </div>
   )
 }

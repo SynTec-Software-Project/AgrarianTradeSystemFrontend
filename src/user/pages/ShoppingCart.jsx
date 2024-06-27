@@ -16,6 +16,7 @@ const ShoppingCart = () => {
   const [buyerID, setBuyerID] = useState('');
   const [open, setOpen] = useState(false);
   const [successOrder, setSuccessOrder] = useState(false);
+//retrieve cart items and buyer user id from the database
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
@@ -24,21 +25,22 @@ const ShoppingCart = () => {
         const cartData = await getCartItems(decodedData.email);
         setCartItems(cartData);
         setBuyerID(decodedData.email);
-       // console.log(cartData);
       } catch (error) {
         console.error('Error fetching cart details:', error);
       }
     };
     fetchCartItems();
   }, [cartItems]);
-
+//delete item from the cart
   const handleDeleteItem = (item) => {
     setCartItems(item);
   }
+//open the order modal
   const modelOpenHandler = () => {
    open ? setOpen(false) :
     setOpen(true);   
   };
+//handle the success order alert
   const handleSuccessOrder = (success) => {
     setSuccessOrder(success);
   }

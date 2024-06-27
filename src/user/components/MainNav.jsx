@@ -35,13 +35,9 @@ const MainNav = ({ getSearchResults }) => {
 
   const handleSearch = async (searchTerm) => {
     try {
-      // Fetch search results
       navigate(`/products?search=${searchTerm}`);
       const results = await getSearchProducts(searchTerm);
-      // Pass search results to ProductList
       getSearchResults(results);
-      // Navigate to /products with search term as query param
-
     } catch (error) {
       console.error('Error fetching search results:', error);
     }

@@ -35,21 +35,21 @@ const CartOrderModal = ({ open, setOpen,cartItems,buyerID ,setSuccessOrder}) => 
     const createOrdersFromCart = async () => {
         try {
             const ordersToCreate = cartItems.map(item => ({
-                buyerID: buyerID, // Assuming buyerID is part of each cart item
+                buyerID: buyerID,
                 productID: item.productId,
                 deliveryAddressLine1: addL1Ref.current.value,
                 deliveryAddressLine2: addL2Ref.current.value,
-                deliveryAddressLine3: 'Srilanka', // Assuming destination is part of each cart item
+                deliveryAddressLine3: 'Srilanka',
                 orderStatus: "new",
                 deliveryFee: 200,
                 totalQuantity: item.quantity,
-                orderedDate: new Date().toISOString(), // Current timestamp
-                totalPrice: item.price, // Adjust this based on your cart item structure
+                orderedDate: new Date().toISOString(),
+                totalPrice: item.price, 
                 courierID: null,
-                pickupDate: null, // Adjust as needed
-                deliveryDate: null, // Adjust as needed
+                pickupDate: null, 
+                deliveryDate: null, 
             }))
-           // const response = await axios.post('https://localhost:7144/api/NewOrder/CreateOrders', ordersToCreate);
+           
            handlePost(ordersToCreate);
         } catch (error) {
             console.error('Error creating orders:', error);
