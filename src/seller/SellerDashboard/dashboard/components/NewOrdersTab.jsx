@@ -24,8 +24,8 @@ export default function NewOrdersTab() {
     }
   };
 
-  const handleRowClick = (id) => {
-    navigate(`/dashboard/select-courier/${id}`);
+  const handleRowClick = (id, totalPrice) => {
+    navigate(`/dashboard/select-courier/${id}`, { state: { totalPrice } });
   };
 
   useEffect(() => {
@@ -40,6 +40,7 @@ export default function NewOrdersTab() {
           filterOptions.includes(order.orderStatus)
         );
         setData(filteredOrders);
+        console.log(orders);
       } catch (error) {
         console.error('Error fetching orders:', error);
       }
@@ -70,7 +71,7 @@ export default function NewOrdersTab() {
                 <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Order Placed</th>
                 <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Quantity (Kg)</th>
                 <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Total</th>
-                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Delivery</th>
+                <th className="p-4 pt-8 pb-6 font-bold w-24 text-center align-middle">Order Status</th>
               </tr>
             </thead>
             <tbody>
@@ -82,7 +83,7 @@ export default function NewOrdersTab() {
                 return (
                   <tr
                     key={orderID}
-                    onClick={() => handleRowClick(orderID)}
+                    onClick={() => handleRowClick(orderID, totalPrice)}
                     onMouseEnter={() => setSelectedRow(orderID)}
                     onMouseLeave={() => setSelectedRow(null)}
                     className={selectedRow === orderID ? 'bg-gray-200 cursor-pointer' : 'cursor-pointer'}

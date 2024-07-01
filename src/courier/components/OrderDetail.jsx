@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios"; // HTTP client for making API requests
 import { sendNotification } from "@/services/notificationService";
 import { fetchCourierDetails, updateOrderStatus } from "@/services/orderServices";
+import moment from 'moment';
 
 const OrderDetail = () => {
   const { id } = useParams(); // Get the id parameter from the URL using useParams hook
@@ -16,6 +17,13 @@ const OrderDetail = () => {
     const fetchOrderDetails = async () => {
       try {
         const orderData = await fetchCourierDetails(id);
+        
+        // Format the deliveryDate using moment
+        if (orderData.deliveryDate) {
+          orderData.deliveryDate = moment(orderData.deliveryDate).format("YYYY-MM-DD");
+        }
+
+        console.log(orderData);
         setData(orderData);
       } catch (error) {
         console.error('Error fetching order details:', error);
@@ -98,7 +106,7 @@ const OrderDetail = () => {
       const notificationObj = {
         id: 0,
         from: "john.doe@example.com",
-        to: "adam.jayasinghe@example.com",
+        to: data.farmerID,
         message: "Your Orders has been rejected",
         isSeen: false,
       };

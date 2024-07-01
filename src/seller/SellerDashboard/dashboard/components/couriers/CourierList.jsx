@@ -144,7 +144,7 @@ export function CourierList({ search, orderId }) {
                         color="gray"
                         className="font-normal"
                       >
-                        {"No:" +
+                        {
                           addressLine1 +
                           ", " +
                           addressLine2 +
