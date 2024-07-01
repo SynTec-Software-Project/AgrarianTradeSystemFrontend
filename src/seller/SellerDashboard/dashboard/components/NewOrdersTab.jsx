@@ -25,7 +25,10 @@ export default function NewOrdersTab() {
   };
 
   const handleRowClick = (id, totalPrice) => {
-    navigate(`/dashboard/select-courier/${id}`, { state: { totalPrice } });
+    const token = sessionStorage.getItem('jwtToken');
+    const decodedData = jwtDecode(token);
+    const sellerID = decodedData.email;
+    navigate(`/dashboard/select-courier/${id}`, { state: { totalPrice, sellerID } });
   };
 
   useEffect(() => {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import axios from "axios";
 import {
   Button,
   List,
@@ -16,14 +15,12 @@ import {
   updateCourier,
   updateOrderStatus,
 } from "@/services/orderServices";
-import { FARMER_ID } from "@/usersID";
 import { sendNotification } from "@/services/notificationService";
 
-export function CourierList({ search, orderId }) {
+export function CourierList({ search, orderId, sellerID }) {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState(false);
   const [courierList, setCourierList] = useState([]);
-  const [courierEmail, setCourierEmail] = useState("");
 
   const handlePopup = (courierId) => {
     Swal.fire({
@@ -51,10 +48,9 @@ export function CourierList({ search, orderId }) {
   const handleUpdateStatus = async (orderID, newStatus, courierID) => {
     try {
       const response = await updateOrderStatus(orderID, newStatus);
-      console.log(courierID);
       var obj = {
         id: 0,
-        from: FARMER_ID,
+        from: sellerID,
         to: courierID,
         message: "you have a new order!",
         isSeen: false,
@@ -67,7 +63,6 @@ export function CourierList({ search, orderId }) {
   };
 
   const handleUpdateCourier = async (courierID) => {
-    console.log(courierID);
     try {
       await updateCourier(orderId, courierID);
       console.log(
@@ -121,7 +116,6 @@ export function CourierList({ search, orderId }) {
               addressLine1,
               addressLine2,
               addressLine3,
-              courierImageUrl,
               courierID,
             } = values;
             return (

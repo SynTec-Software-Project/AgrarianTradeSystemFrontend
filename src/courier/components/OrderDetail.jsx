@@ -7,6 +7,7 @@ import axios from "axios"; // HTTP client for making API requests
 import { sendNotification } from "@/services/notificationService";
 import { fetchCourierDetails, updateOrderStatus } from "@/services/orderServices";
 import moment from 'moment';
+const { courierID } = location.state || {};
 
 const OrderDetail = () => {
   const { id } = useParams(); // Get the id parameter from the URL using useParams hook
@@ -62,7 +63,7 @@ const OrderDetail = () => {
       // Prepare notification object
       const notificationData = {
         id: 0,
-        from: "john.doe@example.com",
+        from: courierID,
         to: data.farmerID,
         message: "Your Orders has been accepted",
         isSeen: false,

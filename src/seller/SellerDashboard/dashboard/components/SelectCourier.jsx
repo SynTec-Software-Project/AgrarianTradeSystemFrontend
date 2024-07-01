@@ -11,7 +11,8 @@ function SelectCourier() {
   const [data, setData] = useState([]);
   const { id } = useParams();
   const location = useLocation();
-  const { totalPrice } = location.state || {};
+  const { totalPrice, sellerID } = location.state || {};
+
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -95,7 +96,7 @@ function SelectCourier() {
     
       {/* Render CourierList component with orderId prop */}
       <div className="mt-10 overflow-y-auto max-h-screen">
-        <CourierList search={search} orderId={data.orderID} />
+      <CourierList search={search} orderId={data.orderID} sellerID={sellerID} />
       </div>
     </>
   );

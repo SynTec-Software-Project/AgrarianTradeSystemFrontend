@@ -27,8 +27,11 @@ export default function CourierNewOrdersTab() {
     fetchOrders();
   }, []);
 
-  const handleRowClick = (id) => {  
-    navigate(`/couriers/new-orders/${id}`);
+  const handleRowClick = (id) => {
+    const token = sessionStorage.getItem('jwtToken');
+        const decodedData = jwtDecode(token);
+        const courierID = decodedData.email;
+    navigate(`/couriers/new-orders/${id}`,{ state: {courierID } });
   };
 
   return (
